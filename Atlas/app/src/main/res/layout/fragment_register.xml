@@ -120,5 +120,6 @@
         android:layout_marginBottom="32dp"
         android:gravity="center"
         android:text="Already a User?  Login"
-        android:textSize="22sp" />
+        android:textSize="16sp"
+        />
 </LinearLayout>
