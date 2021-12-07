@@ -13,9 +13,11 @@ import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.atlas.R;
+import com.example.atlas.UserDetailsFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +25,7 @@ import com.example.atlas.R;
  */
 public class RegisterFragment extends Fragment {
 
-    TextView goToLogin;
+    Button signUp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,7 +38,8 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView signupToLogin = view.findViewById(R.id.tv_signup_to_login);
+        //work of moving back from signUp page to login page
+        TextView signupToLogin = (TextView) view.findViewById(R.id.tv_signup_to_login);
         String logInText = getString(R.string.asking_for_login);
         SpannableString ss = new SpannableString(logInText);
 
@@ -55,6 +58,18 @@ public class RegisterFragment extends Fragment {
 
         signupToLogin.setText(ss);
         signupToLogin.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // work of moving from signUp page to userDetails Page
+        signUp = (Button) view.findViewById(R.id.bv_signup);
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.auth_fragment_container, new UserDetailsFragment())
+                        .commit();
+            }
+        });
     }
 
 
