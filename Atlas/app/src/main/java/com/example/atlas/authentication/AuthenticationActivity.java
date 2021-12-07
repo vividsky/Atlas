@@ -1,8 +1,10 @@
-package com.example.atlas;
+package com.example.atlas.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.atlas.R;
 
 public class AuthenticationActivity extends AppCompatActivity {
 

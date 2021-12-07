@@ -1,4 +1,4 @@
-package com.example.atlas;
+package com.example.atlas.authentication;
 
 import android.os.Bundle;
 
@@ -8,16 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.atlas.R;
+
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class UserDetailsFragment extends Fragment {
+public class LoginFragment extends Fragment {
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_details, container, false);
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 }
