@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Atlas">
         <activity
-            android:name=".UserCredentialsActivity"
+            android:name=".MainActivity"
             android:exported="false" />
-        <activity android:name=".MainActivity"
+        <activity android:name=".AuthenticationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
