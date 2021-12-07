@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "400793447756",
+    "project_id": "atlas-adfe5",
+    "storage_bucket": "atlas-adfe5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400793447756:android:9f2c205a03197ab51433e9",
+        "android_client_info": {
+          "package_name": "com.example.atlas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "400793447756-dffa8dpa48k77ldf0usecd9u7mddq4sv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.atlas",
+            "certificate_hash": "b7f8a13496210aae23f9b4ea14cc060d710c4683"
+          }
+        },
+        {
+          "client_id": "400793447756-dol0mn30rvl8qlo2tbgsq55as8e2s205.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5m-NoQ1WLAUQIaFvJvVl-5Xj45UK04wk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "400793447756-dol0mn30rvl8qlo2tbgsq55as8e2s205.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
