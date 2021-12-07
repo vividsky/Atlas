@@ -6,6 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,14 +35,27 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        goToLogin = (TextView) view.findViewById(R.id.tv_login);
 
-        goToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.fr)
+        TextView signupToLogin = view.findViewById(R.id.tv_signup_to_login);
+        String logInText = getString(R.string.asking_for_login);
+        SpannableString ss = new SpannableString(logInText);
+
+        // creating clickable span to be implemented as a link
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            public void onClick(View widget) {
+                getParentFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.auth_fragment_container, new LoginFragment())
+                        .commit();
             }
-        });
+        };
+
+        // setting the part of string to be act as a link
+        ss.setSpan(clickableSpan, logInText.indexOf("Login"), logInText.indexOf('.'), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        signupToLogin.setText(ss);
+        signupToLogin.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
+
 }
