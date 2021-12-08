@@ -2,13 +2,13 @@ package com.example.atlas.Models;
 
 public class UsersModel {
 
-    private String id;
-    private String email;
-    private String contact;
+    private final String id;
+    private final String email;
+    private final String contact;
     private String password;
     private String name;
     // male -> 0, female -> 1
-    private int gender;
+    private String gender;
     private String address;
     private String alternateContact;
     // type -> SP or NoS
@@ -22,14 +22,6 @@ public class UsersModel {
     }
 
     //    setters
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -38,7 +30,7 @@ public class UsersModel {
         this.name = name;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -75,7 +67,7 @@ public class UsersModel {
         return name;
     }
 
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 
