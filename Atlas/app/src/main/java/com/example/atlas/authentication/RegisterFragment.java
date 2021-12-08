@@ -168,7 +168,6 @@ public class RegisterFragment extends Fragment {
                 getParentFragmentManager()
                         .beginTransaction()
                         .replace(R.id.auth_fragment_container, new UserDetailsFragment())
-                        .addToBackStack(null)
                         .commit();
             }
         });
