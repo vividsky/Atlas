@@ -29,7 +29,7 @@
             android:drawablePadding="10dp"
             android:hint="Username"
             android:inputType="text"
-            android:padding="15dp" />
+            android:paddingTop="20dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -48,7 +48,7 @@
             android:drawablePadding="10dp"
             android:hint="Password"
             android:inputType="textPassword"
-            android:padding="15dp" />
+            android:paddingTop="20dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
