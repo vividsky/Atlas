@@ -6,25 +6,19 @@ android:layout_height="match_parent"
 android:orientation="vertical"
 tools:context="UserDetailsFragment">
 
-<!--  UI needs to be improved-->
-
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
         android:id="@+id/et_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="24dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_baseline_person_24"
-            android:drawablePadding="10dp"
-            android:hint="@string/name"
-            android:inputType="text"
-            android:padding="15dp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_marginEnd="24dp"
+        android:drawableStart="@drawable/ic_baseline_person_24"
+        android:drawablePadding="10dp"
+        android:hint="@string/name"
+        android:inputType="text"
+        android:padding="20dp"
+        android:autofillHints="Name" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,59 +31,64 @@ tools:context="UserDetailsFragment">
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_weight="2"
             android:text="Gender"
             android:paddingStart="10dp"
-            android:textSize="24sp" />
-        <RadioButton
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Male" />
+            android:paddingEnd="10dp"
+            android:gravity="center_vertical"
+            android:textSize="18sp" />
 
-        <RadioButton
-            android:layout_weight="1"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:id="@+id/rg_gender"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Female" />
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:checkedButton="@id/rb_gender_male">
+
+            <RadioButton
+                android:id="@+id/rb_gender_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Male"/>
+
+            <RadioButton
+                android:id="@+id/rb_gender_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Female"/>
+
+        </RadioGroup>
     </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
         android:id="@+id/et_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp">
+        android:layout_marginEnd="24dp"
+        android:drawableStart="@drawable/ic_baseline_location_on_24"
+        android:drawablePadding="10dp"
+        android:hint="Address"
+        android:inputType="text"
+        android:padding="20dp"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_baseline_location_on_24"
-            android:drawablePadding="10dp"
-            android:hint="Address"
-            android:maxLines="3"
-            android:inputType="text"
-            android:padding="15dp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
         android:id="@+id/et_contact_alternate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp">
+        android:layout_marginEnd="24dp"
+        android:drawableStart="@drawable/ic_baseline_phone_24"
+        android:drawablePadding="10dp"
+        android:hint="Contact (Alternate)"
+        android:inputType="phone"
+        android:padding="20dp" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_baseline_phone_24"
-            android:drawablePadding="10dp"
-            android:hint="Contact (Alternate)"
-            android:inputType="phone"
-            android:padding="15dp" />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -102,21 +101,36 @@ tools:context="UserDetailsFragment">
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_weight="2"
             android:text="Services"
             android:paddingStart="10dp"
-            android:textSize="24sp" />
-        <RadioButton
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Service Provider" />
+            android:paddingEnd="10dp"
+            android:gravity="center_vertical"
+            android:textSize="18sp" />
 
-        <RadioButton
+        <RadioGroup
+            android:id="@+id/rg_services"
             android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="In need of Services" />
+            android:orientation="horizontal"
+            android:checkedButton="@id/rb_service_provider">
+
+            <RadioButton
+                android:id="@+id/rb_service_provider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="SP"/>
+
+            <RadioButton
+                android:id="@+id/rb_require_services"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Need"/>
+
+        </RadioGroup>
     </LinearLayout>
 
     <Button
