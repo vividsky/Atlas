@@ -15,7 +15,7 @@
         android:src="@mipmap/ic_launcher_round"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_username"
+        android:id="@+id/et_login_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_baseline_person_24"
             android:drawablePadding="10dp"
-            android:hint="Username"
+            android:hint="Email"
             android:inputType="text"
             android:paddingTop="20dp" />
     </com.google.android.material.textfield.TextInputLayout>
