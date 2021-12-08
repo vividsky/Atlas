@@ -1,8 +1,15 @@
 <resources>
     <string name="app_name">Atlas</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="asking_for_login">Already have an account? Login here.</string>
     <string name="asking_for_sign_up">Don\'t have an account? Sign up here.</string>
     <string name="name">Name</string>
+
+    <string name="cook">Cook</string>
+    <string name="maid">Maid</string>
+    <string name="driver">Driver</string>
+    <string name="daily_wager">Daily Wager</string>
+
+    <string name="month">Month</string>
+    <string name="year">Year</string>
 </resources>

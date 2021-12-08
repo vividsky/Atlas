@@ -11,13 +11,15 @@
         android:theme="@style/Theme.Atlas">
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
-        <activity android:name=".authentication.AuthenticationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".authentication.AuthenticationActivity"
+            android:exported="true">
         </activity>
     </application>
 
