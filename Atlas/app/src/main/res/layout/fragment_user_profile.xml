@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,34 +7,52 @@
     tools:context=".authentication.UserProfileFragment">
 
     <TextView
-        android:padding="24dp"
-        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingStart="24dp"
+        android:paddingTop="24dp"
+        android:paddingEnd="24dp"
         android:text="Are you a..."
-        android:textSize="36sp"
-        android:gravity="center_horizontal"/>
+        android:textSize="36sp" />
 
     <Button
-        android:padding="24dp"
         android:id="@+id/b_profile_type_sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="156dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="48dp"
+        android:layout_weight="1"
+        android:backgroundTint="#7447C4"
+        android:paddingStart="24dp"
+        android:paddingTop="24dp"
+        android:paddingEnd="24dp"
         android:text="Service Provider"
-        android:textSize="42sp"
-        android:gravity="center_horizontal"
-        android:layout_weight="1"/>
+        android:textSize="42sp" />
+
+    <ProgressBar
+        android:id="@+id/pb_progressbar_in_profile_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone" />
 
     <Button
-        android:padding="24dp"
         android:id="@+id/b_profile_type_sin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="48dp"
+        android:layout_weight="1"
+        android:backgroundTint="#7447C4"
+        android:paddingStart="24dp"
+        android:paddingTop="24dp"
+        android:paddingEnd="24dp"
         android:text="In need of Service"
-        android:textSize="42sp"
-        android:gravity="center_horizontal"
-        android:layout_weight="1"/>
+        android:textSize="42sp" />
 
 
 </LinearLayout>

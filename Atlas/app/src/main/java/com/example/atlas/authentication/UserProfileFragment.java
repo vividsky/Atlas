@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.atlas.MainActivity;
@@ -106,6 +107,9 @@ public class UserProfileFragment extends Fragment {
 
     private void makeUserReceiverCollection() {
 
+        ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.pb_progressbar_in_profile_fragment);
+        progressBar.setVisibility(View.VISIBLE);
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -123,6 +127,7 @@ public class UserProfileFragment extends Fragment {
                             .document(firebaseAuth.getCurrentUser().getUid())
                             .set(new ServiceReceiverModel(servicesSelected, user))
                             .addOnCompleteListener(task2 -> {
+                                progressBar.setVisibility(View.GONE);
                                 if (task2.isSuccessful()) {
                                     Toast.makeText(getContext(), "Service Receiver details saved successfully.", Toast.LENGTH_LONG).show();
 
