@@ -42,7 +42,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:checkedButton="@id/rb_gender_male"
             android:orientation="horizontal">
 
             <RadioButton
@@ -84,7 +83,7 @@
         android:layout_marginEnd="24dp"
         android:drawableStart="@drawable/ic_baseline_phone_24"
         android:drawablePadding="10dp"
-        android:hint="Contact (Alternate)"
+        android:hint="Alternate Contact (Optional)"
         android:inputType="phone"
         android:padding="20dp" />
 
@@ -112,7 +111,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:checkedButton="@id/rb_service_provider"
             android:orientation="horizontal">
 
             <RadioButton

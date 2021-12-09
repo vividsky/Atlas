@@ -67,11 +67,8 @@ public class UserDetailsFragment extends Fragment {
         mGender = (RadioGroup) view.findViewById(R.id.rg_gender);
         mServices = (RadioGroup) view.findViewById(R.id.rg_services);
 
-        // setting gender to be default as male, if nothing clicked on radio button
-        String[] gender = new String[]{GENDER_MALE};
-
-        // setting type to be default as Service Provider, if nothing clicked on radio button
-        String[] type = new String[]{SERVICE_PROVIDER};
+        String[] gender = new String[1];
+        String[] type = new String[1];
 
         // updating gender on radio button click
         mGender.setOnCheckedChangeListener((group, checkedId) -> {
@@ -83,11 +80,9 @@ public class UserDetailsFragment extends Fragment {
                     gender[0] = GENDER_FEMALE;
                     break;
                 default:
-                    // do nothing or we can set default gender here.
+                    // do nothing.
             }
         });
-
-//        mServices.clearCheck();
 
         // updating type on radio button click
         mServices.setOnCheckedChangeListener((group, checkedId) -> {
@@ -104,10 +99,7 @@ public class UserDetailsFragment extends Fragment {
 //                    Log.d(TAG, String.valueOf(requiredServices));
                     break;
                 default:
-                    Log.d(TAG, "SP is clicked in default.");
-                    // do nothing or we can set default type here.
-                    // TODO: Go to service provider fragment and the data of this fragment should not
-                    //  be lost and "need to see/resolve" if its to be done here or not since default type is SP and may be user clicks nothing
+                    // do nothing.
             }
         });
 
@@ -129,8 +121,10 @@ public class UserDetailsFragment extends Fragment {
 
                 /* validations check
                  * 1. name
-                 * 2. address
-                 * 3. alternate contact
+                 * 2. gender
+                 * 3. address
+                 * 4. alternate contact
+                 * 5. services
                 */
                 if (TextUtils.isEmpty(name)) {
                     mName.setError("Name is required.");
@@ -138,6 +132,11 @@ public class UserDetailsFragment extends Fragment {
                 }
                 if (!Pattern.compile("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$").matcher(name).matches()) {
                     mName.setError("Please enter a valid name.");
+                }
+
+                if (mGender.getCheckedRadioButtonId() == -1) {
+                    Toast.makeText(getContext(), "Gender is required.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
 
@@ -149,6 +148,11 @@ public class UserDetailsFragment extends Fragment {
                 if (!TextUtils.isEmpty(alternateContact) && !Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
                         .matcher(alternateContact).matches()) {
                     mAlternateContact.setError("Please enter a valid Contact detail.");
+                    return;
+                }
+
+                if (mServices.getCheckedRadioButtonId() == -1) {
+                    Toast.makeText(getContext(), "Services Type is required.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -192,17 +196,16 @@ public class UserDetailsFragment extends Fragment {
                     Log.d(TAG, "type updating failed");
                 });
 
-                // update contact only when entered as its an optional field
-                if (!alternateContact.isEmpty()) {
-                    user.update("alternateContact", alternateContact).addOnSuccessListener(success -> {
-                        Log.d(TAG, "alternate Contact successfully updted");
-                    }).addOnFailureListener(failure -> {
-                        Log.d(TAG, "alternate Contact updating failed");
-                    });
-                }
+
+                user.update("alternateContact", alternateContact).addOnSuccessListener(success -> {
+                    Log.d(TAG, "alternate Contact successfully updted");
+                }).addOnFailureListener(failure -> {
+                    Log.d(TAG, "alternate Contact updating failed");
+                });
+
 
                 // to indicate user save was successful
-                Toast.makeText(getActivity(), "Successfully Saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Successfully Saved", Toast.LENGTH_SHORT).show();
 
             }
         });

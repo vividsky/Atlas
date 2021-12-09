@@ -172,7 +172,7 @@ public class RegisterFragment extends Fragment {
                                 firestore.document(mAuth.getCurrentUser().getUid()).set(mUser)
                                         .addOnCompleteListener(isUserCreatedTask -> {
                                             if (isUserCreatedTask.isSuccessful()) {
-                                                Toast.makeText(getActivity(), "SignUp successful.",
+                                                Toast.makeText(getContext(), "SignUp successful.",
                                                         Toast.LENGTH_SHORT).show();
 
                                                 // working of moving from signUp page to userDetails Page
