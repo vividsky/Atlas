@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.atlas.R;
+import com.example.atlas.ServiceProviderDetailsFragment;
+import com.example.atlas.UserDetailsFragment;
 
 public class AuthenticationActivity extends AppCompatActivity {
 

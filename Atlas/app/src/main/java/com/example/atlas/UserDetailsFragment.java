@@ -90,6 +90,10 @@ public class UserDetailsFragment extends Fragment {
                 case R.id.rb_service_provider:
                     type[0] = SERVICE_PROVIDER;
                     Log.d(TAG, "SP is clicked.");
+                    getParentFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.auth_fragment_container, new ServiceProviderDetailsFragment())
+                            .commit();
                     // TODO: Go to service provider fragment and the data of this fragment should not be lost
                     break;
                 case R.id.rb_require_services:

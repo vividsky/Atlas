@@ -2,9 +2,9 @@ package com.example.atlas.Models;
 
 public class UsersModel {
 
-    private final String id;
-    private final String email;
-    private final String contact;
+    private  String id;
+    private  String email;
+    private  String contact;
     private String password;
     private String name;
     private String gender;
@@ -18,6 +18,7 @@ public class UsersModel {
         this.contact = contact;
         this.password = password;
     }
+    public UsersModel() {}
 
     //    setters
     public void setPassword(String password) {
