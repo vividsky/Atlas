@@ -39,13 +39,14 @@ public class RegisterFragment extends Fragment {
     public static final String TAG = RegisterFragment.class.getSimpleName();
 
     Button mSignUp;
-
     TextInputLayout mEmailId;
     TextInputLayout mContact;
     TextInputLayout mPassword;
     TextInputLayout mConfirmPassword;
-
     ProgressBar mProgressBar;
+
+    FirebaseAuth firebaseAuth;
+    FirebaseFirestore firebaseFirestore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -157,22 +158,20 @@ public class RegisterFragment extends Fragment {
                 mProgressBar.setVisibility(View.VISIBLE);
 
                 // authentication
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                firebaseAuth = FirebaseAuth.getInstance();
+                firebaseFirestore = FirebaseFirestore.getInstance();
 
-                mAuth.createUserWithEmailAndPassword(email, password)
+                firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(createUserTask -> {
                             if (createUserTask.isSuccessful()) {
                                 Log.d(TAG, "createUserWithEmail:success");
+                                // creating user model to save it in fireStore
+                                UsersModel mUser = new UsersModel(firebaseAuth.getCurrentUser().getUid(), email, contact, password);
 
-                                // creating user model to save it in firestore
-                                UsersModel mUser = new UsersModel(mAuth.getCurrentUser().getUid(), email, contact, password);
-
-                                CollectionReference firestore = FirebaseFirestore.getInstance().collection("Users");
-
-                                firestore.document(mAuth.getCurrentUser().getUid()).set(mUser)
+                                firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid()).set(mUser)
                                         .addOnCompleteListener(isUserCreatedTask -> {
                                             if (isUserCreatedTask.isSuccessful()) {
-                                                Toast.makeText(getContext(), "SignUp successful.",
+                                                Toast.makeText(getContext(), "Signup successful.",
                                                         Toast.LENGTH_SHORT).show();
 
                                                 // working of moving from signUp page to userDetails Page
@@ -193,7 +192,7 @@ public class RegisterFragment extends Fragment {
 
                                 // If sign up fails, display a message to the user.
                                 Log.w(TAG, "createUserWithEmail:failure", createUserTask.getException());
-                                Toast.makeText(getActivity(), "User Already Exists or Some Issue Occurred.",
+                                Toast.makeText(getActivity(), "Some Issue Occurred.Check your Internet Connection",
                                         Toast.LENGTH_SHORT).show();
                             }
                         });

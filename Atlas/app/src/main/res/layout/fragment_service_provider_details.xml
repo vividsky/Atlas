@@ -68,8 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:checkedButton="@id/rb_vehicle_owned_no">
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/rb_vehicle_owned_yes"

@@ -2,15 +2,14 @@ package com.example.atlas.Models;
 
 public class UsersModel {
 
-    private  String id;
-    private  String email;
-    private  String contact;
+    private String id;
+    private String email;
+    private String contact;
     private String password;
     private String name;
     private String gender;
     private String address;
     private String alternateContact;
-    private String type;
 
     public UsersModel(String id, String email, String contact, String password) {
         this.id = id;
@@ -39,10 +38,6 @@ public class UsersModel {
 
     public void setAlternateContact(String alternateContact) {
         this.alternateContact = alternateContact;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     // getters
@@ -77,10 +72,5 @@ public class UsersModel {
     public String getAlternateContact() {
         return alternateContact;
     }
-
-    public String getType() {
-        return type;
-    }
-
 }
 
