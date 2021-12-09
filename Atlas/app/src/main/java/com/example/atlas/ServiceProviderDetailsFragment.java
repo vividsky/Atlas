@@ -57,7 +57,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
         mSaveButton = view.findViewById(R.id.button_service_provider_details_save);
         vehicleOwnedRadioGroup = view.findViewById(R.id.rg_vehicle_owned);
 
-        String[] vehicleOwned = new String[] {VEHICLE_OWNED_NO};
+        String[] vehicleOwned = new String[1];
         vehicleOwnedRadioGroup.setOnCheckedChangeListener((group, id) -> {
             if (id == R.id.rb_vehicle_owned_yes) {
                 vehicleOwned[0] = VEHICLE_OWNED_YES;
@@ -84,7 +84,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
                         if (task.isSuccessful()) {
                             user = task.getResult().toObject(UsersModel.class);
                         } else {
-                            Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                         firebaseFirestore.collection("ServiceProviders")
                                 .document(firebaseAuth.getCurrentUser().getUid())
@@ -92,12 +92,12 @@ public class ServiceProviderDetailsFragment extends Fragment {
                                 .addOnCompleteListener(task2 -> {
                                     if (task2.isSuccessful()) {
                                         Log.d(TAG, "details of service provider saved successfully");
-                                        Toast.makeText(getContext(), "Service Provider details saved successfully.", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext(), "Service Provider details saved successfully.", Toast.LENGTH_SHORT).show();
                                         getChildFragmentManager()
                                                 .beginTransaction()
                                                 .replace(R.id.auth_fragment_container, new UserDetailsFragment());
                                     } else {
-                                        Toast.makeText(getContext(), task2.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext(), task2.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
 
