@@ -1,4 +1,4 @@
-package com.example.atlas;
+package com.example.atlas.authentication;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.atlas.authentication.UserProfileFragment;
+import com.example.atlas.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -102,6 +102,7 @@ public class UserDetailsFragment extends Fragment {
                 }
                 if (!Pattern.compile("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$").matcher(name).matches()) {
                     mName.setError("Please enter a valid name.");
+                    return;
                 }
 
                 if (mGender.getCheckedRadioButtonId() == -1) {

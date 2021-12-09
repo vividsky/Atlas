@@ -5,15 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ServiceProviderDetailsFragment">
+    tools:context=".authentication.ServiceProviderDetailsFragment">
 
-    <Spinner
-        android:id="@+id/spinner_speciality"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        android:spinnerMode="dropdown"
-        android:entries="@array/speciality"/>
+        android:orientation="horizontal">
+    <TextView
+        android:id="@+id/tv_speciality"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:layout_gravity="center_vertical"
+        android:text="Choose Speciality."
+        android:textSize="24sp" />
+        <ImageButton
+            android:id="@+id/iv_speciality"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_arrow_down"
+            android:clickable="true"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,7 +83,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:checkedButton="@id/rb_vehicle_owned_no">
 
             <RadioButton
                 android:id="@+id/rb_vehicle_owned_yes"

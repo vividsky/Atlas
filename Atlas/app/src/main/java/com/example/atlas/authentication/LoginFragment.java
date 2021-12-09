@@ -25,7 +25,14 @@ import android.widget.Toast;
 import com.example.atlas.MainActivity;
 import com.example.atlas.R;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthSettings;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -113,7 +120,7 @@ public class LoginFragment extends Fragment {
         });
 
 //        loginButton.setOnClickListener(view1 ->  {
-//            String phoneNumber = "+91" + username.getEditText().getText().toString();
+//            String phoneNumber = "+91" + email.getEditText().getText().toString();
 //            String smsCode = "123456";
 //
 //            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();

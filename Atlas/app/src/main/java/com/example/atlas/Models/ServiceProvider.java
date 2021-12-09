@@ -1,23 +1,20 @@
 package com.example.atlas.Models;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.auth.User;
-
 import java.util.ArrayList;
 
-public class ServiceProviderModel {
+public class ServiceProvider {
     public ArrayList<String> specialities;
     public String experience;
     public String expectedWage;
     public String  vehicleOwned;
-    public UsersModel userDetails;
+    public User userDetails;
 
-    public ServiceProviderModel(ArrayList<String> specialities, String experience, String expectedWage, String vehicleOwned, UsersModel userDetails) {
+    public ServiceProvider(ArrayList<String> specialities, String experience, String expectedWage, String vehicleOwned, User userDetails) {
         this.specialities = specialities;
         this.experience = experience;
         this.expectedWage = expectedWage;
         this.vehicleOwned = vehicleOwned;
         this.userDetails = userDetails;
     }
-    public ServiceProviderModel() {}
+    public ServiceProvider() {}
 }

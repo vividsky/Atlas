@@ -2,14 +2,15 @@ package com.example.atlas.Models;
 
 import java.util.ArrayList;
 
-public class ServiceReceiverModel {
-    public UsersModel userDetails;
+public class ServiceReceiver {
+    public User userDetails;
     public ArrayList<String> requirements;
 
-    public ServiceReceiverModel(ArrayList<String> requirements, UsersModel userDetails) {
+    public ServiceReceiver(ArrayList<String> requirements, User userDetails) {
         this.requirements = requirements;
         this.userDetails = userDetails;
     }
+    public ServiceReceiver() {}
 
     public ArrayList<String> getRequirements() {
         return requirements;

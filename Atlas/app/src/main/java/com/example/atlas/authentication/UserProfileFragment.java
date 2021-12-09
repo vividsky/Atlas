@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.atlas.MainActivity;
-import com.example.atlas.Models.ServiceProviderModel;
-import com.example.atlas.Models.ServiceReceiverModel;
-import com.example.atlas.Models.UsersModel;
+import com.example.atlas.Models.ServiceReceiver;
+import com.example.atlas.Models.User;
 import com.example.atlas.R;
-import com.example.atlas.ServiceProviderDetailsFragment;
-import com.example.atlas.UserDetailsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -80,9 +76,6 @@ public class UserProfileFragment extends Fragment {
             checkedItems[which] = isChecked;
         });
 
-        // alert dialog shouldn't be cancellable
-        builder.setCancelable(false);
-
         builder.setPositiveButton("Done", (dialog, which) -> {
             for (int i = 0; i < checkedItems.length; i++) {
                 if (checkedItems[i]) {
@@ -117,18 +110,19 @@ public class UserProfileFragment extends Fragment {
                 .document(firebaseAuth.getCurrentUser().getUid())
                 .get()
                 .addOnCompleteListener(task -> {
-                    UsersModel user = null;
+                    User user = null;
                     if (task.isSuccessful()) {
-                        user = task.getResult().toObject(UsersModel.class);
+                        user = task.getResult().toObject(User.class);
                     } else {
                         Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     firebaseFirestore.collection("ServiceReceivers")
                             .document(firebaseAuth.getCurrentUser().getUid())
-                            .set(new ServiceReceiverModel(servicesSelected, user))
+                            .set(new ServiceReceiver(servicesSelected, user))
                             .addOnCompleteListener(task2 -> {
                                 progressBar.setVisibility(View.GONE);
                                 if (task2.isSuccessful()) {
+                                    // TODO Update type of user
                                     Toast.makeText(getContext(), "Service Receiver details saved successfully.", Toast.LENGTH_LONG).show();
 
                                     Intent intent = new Intent(getContext(), MainActivity.class);

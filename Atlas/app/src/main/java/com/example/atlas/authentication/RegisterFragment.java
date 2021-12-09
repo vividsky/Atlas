@@ -20,12 +20,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.atlas.Models.UsersModel;
+import com.example.atlas.Models.User;
 import com.example.atlas.R;
-import com.example.atlas.UserDetailsFragment;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.regex.Pattern;
@@ -166,7 +164,7 @@ public class RegisterFragment extends Fragment {
                             if (createUserTask.isSuccessful()) {
                                 Log.d(TAG, "createUserWithEmail:success");
                                 // creating user model to save it in fireStore
-                                UsersModel mUser = new UsersModel(firebaseAuth.getCurrentUser().getUid(), email, contact, password);
+                                User mUser = new User(firebaseAuth.getCurrentUser().getUid(), email, contact, password);
 
                                 firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid()).set(mUser)
                                         .addOnCompleteListener(isUserCreatedTask -> {

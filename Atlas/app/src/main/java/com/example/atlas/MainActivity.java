@@ -10,22 +10,24 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-//    FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        firebaseAuth = FirebaseAuth.getInstance();
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.main_activity_container, new ServiceProviderDetailsFragment())
-//                .commit();
+        firebaseAuth = FirebaseAuth.getInstance();
 
-//        if (firebaseAuth.getCurrentUser() == null) {
-//            startActivity( new Intent(this, AuthenticationActivity.class));
-//        }
+        if (firebaseAuth.getCurrentUser() == null) {
+            startActivity( new Intent(this, AuthenticationActivity.class));
+        }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // TODO user should not go back to user profile fragment and exits the apps
     }
 }
