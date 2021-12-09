@@ -7,11 +7,9 @@ public class UsersModel {
     private final String contact;
     private String password;
     private String name;
-    // male -> 0, female -> 1
     private String gender;
     private String address;
     private String alternateContact;
-    // type -> SP or NoS
     private String type;
 
     public UsersModel(String id, String email, String contact, String password) {
@@ -84,3 +82,4 @@ public class UsersModel {
     }
 
 }
+

@@ -1,24 +1,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-tools:context="UserDetailsFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="UserDetailsFragment">
 
     <EditText
         android:id="@+id/et_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
+        android:autofillHints="Name"
         android:drawableStart="@drawable/ic_baseline_person_24"
         android:drawablePadding="10dp"
         android:hint="@string/name"
         android:inputType="text"
-        android:padding="20dp"
-        android:autofillHints="Name" />
+        android:padding="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,10 +31,10 @@ tools:context="UserDetailsFragment">
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:text="Gender"
+            android:gravity="center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:gravity="center_vertical"
+            android:text="Gender"
             android:textSize="18sp" />
 
         <RadioGroup
@@ -43,22 +42,22 @@ tools:context="UserDetailsFragment">
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:checkedButton="@id/rb_gender_male">
+            android:checkedButton="@id/rb_gender_male"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/rb_gender_male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Male"/>
+                android:text="Male" />
 
             <RadioButton
                 android:id="@+id/rb_gender_female"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Female"/>
+                android:text="Female" />
 
         </RadioGroup>
     </LinearLayout>
@@ -74,7 +73,7 @@ tools:context="UserDetailsFragment">
         android:drawablePadding="10dp"
         android:hint="Address"
         android:inputType="text"
-        android:padding="20dp"/>
+        android:padding="20dp" />
 
     <EditText
         android:id="@+id/et_contact_alternate"
@@ -102,33 +101,33 @@ tools:context="UserDetailsFragment">
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:text="Services"
+            android:gravity="center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:gravity="center_vertical"
+            android:text="Services"
             android:textSize="18sp" />
 
         <RadioGroup
             android:id="@+id/rg_services"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:checkedButton="@id/rb_service_provider">
+            android:layout_weight="1"
+            android:checkedButton="@id/rb_service_provider"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/rb_service_provider"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="SP"/>
+                android:text="SP" />
 
             <RadioButton
                 android:id="@+id/rb_require_services"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Need"/>
+                android:text="Need" />
 
         </RadioGroup>
     </LinearLayout>

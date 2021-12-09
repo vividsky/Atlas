@@ -1,12 +1,6 @@
 package com.example.atlas.authentication;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -22,16 +16,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.atlas.MainActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.atlas.Models.UsersModel;
 import com.example.atlas.R;
 import com.example.atlas.UserDetailsFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -86,12 +79,6 @@ public class RegisterFragment extends Fragment {
         signupToLogin.setText(ss);
         signupToLogin.setMovementMethod(LinkMovementMethod.getInstance());
 
-        /* validations check
-         * 1. email
-         * 2. contact
-         * 3. password
-         * 4. confirm password
-         */
         mEmailId = (TextInputLayout) view.findViewById(R.id.et_email);
         mContact = (TextInputLayout) view.findViewById(R.id.et_contact);
         mPassword = (TextInputLayout) view.findViewById(R.id.et_register_password);
@@ -100,6 +87,8 @@ public class RegisterFragment extends Fragment {
         mProgressBar = (ProgressBar) view.findViewById(R.id.pb_progressbar);
 
         mSignUp = (Button) view.findViewById(R.id.bv_signup);
+
+        // validation check will be performed when Sign up button is clicked
         mSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,27 +104,33 @@ public class RegisterFragment extends Fragment {
                 mPassword.setError(null);
                 mConfirmPassword.setError(null);
 
-                if(TextUtils.isEmpty(email)) {
+                /* validations check
+                 * 1. email
+                 * 2. contact
+                 * 3. password
+                 * 4. confirm password
+                 */
+                if (TextUtils.isEmpty(email)) {
                     mEmailId.setError("Email is required.");
                     return;
                 }
 
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     mEmailId.setError("Please enter a valid Email address.");
                     return;
                 }
 
-                if(TextUtils.isEmpty(contact)) {
+                if (TextUtils.isEmpty(contact)) {
                     mContact.setError("Contact is required.");
                     return;
                 }
 
-                if(!Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$").matcher(contact).matches()) {
+                if (!Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$").matcher(contact).matches()) {
                     mContact.setError("Please enter a valid Contact detail.");
                     return;
                 }
 
-                if(TextUtils.isEmpty(password)) {
+                if (TextUtils.isEmpty(password)) {
                     mPassword.setError("Password is required.");
                     return;
                 }
@@ -143,53 +138,64 @@ public class RegisterFragment extends Fragment {
                 /* Password regex
                  * Minimum eight characters, at least one letter, one number and one special character
                  */
-                if(!Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$").matcher(password).matches()) {
+                if (!Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$").matcher(password).matches()) {
                     mPassword.setError("Password should contain minimum eight characters, at least one letter, one number and one special character.");
                     return;
                 }
 
-                if(TextUtils.isEmpty(confirmPassword)) {
+                if (TextUtils.isEmpty(confirmPassword)) {
                     mConfirmPassword.setError("Confirm Password is required.");
                     return;
                 }
 
-                if(!password.equals(confirmPassword)) {
+                if (!password.equals(confirmPassword)) {
                     mConfirmPassword.setError("Password does not match.");
                     return;
                 }
 
+                // set progress bar visibility to visible to tell user sign Up is in process
                 mProgressBar.setVisibility(View.VISIBLE);
 
+                // authentication
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, "createUserWithEmail:success");
-                                    UsersModel mUser = new UsersModel(mAuth.getCurrentUser().getUid(), email, contact, password);
-                                    CollectionReference firestore = FirebaseFirestore.getInstance().collection("Users");
-                                    firestore.document(mAuth.getCurrentUser().getUid()).set(mUser)
-                                            .addOnCompleteListener(task2 -> {
-                                                if(task2.isSuccessful()) {
-                                                    Toast.makeText(getActivity(), "SignUp successful.",
-                                                            Toast.LENGTH_SHORT).show();
-                                                    // work of moving from signUp page to userDetails Page
-                                                    getParentFragmentManager()
-                                                            .beginTransaction()
-                                                            .replace(R.id.auth_fragment_container, new UserDetailsFragment())
-                                                            .commit();
-                                                } else {
-                                                    Log.d(TAG, "SignUp failed due to task2.");
-                                                }
-                                                mProgressBar.setVisibility(View.GONE);
-                                            });
 
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    mProgressBar.setVisibility(View.GONE);
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(getActivity(), "SignUp failed due to task1.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(createUserTask -> {
+                            if (createUserTask.isSuccessful()) {
+                                Log.d(TAG, "createUserWithEmail:success");
+
+                                // creating user model to save it in firestore
+                                UsersModel mUser = new UsersModel(mAuth.getCurrentUser().getUid(), email, contact, password);
+
+                                CollectionReference firestore = FirebaseFirestore.getInstance().collection("Users");
+
+                                firestore.document(mAuth.getCurrentUser().getUid()).set(mUser)
+                                        .addOnCompleteListener(isUserCreatedTask -> {
+                                            if (isUserCreatedTask.isSuccessful()) {
+                                                Toast.makeText(getActivity(), "SignUp successful.",
+                                                        Toast.LENGTH_SHORT).show();
+
+                                                // working of moving from signUp page to userDetails Page
+                                                getParentFragmentManager()
+                                                        .beginTransaction()
+                                                        .replace(R.id.auth_fragment_container, new UserDetailsFragment())
+                                                        .commit();
+                                            } else {
+                                                Log.d(TAG, "SignUp failed.User does not exist.");
+                                            }
+                                            // once done with sign up, progress bar visibility set to GONE
+                                            mProgressBar.setVisibility(View.GONE);
+                                        });
+
+                            } else {
+                                // once done with sign up, progress bar visibility set to GONE
+                                mProgressBar.setVisibility(View.GONE);
+
+                                // If sign up fails, display a message to the user.
+                                Log.w(TAG, "createUserWithEmail:failure", createUserTask.getException());
+                                Toast.makeText(getActivity(), "User Already Exists or Some Issue Occurred.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         });
             }
         });
@@ -197,3 +203,4 @@ public class RegisterFragment extends Fragment {
     }
 
 }
+

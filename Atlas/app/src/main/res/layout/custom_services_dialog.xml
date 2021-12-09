@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <CheckBox
+        android:id="@+id/cb_cook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cook" />
+
+    <CheckBox
+        android:id="@+id/cb_driver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Driver" />
+
+    <CheckBox
+        android:id="@+id/cb_daily_wager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Daily Wager" />
+
+    <CheckBox
+        android:id="@+id/cb_babysitter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Babysitter" />
+
+    <CheckBox
+        android:id="@+id/cb_housemaid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="HouseMaid" />
+
+    <CheckBox
+        android:id="@+id/cb_tutor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tutor" />
+
+    <Button
+        android:id="@+id/bv_save_services"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="SAVE" />
+</LinearLayout>
