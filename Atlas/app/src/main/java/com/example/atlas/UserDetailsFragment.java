@@ -1,6 +1,8 @@
 package com.example.atlas;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,12 +20,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.atlas.authentication.AuthenticationActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -46,6 +51,8 @@ public class UserDetailsFragment extends Fragment {
     private Button mSave;
 
     private String currentUserId;
+
+    private ArrayList<String> servicesSelected = new ArrayList<>();
 
 
     @Override
@@ -90,13 +97,12 @@ public class UserDetailsFragment extends Fragment {
                 case R.id.rb_service_provider:
                     type[0] = SERVICE_PROVIDER;
                     Log.d(TAG, "SP is clicked.");
-                    // TODO: Go to service provider fragment and the data of this fragment should not be lost
+                    // TODO: Go to service provider fragment, after making service provider model comeback and the data of this fragment should not be lost
                     break;
                 case R.id.rb_require_services:
                     type[0] = IN_NEED_OF_SERVICES;
-//                    TODO: dialog box to ask for needs
-//                    ArrayList<String> requiredServices = saveInNeedOfServices(view);
-//                    Log.d(TAG, String.valueOf(requiredServices));
+                    Log.d(TAG, "calling choose");
+                    saveInNeedOfServices(view);
                     break;
                 default:
                     // do nothing.
@@ -156,6 +162,14 @@ public class UserDetailsFragment extends Fragment {
                     return;
                 }
 
+                if(type[0].equals(IN_NEED_OF_SERVICES) && servicesSelected.isEmpty()) {
+                    Toast.makeText(getContext(), "At least one Need should be selected.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Log.d(TAG, String.valueOf(servicesSelected));
+                // Todo : use servicesSelected array to save "in need of Service user model."
+
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
                 currentUserId = mAuth.getCurrentUser().getUid();
@@ -173,36 +187,35 @@ public class UserDetailsFragment extends Fragment {
                  * 5. alternate contact
                  */
                 user.update("name", name).addOnSuccessListener(success -> {
-                    Log.d(TAG, "name successfully updted");
+                    Log.d(TAG, "name successfully updated");
                 }).addOnFailureListener(failure -> {
                     Log.d(TAG, "name updating failed");
                 });
 
                 user.update("gender", gender[0]).addOnSuccessListener(success -> {
-                    Log.d(TAG, "gender successfully updted");
+                    Log.d(TAG, "gender successfully updated");
                 }).addOnFailureListener(failure -> {
                     Log.d(TAG, "gender updating failed");
                 });
 
                 user.update("address", address).addOnSuccessListener(success -> {
-                    Log.d(TAG, "address successfully updted");
+                    Log.d(TAG, "address successfully updated");
                 }).addOnFailureListener(failure -> {
                     Log.d(TAG, "address updating failed");
                 });
 
-                user.update("type", type[0]).addOnSuccessListener(success -> {
-                    Log.d(TAG, "type successfully updted");
-                }).addOnFailureListener(failure -> {
-                    Log.d(TAG, "type updating failed");
-                });
-
 
                 user.update("alternateContact", alternateContact).addOnSuccessListener(success -> {
-                    Log.d(TAG, "alternate Contact successfully updted");
+                    Log.d(TAG, "alternate Contact successfully updated");
                 }).addOnFailureListener(failure -> {
                     Log.d(TAG, "alternate Contact updating failed");
                 });
 
+                user.update("type", type[0]).addOnSuccessListener(success -> {
+                    Log.d(TAG, "type successfully updated");
+                }).addOnFailureListener(failure -> {
+                    Log.d(TAG, "type updating failed");
+                });
 
                 // to indicate user save was successful
                 Toast.makeText(getContext(), "Successfully Saved", Toast.LENGTH_SHORT).show();
@@ -212,58 +225,41 @@ public class UserDetailsFragment extends Fragment {
 
     }
 
-    /**
-     *
-     * @param view
-     * @return
-     */
-    private ArrayList<String> saveInNeedOfServices(View view) {
-        ArrayList<String> servicesChecked = new ArrayList<>();
+    private void saveInNeedOfServices(View view) {
+        final String[] servicesList = new String[]{"Cook", "Driver", "Babysitter", "Tutor", "Daily wager", "HouseMaid"};
+        final boolean[] checkedItems = new boolean[servicesList.length];
+        servicesSelected.clear();
 
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        View mView = getLayoutInflater().inflate(R.layout.custom_services_dialog, null);
-        CheckBox cook = (CheckBox) mView.findViewById(R.id.cb_cook);
-        CheckBox housemaid = (CheckBox) mView.findViewById(R.id.cb_housemaid);
-        CheckBox babysitter = (CheckBox) mView.findViewById(R.id.cb_babysitter);
-        CheckBox dailyWager = (CheckBox) mView.findViewById(R.id.cb_daily_wager);
-        CheckBox driver = (CheckBox) mView.findViewById(R.id.cb_driver);
-        CheckBox tutor = (CheckBox) mView.findViewById(R.id.cb_tutor);
-        Button save = (Button) mView.findViewById(R.id.bv_save_services);
+        // initialise the alert dialog builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        alert.setView(mView);
-        final AlertDialog alertDialog = alert.create();
-        alertDialog.setCanceledOnTouchOutside(false);
+        // set the title for the alert dialog
+        builder.setTitle("Choose Services");
 
-        save.setOnClickListener(v -> {
-            if (cook.isChecked()) {
-                servicesChecked.add(cook.getText().toString());
-                Log.d(TAG, "in cook" + "--" + servicesChecked);
-            }
-            if (housemaid.isChecked()) {
-                servicesChecked.add(housemaid.getText().toString());
-                Log.d(TAG, "in 2" + "--" + servicesChecked);
-            }
-            if (babysitter.isChecked()) {
-                servicesChecked.add(babysitter.getText().toString());
-                Log.d(TAG, "in 3" + "--" + servicesChecked);
-            }
-            if (dailyWager.isChecked()) {
-                servicesChecked.add(dailyWager.getText().toString());
-                Log.d(TAG, "in 4" + "--" + servicesChecked);
-            }
-            if (driver.isChecked()) {
-                servicesChecked.add(driver.getText().toString());
-                Log.d(TAG, "in 5" + "--" + servicesChecked);
-            }
-            if (tutor.isChecked()) {
-                servicesChecked.add(tutor.getText().toString());
-                Log.d(TAG, "in 6" + "--" + servicesChecked);
-            }
-            alertDialog.dismiss();
+        // now this is the function which sets the alert dialog for multiple item selection ready
+        builder.setMultiChoiceItems(servicesList, checkedItems, (dialog, which, isChecked) -> {
+            checkedItems[which] = isChecked;
         });
 
+        // alert dialog shouldn't be cancellable
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Done", (dialog, which) -> {
+            for (int i = 0; i < checkedItems.length; i++) {
+                if (checkedItems[i]) {
+                    servicesSelected.add(servicesList[i]);
+                }
+            }
+        });
+
+        // create the builder
+        builder.create();
+
+        // create the alert dialog with the
+        // alert dialog builder instance
+        AlertDialog alertDialog = builder.create();
         alertDialog.show();
-        Log.d(TAG, String.valueOf(servicesChecked));
-        return servicesChecked;
     }
+
 }
+
