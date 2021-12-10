@@ -144,10 +144,8 @@ public class UserProfileFragment extends Fragment {
                                     Toast.makeText(getContext(), "Service Receiver details saved successfully.", Toast.LENGTH_LONG).show();
 
                                     Intent intent = new Intent(getContext(), MainActivity.class);
-                                    if(intent.resolveActivity(getContext().getPackageManager()) != null) {
-                                        startActivity(intent);
-                                        getActivity().finish();
-                                    }
+                                    startActivity(intent);
+                                    getActivity().finish();
                                 } else {
                                     Toast.makeText(getContext(), task2.getException().getMessage(), Toast.LENGTH_LONG).show();
                                 }

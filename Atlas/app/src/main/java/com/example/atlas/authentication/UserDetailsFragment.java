@@ -32,14 +32,6 @@ public class UserDetailsFragment extends Fragment {
 
     private static final String TAG = UserDetailsFragment.class.getSimpleName();
 
-    private static final String NAME = "Name";
-    private static final String GENDER = "Gender";
-    private static final String ADDRESS = "Address";
-    private static final String ALTERNATE_CONTACT = "alternate contact";
-
-    private static final String GENDER_MALE = "Male";
-    private static final String GENDER_FEMALE = "Female";
-
     private EditText mName;
     private EditText mAddress;
     private EditText mAlternateContact;
@@ -49,7 +41,7 @@ public class UserDetailsFragment extends Fragment {
     String name;
     String address;
     String alternateContact;
-    String[] gender = new String[]{GENDER_MALE};
+    String[] gender;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -67,29 +59,20 @@ public class UserDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // get all the views to retrieve user inputs
-        mName = (EditText) view.findViewById(R.id.et_name);
-        mAddress = (EditText) view.findViewById(R.id.et_address);
-        mAlternateContact = (EditText) view.findViewById(R.id.et_contact_alternate);
-        mGender = (RadioGroup) view.findViewById(R.id.rg_gender);
-        mSave = (Button) view.findViewById(R.id.bv_save);
-
-
-        if (savedInstanceState != null) {
-            mName.setText(name);
-            mAddress.setText(address);
-            mAlternateContact.setText(alternateContact);
-            if(gender[0].equals(GENDER_FEMALE)) {
-                ((RadioButton) mGender.getChildAt(0)).setChecked(true);
-            }
-        }
+        mName = view.findViewById(R.id.et_name);
+        mAddress = view.findViewById(R.id.et_address);
+        mAlternateContact = view.findViewById(R.id.et_contact_alternate);
+        mGender = view.findViewById(R.id.rg_gender);
+        mSave = view.findViewById(R.id.bv_save);
+        gender = new String[]{getString(R.string.gender_male)};
 
         // updating gender on radio button click
         mGender.setOnCheckedChangeListener((group, id) -> {
             if (id == R.id.rb_gender_male) {
-                gender[0] = GENDER_MALE;
+                gender[0] = getString(R.string.gender_male);
             }
             if (id == R.id.rb_gender_female) {
-                gender[0] = GENDER_FEMALE;
+                gender[0] = getString(R.string.gender_female);
             }
         });
 
@@ -179,21 +162,10 @@ public class UserDetailsFragment extends Fragment {
             Toast.makeText(getContext(), "Successfully Saved", Toast.LENGTH_SHORT).show();
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.auth_fragment_container, new UserProfileFragment())
-                    .addToBackStack(null)
                     .commit();
 
         });
 
     }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(NAME, name);
-        outState.putString(GENDER, gender[0]);
-        outState.putString(ADDRESS, address);
-        outState.putString(ALTERNATE_CONTACT, alternateContact);
-    }
-
 }
 

@@ -19,10 +19,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.atlas.MainActivity;
+import com.example.atlas.Models.User;
 import com.example.atlas.R;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
@@ -31,6 +33,8 @@ import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.TimeUnit;
 
@@ -47,6 +51,10 @@ public class LoginFragment extends Fragment {
     TextInputLayout email;
     TextInputLayout password;
     String signInText;
+    ProgressBar progressBar;
+
+    FirebaseFirestore firebaseFirestore;
+    FirebaseAuth firebaseAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,12 +68,15 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-         loginToSignup  = view.findViewById(R.id.tv_login_to_signup);
-         loginButton    = view.findViewById(R.id.bv_login);
-         email       = view.findViewById(R.id.et_login_email);
-         password       = view.findViewById(R.id.et_password);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
-         signInText     = getString(R.string.asking_for_sign_up);
+        loginToSignup  = view.findViewById(R.id.tv_login_to_signup);
+        loginButton    = view.findViewById(R.id.bv_login);
+        email       = view.findViewById(R.id.et_login_email);
+        password       = view.findViewById(R.id.et_password);
+        signInText     = getString(R.string.asking_for_sign_up);
+        progressBar = view.findViewById(R.id.pb_login_page);
         SpannableString ss = new SpannableString(signInText);
 
         // creating clickable span to be implemented as a link
@@ -105,18 +116,15 @@ public class LoginFragment extends Fragment {
                 return;
             }
 
-            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
+            progressBar.setVisibility(View.VISIBLE);
             firebaseAuth.signInWithEmailAndPassword(emailText, passwordText)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Login successful.", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getContext(), MainActivity.class));
-                            getActivity().finish();
+                            isUserProfileSavedSuccessful();
                         } else {
-                            Log.d(TAG, task.getException().getMessage());
                             Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
+                        progressBar.setVisibility(View.GONE);
                     });
         });
 
@@ -151,5 +159,37 @@ public class LoginFragment extends Fragment {
 //                    .build();
 //            PhoneAuthProvider.verifyPhoneNumber(options);
 //        });
+    }
+    private void isUserProfileSavedSuccessful() {
+
+        DocumentReference user = firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid());
+
+        user.get().addOnCompleteListener(task -> {
+            User userObj;
+            if (task.isSuccessful()) {
+                userObj = task.getResult().toObject(User.class);
+                if (userObj != null) {
+                    if (userObj.getName() == null)
+                        getParentFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.auth_fragment_container, new UserDetailsFragment())
+                                .commit();
+                    else if(userObj.getProfile() == null) {
+                        getParentFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.auth_fragment_container, new UserProfileFragment())
+                                .commit();
+                    }
+                    else {
+                        Toast.makeText(getContext(), "Login successful.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getContext(), MainActivity.class));
+                        getActivity().finish();
+                    }
+                }
+            } else {
+                Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }
