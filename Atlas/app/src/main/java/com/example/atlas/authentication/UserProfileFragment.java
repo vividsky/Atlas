@@ -117,15 +117,15 @@ public class UserProfileFragment extends Fragment {
                 .document(firebaseAuth.getCurrentUser().getUid())
                 .get()
                 .addOnCompleteListener(task -> {
-                    User user = null;
+                    User userObj = null;
                     if (task.isSuccessful()) {
-                        user = task.getResult().toObject(User.class);
+                        userObj = task.getResult().toObject(User.class);
                     } else {
                         Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     firebaseFirestore.collection("ServiceReceivers")
                             .document(firebaseAuth.getCurrentUser().getUid())
-                            .set(new ServiceReceiver(servicesSelected, user))
+                            .set(new ServiceReceiver(servicesSelected, userObj))
                             .addOnCompleteListener(task2 -> {
                                 progressBar.setVisibility(View.GONE);
                                 if (task2.isSuccessful()) {
@@ -146,6 +146,7 @@ public class UserProfileFragment extends Fragment {
                                     Intent intent = new Intent(getContext(), MainActivity.class);
                                     if(intent.resolveActivity(getContext().getPackageManager()) != null) {
                                         startActivity(intent);
+                                        getActivity().finish();
                                     }
                                 } else {
                                     Toast.makeText(getContext(), task2.getException().getMessage(), Toast.LENGTH_LONG).show();

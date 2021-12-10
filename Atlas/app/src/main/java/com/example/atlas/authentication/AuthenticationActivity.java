@@ -2,7 +2,6 @@ package com.example.atlas.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -42,23 +41,19 @@ public class AuthenticationActivity extends AppCompatActivity {
                     .replace(R.id.auth_fragment_container, new LoginFragment())
                     .commit();
         } else {
-            Log.d(TAG, "its not a new user");
-            Log.d(TAG, "task starting to fetch user");
             DocumentReference user = firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid());
-            Log.d(TAG, "user's document fetched successfully");
+
             user.get().addOnCompleteListener(task -> {
-                User userObject = null;
+                User userObj;
                 if (task.isSuccessful()) {
-                    Log.d(TAG, String.valueOf(userObject));
-                    userObject = task.getResult().toObject(User.class);
-                    Log.d(TAG, "task attempted successfully " + userObject);
-                    if (userObject != null) {
-                        if (userObject.getName() == null)
+                    userObj = task.getResult().toObject(User.class);
+                    if (userObj != null) {
+                        if (userObj.getName() == null)
                             getSupportFragmentManager()
                                     .beginTransaction()
                                     .replace(R.id.auth_fragment_container, new UserDetailsFragment())
                                     .commit();
-                        else if(userObject.getProfile() == null) {
+                        else if(userObj.getProfile() == null) {
                             getSupportFragmentManager()
                                     .beginTransaction()
                                     .replace(R.id.auth_fragment_container, new UserProfileFragment())
@@ -66,11 +61,12 @@ public class AuthenticationActivity extends AppCompatActivity {
                         }
                         else {
                             startActivity(new Intent(AuthenticationActivity.this, MainActivity.class));
+                            finish();
                         }
                     }
                 } else {
-                    Log.v(TAG, "task failed");
-                    Toast.makeText(AuthenticationActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "task failed");
+                    Toast.makeText(AuthenticationActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
         }
