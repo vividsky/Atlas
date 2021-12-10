@@ -193,7 +193,7 @@ public class RegisterFragment extends Fragment {
                                 // If sign up fails, display a message to the user.
                                 Log.w(TAG, "createUserWithEmail:failure" + createUserTask.getException().getMessage());
 
-                                Toast.makeText(getActivity(), "An Error Occurred", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), createUserTask.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
                         });
             }
