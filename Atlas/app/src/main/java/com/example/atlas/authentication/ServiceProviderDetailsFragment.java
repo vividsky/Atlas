@@ -38,7 +38,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
     private static final String TAG = "ServiceProviderDetails";
     private static final String VEHICLE_OWNED_NO = "No";
     private static final String VEHICLE_OWNED_YES = "Yes";
-    private static ArrayList<String> checkedSpecialitiesl = new ArrayList<>();
+    private static ArrayList<String> checkedSpecialities = new ArrayList<>();
     String[] options;
     boolean[] checkedItems;
 
@@ -104,7 +104,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
                         }
                         firebaseFirestore.collection("ServiceProviders")
                                 .document(firebaseAuth.getCurrentUser().getUid())
-                                .set(new ServiceProvider( checkedSpecialitiesl, experience, expectedWage, vehicleOwned[0], user))
+                                .set(new ServiceProvider(checkedSpecialities, experience, expectedWage, vehicleOwned[0], user))
                                 .addOnCompleteListener(task2 -> {
                                     if (task2.isSuccessful()) {
                                         // TODO update user type
@@ -127,7 +127,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
 
         dialogBuilder.setTitle("Choose Specialities");
 
-        dialogBuilder.setMultiChoiceItems(R.array.speciality, checkedItems, (dialog, indexSelected, isChecked) -> {
+        dialogBuilder.setMultiChoiceItems(R.array.speciality, checkedItems , (dialog, indexSelected, isChecked) -> {
             if (isChecked) {
                 checkedItems[indexSelected] = true;
             } else if (checkedItems[indexSelected]) {
@@ -139,7 +139,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
         dialogBuilder.setPositiveButton("Save", ((dialogInterface, id) -> {
             for (int i = 0; i < options.length; i++) {
                 if (checkedItems[i]) {
-                    checkedSpecialitiesl.add(options[i]);
+                    checkedSpecialities.add(options[i]);
                 }
             }
         }));
