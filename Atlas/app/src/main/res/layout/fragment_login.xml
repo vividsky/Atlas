@@ -12,7 +12,7 @@
         android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
-        android:src="@mipmap/ic_launcher_round"/>
+        android:src="@drawable/atlas"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/et_login_email"
