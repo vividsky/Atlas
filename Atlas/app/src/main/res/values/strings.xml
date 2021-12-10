@@ -9,6 +9,8 @@
     <string name="maid">Maid</string>
     <string name="driver">Driver</string>
     <string name="daily_wager">Daily Wager</string>
+    <string name="babysitter">Babysitter</string>
+    <string name="tutor">Tutor</string>
 
     <string name="month">Month</string>
     <string name="year">Year</string>

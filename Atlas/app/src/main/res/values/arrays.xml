@@ -5,6 +5,8 @@
         <item >@string/maid</item>
         <item >@string/driver</item>
         <item >@string/daily_wager</item>
+        <item >@string/babysitter</item>
+        <item >@string/tutor</item>
     </string-array>
 
     <string-array name="experience_variable">

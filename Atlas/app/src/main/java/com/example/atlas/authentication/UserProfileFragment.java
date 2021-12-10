@@ -29,7 +29,7 @@ public class UserProfileFragment extends Fragment {
     public static final String TAG = UserProfileFragment.class.getSimpleName();
 
     private ArrayList<String> servicesSelected = new ArrayList<>();
-    private final String[] servicesList = new String[]{"Cook", "Driver", "Babysitter", "Tutor", "Daily wager", "Maid"};
+    private final String[] servicesList = getResources().getStringArray(R.array.speciality);
     private final boolean[] checkedItems = new boolean[servicesList.length];
 
     FirebaseAuth firebaseAuth;
