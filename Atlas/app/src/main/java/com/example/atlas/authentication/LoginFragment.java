@@ -112,6 +112,7 @@ public class LoginFragment extends Fragment {
                         if (task.isSuccessful()) {
                             Toast.makeText(getContext(), "Login successful.", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getContext(), MainActivity.class));
+                            getActivity().finish();
                         } else {
                             Log.d(TAG, task.getException().getMessage());
                             Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
