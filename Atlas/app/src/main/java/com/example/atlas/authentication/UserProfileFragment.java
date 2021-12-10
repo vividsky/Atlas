@@ -129,7 +129,8 @@ public class UserProfileFragment extends Fragment {
                             .addOnCompleteListener(task2 -> {
                                 progressBar.setVisibility(View.GONE);
                                 if (task2.isSuccessful()) {
-                                    // TODO Update type of user
+                                    // Update type of user
+
                                     // getting the document users by its id because its unique always
                                     DocumentReference currentUser = firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid());
 
