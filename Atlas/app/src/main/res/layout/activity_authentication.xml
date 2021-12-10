@@ -8,4 +8,5 @@
     android:layout_height="match_parent"
     tools:context=".authentication.AuthenticationActivity">
 
+<!--    TODO: set logo-->
 </FrameLayout>
