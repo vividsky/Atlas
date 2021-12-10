@@ -190,8 +190,8 @@ public class RegisterFragment extends Fragment {
 
                                 // If sign up fails, display a message to the user.
                                 Log.w(TAG, "createUserWithEmail:failure", createUserTask.getException());
-                                Toast.makeText(getActivity(), "Some Issue Occurred.Check your Internet Connection",
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Network Error",
+                                        Toast.LENGTH_LONG).show();
                             }
                         });
             }
