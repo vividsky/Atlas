@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.atlas.Models.User;
 import com.example.atlas.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -37,7 +38,6 @@ public class UserDetailsFragment extends Fragment {
     private EditText mAddress;
     private EditText mAlternateContact;
     private RadioGroup mGender;
-    private RadioGroup mServices;
     private Button mSave;
 
     private FirebaseAuth firebaseAuth;
@@ -123,11 +123,10 @@ public class UserDetailsFragment extends Fragment {
                 }
 
                 firebaseAuth = FirebaseAuth.getInstance();
-                String currentUserId = firebaseAuth.getCurrentUser().getUid();
                 firebaseFirestore = FirebaseFirestore.getInstance();
 
                 // getting the document users by its id because its unique always
-                DocumentReference user = firebaseFirestore.collection("Users").document(currentUserId);
+                DocumentReference user = firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid());
 
                 /* Updates
                  * 1. name

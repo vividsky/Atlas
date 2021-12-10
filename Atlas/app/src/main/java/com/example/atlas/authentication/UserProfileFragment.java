@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.example.atlas.Models.ServiceReceiver;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -27,10 +29,11 @@ import java.util.ArrayList;
 public class UserProfileFragment extends Fragment {
 
     public static final String TAG = UserProfileFragment.class.getSimpleName();
+    public static final String USER_PROFILE_SR = "Service Receiver";
 
     private ArrayList<String> servicesSelected = new ArrayList<>();
-    private final String[] servicesList = getResources().getStringArray(R.array.speciality);
-    private final boolean[] checkedItems = new boolean[servicesList.length];
+    private String[] servicesList;
+    private boolean[] checkedItems;
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -45,8 +48,12 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button buttonInNeedOfService = (Button) view.findViewById(R.id.b_profile_type_sin);
-        Button buttonServiceProvider = (Button) view.findViewById(R.id.b_profile_type_sp);
+
+        servicesList = getResources().getStringArray(R.array.speciality);
+        checkedItems = new boolean[servicesList.length];
+
+        Button buttonInNeedOfService = view.findViewById(R.id.b_profile_type_sin);
+        Button buttonServiceProvider = view.findViewById(R.id.b_profile_type_sp);
 
         buttonServiceProvider.setOnClickListener(view1 -> {
             getParentFragmentManager()
@@ -72,7 +79,7 @@ public class UserProfileFragment extends Fragment {
         builder.setTitle("Choose Services");
 
         // now this is the function which sets the alert dialog for multiple item selection ready
-        builder.setMultiChoiceItems(servicesList, checkedItems, (dialog, which, isChecked) -> {
+        builder.setMultiChoiceItems(R.array.speciality, checkedItems, (dialog, which, isChecked) -> {
             checkedItems[which] = isChecked;
         });
 
@@ -123,6 +130,16 @@ public class UserProfileFragment extends Fragment {
                                 progressBar.setVisibility(View.GONE);
                                 if (task2.isSuccessful()) {
                                     // TODO Update type of user
+                                    // getting the document users by its id because its unique always
+                                    DocumentReference currentUser = firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid());
+
+                                    // Update user profile
+                                    currentUser.update("profile", USER_PROFILE_SR).addOnSuccessListener(success -> {
+                                        Log.d(TAG, "profile successfully updated");
+                                    }).addOnFailureListener(failure -> {
+                                        Log.d(TAG, "profile updating failed");
+                                    });
+
                                     Toast.makeText(getContext(), "Service Receiver details saved successfully.", Toast.LENGTH_LONG).show();
 
                                     Intent intent = new Intent(getContext(), MainActivity.class);
