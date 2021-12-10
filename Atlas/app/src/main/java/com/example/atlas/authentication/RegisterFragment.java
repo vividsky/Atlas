@@ -168,6 +168,10 @@ public class RegisterFragment extends Fragment {
 
                                 firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid()).set(mUser)
                                         .addOnCompleteListener(isUserCreatedTask -> {
+
+                                            // once done with sign up, progress bar visibility set to GONE
+                                            mProgressBar.setVisibility(View.GONE);
+
                                             if (isUserCreatedTask.isSuccessful()) {
                                                 Toast.makeText(getContext(), "Signup successful.",
                                                         Toast.LENGTH_SHORT).show();
@@ -180,8 +184,6 @@ public class RegisterFragment extends Fragment {
                                             } else {
                                                 Log.d(TAG, "SignUp failed.User does not exist.");
                                             }
-                                            // once done with sign up, progress bar visibility set to GONE
-                                            mProgressBar.setVisibility(View.GONE);
                                         });
 
                             } else {
@@ -189,9 +191,9 @@ public class RegisterFragment extends Fragment {
                                 mProgressBar.setVisibility(View.GONE);
 
                                 // If sign up fails, display a message to the user.
-                                Log.w(TAG, "createUserWithEmail:failure", createUserTask.getException());
-                                Toast.makeText(getActivity(), "Network Error",
-                                        Toast.LENGTH_LONG).show();
+                                Log.w(TAG, "createUserWithEmail:failure" + createUserTask.getException().getMessage());
+
+                                Toast.makeText(getActivity(), "An Error Occurred", Toast.LENGTH_LONG).show();
                             }
                         });
             }
