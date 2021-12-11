@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Lenovo/OneDrive/Desktop/Atlas/Atlas/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.12395833333333334" />
+        <entry key="..\:/Users/Lenovo/OneDrive/Desktop/Atlas/Atlas/app/src/main/res/drawable/ic_baseline_phone_24.xml" value="0.24375" />
         <entry key="..\:/Users/Lenovo/OneDrive/Desktop/Atlas/Atlas/app/src/main/res/drawable/ic_launcher_background.xml" value="0.12395833333333334" />
         <entry key="..\:/Users/Lenovo/OneDrive/Desktop/Atlas/Atlas/app/src/main/res/layout/activity_authentication.xml" value="0.2234375" />
+        <entry key="..\:/Users/Lenovo/OneDrive/Desktop/Atlas/Atlas/app/src/main/res/layout/activity_main.xml" value="0.17708333333333334" />
         <entry key="..\:/Users/Lenovo/OneDrive/Desktop/Atlas/Atlas/app/src/main/res/layout/activity_user_credentials.xml" value="0.152" />
         <entry key="..\:/Users/Lenovo/OneDrive/Desktop/Atlas/Atlas/app/src/main/res/layout/custom_services_dialog.xml" value="0.2" />
         <entry key="..\:/Users/Lenovo/OneDrive/Desktop/Atlas/Atlas/app/src/main/res/layout/fragment_login.xml" value="0.2234375" />
