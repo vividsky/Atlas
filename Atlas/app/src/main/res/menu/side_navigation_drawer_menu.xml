@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_update_profile"
+            android:icon="@drawable/ic_baseline_account_circle_24"
+            android:title="@string/profile" />
+    </group>
+
+    <item android:title="@string/preferences">
+        <menu>
+            <item android:id="@+id/nav_sort_by"
+                android:icon="@drawable/ic_baseline_sort_24"
+                android:title="@string/sort_by" />
+            <item android:id="@+id/nav_filter_by"
+                android:icon="@drawable/ic_baseline_filter_alt_24"
+                android:title="@string/filter_by" />
+        </menu>
+    </item>
+
+    <item android:title="@string/useful_corner">
+        <menu>
+            <item android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_baseline_settings_24"
+                android:title="@string/settings" />
+            <item android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_baseline_logout_24"
+                android:title="@string/logout" />
+            <item android:id="@+id/nav_delete_account"
+                android:icon="@drawable/ic_baseline_delete_24"
+                android:title="@string/delete_account" />
+        </menu>
+    </item>
+</menu>
+
