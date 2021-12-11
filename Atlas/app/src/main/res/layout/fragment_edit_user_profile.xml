@@ -21,7 +21,7 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/tv_edit_username"
+            android:id="@+id/et_edit_username"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
@@ -45,15 +45,14 @@
             android:text="Gender"
             android:textSize="24sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/tv_edit_gender"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="20dp"
             android:gravity="end"
-            android:background="@null"
-            android:hint="Female"
+            android:hint="Male"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -71,7 +70,7 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/tv_edit_alternate_contact"
+            android:id="@+id/et_edit_alternate_contact"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
@@ -96,7 +95,7 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/tv_edit_address"
+            android:id="@+id/et_edit_address"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
@@ -109,7 +108,7 @@
 
     <Button
         android:id="@+id/bv_change_password"
-        android:layout_width="wrap_content"
+        android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="20dp"
@@ -119,9 +118,9 @@
         android:textSize="16sp" />
 
     <EditText
-        android:id="@+id/tv_edit_old_password"
-        android:layout_width="29dp"
-        android:layout_height="416dp"
+        android:id="@+id/et_edit_old_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:gravity="center"
         android:hint="Old Password"
@@ -130,7 +129,7 @@
         android:visibility="gone" />
 
     <EditText
-        android:id="@+id/tv_edit_new_password"
+        android:id="@+id/et_edit_new_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -141,15 +140,25 @@
 
     <Button
         android:id="@+id/bv_confirm_password"
-        android:layout_width="wrap_content"
+        android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="20dp"
         android:padding="10dp"
         android:text="Confirm Password"
         android:backgroundTint="#7447C4"
         android:textSize="16sp"
         android:visibility="gone" />
+
+    <Button
+        android:id="@+id/bv_change_profile"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:padding="10dp"
+        android:text="Change Profile"
+        android:backgroundTint="#7447C4"
+        android:textSize="16sp" />
 
 
 </LinearLayout>
