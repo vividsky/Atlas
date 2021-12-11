@@ -13,7 +13,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,20 +22,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.atlas.MainActivity;
+import com.example.atlas.home.MainActivity;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthSettings;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthOptions;
-import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -123,8 +115,9 @@ public class LoginFragment extends Fragment {
                             isUserProfileSavedSuccessful();
                         } else {
                             Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
                         }
-                        progressBar.setVisibility(View.GONE);
+
                     });
         });
 
@@ -162,7 +155,7 @@ public class LoginFragment extends Fragment {
     }
     private void isUserProfileSavedSuccessful() {
 
-        DocumentReference user = firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid());
+        DocumentReference user = firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid());
 
         user.get().addOnCompleteListener(task -> {
             User userObj;
@@ -190,6 +183,7 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+        progressBar.setVisibility(View.GONE);
 
     }
 }

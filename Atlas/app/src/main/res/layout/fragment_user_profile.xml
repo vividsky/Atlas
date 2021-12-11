@@ -22,13 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="48dp"
-        android:layout_marginBottom="48dp"
         android:layout_weight="1"
-        android:backgroundTint="#7447C4"
-        android:paddingStart="24dp"
-        android:paddingTop="24dp"
-        android:paddingEnd="24dp"
+        android:layout_margin="48dp"
         android:text="Service Provider"
         android:textSize="42sp" />
 
@@ -37,7 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
         android:visibility="gone" />
 
     <Button
@@ -45,12 +39,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="48dp"
         android:layout_weight="1"
-        android:backgroundTint="#7447C4"
-        android:paddingStart="24dp"
-        android:paddingTop="24dp"
-        android:paddingEnd="24dp"
+        android:layout_margin="48dp"
         android:text="In need of Service"
         android:textSize="42sp" />
 

@@ -14,7 +14,6 @@ import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProviderAdapter.ContentViewHolder> {
@@ -24,7 +23,6 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
 
     public ServiceProviderAdapter(List<ServiceProvider> serviceProvider) {
         this.serviceProvider = serviceProvider;
-        Log.i(TAG, this.serviceProvider + " ");
     }
 
 

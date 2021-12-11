@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.atlas.MainActivity;
+import com.example.atlas.home.MainActivity;
 import com.example.atlas.Models.ServiceReceiver;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
@@ -112,7 +112,7 @@ public class UserProfileFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        firebaseFirestore.collection("Users")
+        firebaseFirestore.collection(getString(R.string.user))
                 .document(firebaseAuth.getCurrentUser().getUid())
                 .get()
                 .addOnCompleteListener(task -> {
@@ -131,7 +131,7 @@ public class UserProfileFragment extends Fragment {
                                     // Update type of user
 
                                     // getting the document users by its id because its unique always
-                                    DocumentReference currentUser = firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid());
+                                    DocumentReference currentUser = firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid());
 
                                     // Update user profile
                                     currentUser.update("profile", getString(R.string.service_receiver)).addOnSuccessListener(success -> {

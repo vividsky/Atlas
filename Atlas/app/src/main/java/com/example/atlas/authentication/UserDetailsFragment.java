@@ -126,7 +126,7 @@ public class UserDetailsFragment extends Fragment {
             firebaseFirestore = FirebaseFirestore.getInstance();
 
             // getting the document users by its id because its unique always
-            DocumentReference user = firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid());
+            DocumentReference user = firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid());
 
             /* Updates
              * 1. name

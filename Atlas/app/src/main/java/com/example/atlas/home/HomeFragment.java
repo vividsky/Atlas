@@ -1,14 +1,10 @@
-package com.example.atlas;
+package com.example.atlas.home;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +17,7 @@ import android.widget.Toast;
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.ServiceReceiver;
 import com.example.atlas.Models.User;
+import com.example.atlas.R;
 import com.example.atlas.adapters.ServiceProviderAdapter;
 import com.example.atlas.adapters.ServiceReceiverAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +25,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 // implements LoaderManager.LoaderCallbacks<List<ServiceProvider>>
 public class HomeFragment extends Fragment {
@@ -68,7 +64,7 @@ public class HomeFragment extends Fragment {
         serviceReceiversArrayList = new ArrayList<>();
 
 
-        firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid())
+        firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid())
                 .get()
                 .addOnCompleteListener(task -> {
                     User user;
@@ -77,7 +73,7 @@ public class HomeFragment extends Fragment {
                         if (user != null) {
                             String profile = user.getProfile();
                             if (profile.equals(getString(R.string.service_receiver))) {
-                                firebaseFirestore.collection("ServiceProviders").get()
+                                firebaseFirestore.collection(getString(R.string.service_provider)).get()
                                         .addOnCompleteListener(task1 -> {
                                             if (task1.isSuccessful()) {
                                                 for (QueryDocumentSnapshot sp : task1.getResult()) {
@@ -93,7 +89,7 @@ public class HomeFragment extends Fragment {
                                         });
 
                             } else if (profile.equals(getString(R.string.service_provider))) {
-                                firebaseFirestore.collection("ServiceReceivers").get()
+                                firebaseFirestore.collection(getString(R.string.service_receiver)).get()
                                         .addOnCompleteListener(task1 -> {
                                             if (task1.isSuccessful()) {
                                                 for (QueryDocumentSnapshot sp : task1.getResult()) {
@@ -108,7 +104,7 @@ public class HomeFragment extends Fragment {
                                             }
                                         });
                             } else {
-                                Toast.makeText(getContext(), "Some error has occured", Toast.LENGTH_LONG);
+                                Toast.makeText(getContext(), "Some error has occurred", Toast.LENGTH_LONG);
                             }
                         }
                     }

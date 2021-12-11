@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.atlas.MainActivity;
+import com.example.atlas.home.MainActivity;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,19 +29,13 @@ public class AuthenticationActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        // TODO: 1. if user object created but details not saved and pressed back then go to user details fragment when app opens again.
-        // TODO: 2. if user object created, details saved but profile is null and pressed back then go to user profile fragment when app opens again.
-        // TODO: 3. if user object created, details saved but profile is also saved and pressed back
-        //  then go to main activity(here on pressing back user profile should not open) when app opens again.
-
         if (firebaseAuth.getCurrentUser() == null) {
-            Log.d(TAG, "new user it is!");
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.auth_fragment_container, new LoginFragment())
                     .commit();
         } else {
-            DocumentReference user = firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid());
+            DocumentReference user = firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid());
 
             user.get().addOnCompleteListener(task -> {
                 User userObj;
@@ -65,7 +59,6 @@ public class AuthenticationActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    Log.d(TAG, "task failed");
                     Toast.makeText(AuthenticationActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
             });

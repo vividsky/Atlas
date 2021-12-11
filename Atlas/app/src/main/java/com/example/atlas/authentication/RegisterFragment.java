@@ -78,14 +78,14 @@ public class RegisterFragment extends Fragment {
         signupToLogin.setText(ss);
         signupToLogin.setMovementMethod(LinkMovementMethod.getInstance());
 
-        mEmailId = (TextInputLayout) view.findViewById(R.id.et_email);
-        mContact = (TextInputLayout) view.findViewById(R.id.et_contact);
-        mPassword = (TextInputLayout) view.findViewById(R.id.et_register_password);
-        mConfirmPassword = (TextInputLayout) view.findViewById(R.id.et_confirm_password);
+        mEmailId         = view.findViewById(R.id.et_email);
+        mContact         = view.findViewById(R.id.et_contact);
+        mPassword        =  view.findViewById(R.id.et_register_password);
+        mConfirmPassword = view.findViewById(R.id.et_confirm_password);
 
-        mProgressBar = (ProgressBar) view.findViewById(R.id.pb_progressbar);
+        mProgressBar = view.findViewById(R.id.pb_progressbar);
 
-        mSignUp = (Button) view.findViewById(R.id.bv_signup);
+        mSignUp = view.findViewById(R.id.bv_signup);
 
         // validation check will be performed when Sign up button is clicked
         mSignUp.setOnClickListener(new View.OnClickListener() {
@@ -166,14 +166,14 @@ public class RegisterFragment extends Fragment {
                                 // creating user model to save it in fireStore
                                 User mUser = new User(firebaseAuth.getCurrentUser().getUid(), email, contact, password);
 
-                                firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid()).set(mUser)
+                                firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid()).set(mUser)
                                         .addOnCompleteListener(isUserCreatedTask -> {
 
                                             // once done with sign up, progress bar visibility set to GONE
                                             mProgressBar.setVisibility(View.GONE);
 
                                             if (isUserCreatedTask.isSuccessful()) {
-                                                Toast.makeText(getContext(), "Signup successful.",
+                                                Toast.makeText(getContext(), "Sign up successful.",
                                                         Toast.LENGTH_SHORT).show();
 
                                                 // working of moving from signUp page to userDetails Page

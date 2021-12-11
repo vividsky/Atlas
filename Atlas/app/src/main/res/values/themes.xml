@@ -13,4 +13,16 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <!--to remove default action bar from main activity and use custom toolbar(i.e. extensible action bar)-->
+    <style name="Theme.Atlas.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        // TODO find perfect color for our dialog box
+        <item name="android:background">@color/white</item>
+    </style>
+
 </resources>

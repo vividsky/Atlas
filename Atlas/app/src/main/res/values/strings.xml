@@ -21,10 +21,22 @@
     <string name="vehicle_owned_no">No</string>
     <string name="vehicle_owned_yes">Yes</string>
 
-    <string name="service_provider">Service Provider</string>
-    <string name="service_receiver">Service Receiver</string>
-    <string name="users">Users</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="service_provider">ServiceProvider</string>
+    <string name="service_receiver">ServiceReceiver</string>
+    <string name="user">User</string>
+
+    <string name="profile">Profile</string>
+
+    <string name="preferences">Preferences</string>
+    <string name="sort_by">Sort by</string>
+    <string name="filter_by">Filter by</string>
+
+    <string name="useful_corner">Useful Corner</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="delete_account">Delete Account</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

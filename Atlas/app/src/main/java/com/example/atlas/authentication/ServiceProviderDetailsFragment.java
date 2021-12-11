@@ -21,7 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.atlas.MainActivity;
+import com.example.atlas.home.MainActivity;
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
@@ -30,12 +30,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-/**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
- */
 public class ServiceProviderDetailsFragment extends Fragment {
 
     private static final String TAG = "ServiceProviderDetails";
@@ -99,7 +94,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
                 firebaseAuth = FirebaseAuth.getInstance();
                 firebaseFirestore = FirebaseFirestore.getInstance();
 
-                DocumentReference documentReference = firebaseFirestore.collection("Users")
+                DocumentReference documentReference = firebaseFirestore.collection(getString(R.string.user))
                         .document(firebaseAuth.getCurrentUser().getUid());
 
                 documentReference.get()
@@ -111,7 +106,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
                             Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
-                        firebaseFirestore.collection("ServiceProviders")
+                        firebaseFirestore.collection(getString(R.string.service_provider))
                                 .document(firebaseAuth.getCurrentUser().getUid())
                                 .set(new ServiceProvider(checkedSpecialities, experience, expectedWage, vehicleOwned[0], user))
                                 .addOnCompleteListener(task2 -> {
