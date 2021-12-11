@@ -9,6 +9,46 @@ public class ServiceProvider {
     public String  vehicleOwned;
     public User userDetails;
 
+    public ArrayList<String> getSpecialities() {
+        return specialities;
+    }
+
+    public void setSpecialities(ArrayList<String> specialities) {
+        this.specialities = specialities;
+    }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
+    public String getExpectedWage() {
+        return expectedWage;
+    }
+
+    public void setExpectedWage(String expectedWage) {
+        this.expectedWage = expectedWage;
+    }
+
+    public String getVehicleOwned() {
+        return vehicleOwned;
+    }
+
+    public void setVehicleOwned(String vehicleOwned) {
+        this.vehicleOwned = vehicleOwned;
+    }
+
+    public User getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(User userDetails) {
+        this.userDetails = userDetails;
+    }
+
     public ServiceProvider(ArrayList<String> specialities, String experience, String expectedWage, String vehicleOwned, User userDetails) {
         this.specialities = specialities;
         this.experience = experience;

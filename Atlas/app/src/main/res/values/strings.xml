@@ -23,5 +23,8 @@
 
     <string name="service_provider">Service Provider</string>
     <string name="service_receiver">Service Receiver</string>
+    <string name="users">Users</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

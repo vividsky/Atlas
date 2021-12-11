@@ -29,7 +29,6 @@ import java.util.ArrayList;
 public class UserProfileFragment extends Fragment {
 
     public static final String TAG = UserProfileFragment.class.getSimpleName();
-    public static final String USER_PROFILE_SR = "Service Receiver";
 
     private ArrayList<String> servicesSelected = new ArrayList<>();
     private String[] servicesList;
@@ -123,7 +122,7 @@ public class UserProfileFragment extends Fragment {
                     } else {
                         Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                    firebaseFirestore.collection("ServiceReceivers")
+                    firebaseFirestore.collection(getString(R.string.service_receiver))
                             .document(firebaseAuth.getCurrentUser().getUid())
                             .set(new ServiceReceiver(servicesSelected, userObj))
                             .addOnCompleteListener(task2 -> {
@@ -135,7 +134,7 @@ public class UserProfileFragment extends Fragment {
                                     DocumentReference currentUser = firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid());
 
                                     // Update user profile
-                                    currentUser.update("profile", USER_PROFILE_SR).addOnSuccessListener(success -> {
+                                    currentUser.update("profile", getString(R.string.service_receiver)).addOnSuccessListener(success -> {
                                         Log.d(TAG, "profile successfully updated");
                                     }).addOnFailureListener(failure -> {
                                         Log.d(TAG, "profile updating failed");
