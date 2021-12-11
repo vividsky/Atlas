@@ -17,14 +17,14 @@
         android:src="@mipmap/app_logo_foreground" />
 
     <TextView
+        android:id="@+id/tv_username_in_nav_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nidhi Sangwan"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
+        android:id="@+id/tv_user_email_in_nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nidhi.Sangwan@gmail.com" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
