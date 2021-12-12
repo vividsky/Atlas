@@ -17,6 +17,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.atlas.Models.ServiceProvider;
+import com.example.atlas.Models.ServiceReceiver;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
 import com.example.atlas.authentication.AuthenticationActivity;
@@ -30,6 +32,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -41,8 +45,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView mUserName;
     private TextView mUserEmail;
 
-    FirebaseAuth firebaseAuth;
-    FirebaseFirestore firebaseFirestore;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
+
+    private User user;
+    private ServiceProvider serviceProvider;
+    private ServiceReceiver serviceReceiver;
 
     @SuppressLint("ShowToast")
     @Override
@@ -50,14 +59,92 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // set bottom navigation bar
+        // set custom toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.main_activity_drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View navigationHeaderView = navigationView.getHeaderView(0);
+        mUserName = navigationHeaderView.findViewById(R.id.tv_username_in_nav_view);
+        mUserEmail = navigationHeaderView.findViewById(R.id.tv_user_email_in_nav_view);
+
+        // side navigation view
+        navigationView.setNavigationItemSelectedListener(this);
+        // set hamburger icon to open drawer
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        // TODO: instead of fetching all users and SP's and SR's in each fragment we can fetch then here and send it to fragments
+        // get the current user to send it to fragments
+        firebaseFirestore.collection(getString(R.string.user))
+                .document(firebaseAuth.getCurrentUser().getUid())
+                .get().addOnCompleteListener(task -> {
+                    User userObj;
+                    if (task.isSuccessful()) {
+                        userObj = task.getResult().toObject(User.class);
+                        if (userObj != null) {
+                            mUserName.setText(userObj.getName());
+                            mUserEmail.setText(userObj.getEmail());
+                            user = userObj;
+                            if(userObj.getProfile().equals(getString(R.string.service_provider))) {
+                                // get the service provider to send it to fragments
+                                firebaseFirestore.collection(getString(R.string.service_provider))
+                                        .document(firebaseAuth.getCurrentUser().getUid())
+                                        .get().addOnCompleteListener(task1 -> {
+                                    ServiceProvider serviceProviderObj;
+                                    if (task1.isSuccessful()) {
+                                        serviceProviderObj = task1.getResult().toObject(ServiceProvider.class);
+                                        if (serviceProviderObj != null) {
+                                            serviceProvider = serviceProviderObj;
+                                        } else {
+                                            Log.w(TAG, "serviceProviderObj is null");
+                                        }
+                                    } else {
+                                        Log.w(TAG, task1.getException().getMessage());
+                                    }
+                                });
+                            } else if(userObj.getProfile().equals(getString(R.string.service_receiver))) {
+                                // get the service receiver to send it to fragments
+                                firebaseFirestore.collection(getString(R.string.service_receiver))
+                                        .document(firebaseAuth.getCurrentUser().getUid())
+                                        .get().addOnCompleteListener(task2 -> {
+                                    ServiceReceiver serviceReceiverObj;
+                                    if (task2.isSuccessful()) {
+                                        serviceReceiverObj = task2.getResult().toObject(ServiceReceiver.class);
+                                        if (serviceReceiverObj != null) {
+                                            serviceReceiver = serviceReceiverObj;
+                                        } else {
+                                            Log.w(TAG, "serviceProviderObj is null");
+                                        }
+                                    } else {
+                                        Log.w(TAG, task2.getException().getMessage());
+                                    }
+                                });
+                            }
+                        } else {
+                            Log.w(TAG, "userObj is null");
+                        }
+                    } else {
+                        Log.w(TAG, task.getException().getMessage());
+                    }
+        });
+
+
         fragmentManager = getSupportFragmentManager();
-        bottomNavigationView = findViewById(R.id.nv_bottom);
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.main_activity_container, new HomeFragment())
                 .commit();
 
+        // set bottom navigation bar
+        bottomNavigationView = findViewById(R.id.nv_bottom);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.menu_home:
@@ -84,46 +171,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         });
 
-
-        // set custom toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawerLayout = findViewById(R.id.main_activity_drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        View navigationHeaderView = navigationView.getHeaderView(0);
-        mUserName = navigationHeaderView.findViewById(R.id.tv_username_in_nav_view);
-        mUserEmail = navigationHeaderView.findViewById(R.id.tv_user_email_in_nav_view);
-
-        // side navigation view
-        navigationView.setNavigationItemSelectedListener(this);
-        // set hamburger icon to open drawer
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-
-        // get the current user profile
-        Task<DocumentSnapshot> documentSnapshotTask = firebaseFirestore.collection(getString(R.string.user))
-                .document(firebaseAuth.getCurrentUser().getUid()).get();
-        documentSnapshotTask.addOnCompleteListener(task -> {
-            User userObj;
-            if (task.isSuccessful()) {
-                userObj = task.getResult().toObject(User.class);
-                if (userObj != null) {
-                    mUserName.setText(userObj.getName());
-                    mUserEmail.setText(userObj.getEmail());
-                } else {
-                    Log.w(TAG, "userObj is null");
-                }
-            } else {
-                Log.w(TAG, task.getException().getMessage());
-            }
-        });
     }
 
     // if drawer is open, on back press drawer gets closed else we override super
@@ -140,10 +187,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.nav_update_profile:
+
+                // put in bundle and set FragmentClass Arguments
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(getString(R.string.user), (Serializable) user);
+                if(user.getProfile().equals(getString(R.string.service_provider))) {
+                    bundle.putSerializable(getString(R.string.service_provider), (Serializable) serviceProvider);
+                }
+                EditUserProfileFragment fragObj = new EditUserProfileFragment();
+                fragObj.setArguments(bundle);
+
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.main_activity_container, new EditUserProfileFragment())
-                        .addToBackStack(null)
+                        .replace(R.id.main_activity_container, fragObj)
                         .commit();
                 break;
 

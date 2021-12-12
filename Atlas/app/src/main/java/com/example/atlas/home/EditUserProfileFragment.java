@@ -6,41 +6,140 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 
+import com.example.atlas.Models.ServiceProvider;
+import com.example.atlas.Models.User;
 import com.example.atlas.R;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.Serializable;
 
 public class EditUserProfileFragment extends Fragment {
 
-    Button mChangePassword;
-    Button mSaveNewPassword;
-    EditText mOldPassword;
-    EditText mNewPassword;
-    EditText mConfirmNewPassword;
+    public static final String TAG = EditUserProfileFragment.class.getSimpleName();
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
+
+    private String userProfileType;
+    User userObj;
+    ServiceProvider serviceProviderObj;
+
+    private TextInputLayout mEditContact;
+    private TextInputLayout mEditName;
+    private TextInputLayout mEditEmail;
+    private TextInputLayout mEditAddress;
+    private TextInputLayout mEditAlternateContact;
+    private TextInputLayout mEditExperience;
+    private TextInputLayout mEditExpectedWage;
+    private LinearLayout mEditLLVehicleOwned;
+    private RadioGroup mEditGender;
+    private RadioGroup mEditProfile;
+    private RadioGroup mEditVehicleOwned;
+
+    private EditText mOldPassword;
+    private EditText mNewPassword;
+    private EditText mConfirmNewPassword;
+    private Button mChangePassword;
+    private Button mSaveNewPassword;
+    private Button mSave;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        userObj = (User) getArguments().getSerializable(getString(R.string.user));
+        if(userObj.getProfile().equals(getString(R.string.service_provider))) {
+            serviceProviderObj = (ServiceProvider) getArguments().getSerializable(getString(R.string.service_provider));
+        }
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_user_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_user_profile, container, false);
+
+        mEditContact = view.findViewById(R.id.et_edit_contact);
+        mEditName = view.findViewById(R.id.et_edit_name);
+        mEditEmail = view.findViewById(R.id.et_edit_email);
+        mEditGender = view.findViewById(R.id.rg_edit_gender);
+        mEditProfile = view.findViewById(R.id.rg_edit_profile);
+        mEditAddress = view.findViewById(R.id.et_edit_address);
+        mEditAlternateContact = view.findViewById(R.id.et_edit_alternate_contact);
+        mEditExperience = view.findViewById(R.id.et_edit_experience);
+        mEditExpectedWage = view.findViewById(R.id.et_edit_wage);
+        mEditLLVehicleOwned = view.findViewById(R.id.ll_edit_vehicle_owned);
+        mEditVehicleOwned = view.findViewById(R.id.rg_edit_vehicle_owned);
+        mEditGender = view.findViewById(R.id.rg_edit_gender);
+        mSave = view.findViewById(R.id.bv_save_edit_profile);
+
+
+        // setting user's data
+        mEditContact.getEditText().setText(userObj.getContact());
+        mEditName.getEditText().setText(userObj.getName());
+        mEditEmail.getEditText().setText(userObj.getEmail());
+        if(userObj.getGender().equals(getString(R.string.gender_female))) {
+            mEditGender.check(R.id.rb_edit_gender_female);
+        } else {
+            mEditGender.check(R.id.rb_edit_gender_male);
+        }
+        mEditAddress.getEditText().setText(userObj.getAddress());
+        mEditAlternateContact.getEditText().setText(userObj.getAlternateContact());
+
+        if(userObj.getProfile().equals(getString(R.string.service_receiver))) {
+            mEditProfile.check(R.id.rb_edit_sr);
+            mEditExperience.setVisibility(View.GONE);
+            mEditExpectedWage.setVisibility(View.GONE);
+            mEditLLVehicleOwned.setVisibility(View.GONE);
+        } else {
+            mEditProfile.check(R.id.rb_edit_sp);
+
+            // set experience, wage, vehicle owned
+            firebaseAuth = FirebaseAuth.getInstance();
+            firebaseFirestore = FirebaseFirestore.getInstance();
+
+            if (serviceProviderObj != null) {
+                mEditExperience.getEditText().setText(serviceProviderObj.getExperience());
+                mEditExpectedWage.getEditText().setText(serviceProviderObj.getExpectedWage());
+
+                if(serviceProviderObj.getVehicleOwned().equals(getString(R.string.vehicle_owned_yes))) {
+                    mEditVehicleOwned.check(R.id.rb_edit_vehicle_owned_yes);
+                } else {
+                    mEditVehicleOwned.check(R.id.rb_edit_vehicle_owned_no);
+                }
+            } else {
+                Log.w(TAG, "serviceProviderObj is null");
+            }
+        }
+
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        // changing password
         mChangePassword = view.findViewById(R.id.bv_change_password);
         mOldPassword = view.findViewById(R.id.et_edit_old_password);
         mNewPassword = view.findViewById(R.id.et_edit_new_password);
         mConfirmNewPassword = view.findViewById(R.id.et_edit_confirm_new_password);
         mSaveNewPassword = view.findViewById(R.id.bv_save_new_password);
 
+        // changing password
         mChangePassword.setOnClickListener(v -> {
             mChangePassword.setVisibility(View.GONE);
             mOldPassword.setVisibility(View.VISIBLE);
@@ -58,5 +157,11 @@ public class EditUserProfileFragment extends Fragment {
             mConfirmNewPassword.setVisibility(View.GONE);
             mSaveNewPassword.setVisibility(View.GONE);
         });
+
+
+        // valid checks on clicking save
+
+
+
     }
 }

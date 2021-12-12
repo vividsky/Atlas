@@ -35,12 +35,11 @@
                     android:drawablePadding="10dp"
                     android:hint="Contact *"
                     android:inputType="phone"
-                    android:text="9856895696"
                     android:textColor="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/et_edit_username"
+                android:id="@+id/et_edit_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,7 +54,6 @@
                     android:drawablePadding="10dp"
                     android:hint="Name *"
                     android:inputType="phone"
-                    android:text="Shradha Kedia"
                     android:textColor="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,7 +74,6 @@
                     android:drawablePadding="10dp"
                     android:hint="Email *"
                     android:inputType="phone"
-                    android:text="Shradhakedia@gmail.com"
                     android:textColor="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -182,7 +179,6 @@
                     android:drawablePadding="10dp"
                     android:hint="Address *"
                     android:inputType="phone"
-                    android:text="Gorakhpur"
                     android:textColor="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -202,7 +198,6 @@
                     android:drawablePadding="10dp"
                     android:hint="Alternate Contact"
                     android:inputType="phone"
-                    android:text="8842512121"
                     android:textColor="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -222,7 +217,6 @@
                     android:drawablePadding="10dp"
                     android:hint="Experience (Yrs)"
                     android:inputType="phone"
-                    android:text="1"
                     android:textColor="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -242,11 +236,11 @@
                     android:drawablePadding="10dp"
                     android:hint="Expected Wage"
                     android:inputType="phone"
-                    android:text="2000"
                     android:textColor="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
+                android:id="@+id/ll_edit_vehicle_owned"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="24dp"
