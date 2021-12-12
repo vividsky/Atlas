@@ -126,12 +126,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
         dialogBuilder.setTitle("Choose Specialities");
 
         dialogBuilder.setMultiChoiceItems(R.array.speciality, checkedItems , (dialog, indexSelected, isChecked) -> {
-            if (isChecked) {
-                checkedItems[indexSelected] = true;
-            } else if (checkedItems[indexSelected]) {
-                checkedItems[indexSelected] = false;
-            }
-            Log.d(TAG, checkedItems[indexSelected] + "");
+            checkedItems[indexSelected] = isChecked;
         });
 
         dialogBuilder.setPositiveButton("Save", ((dialogInterface, id) -> {

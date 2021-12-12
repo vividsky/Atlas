@@ -1,6 +1,7 @@
 package com.example.atlas.authentication;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -81,7 +82,7 @@ public class UserProfileFragment extends Fragment {
         servicesSelected.clear();
 
         // initialise the alert dialog builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         // set the title for the alert dialog
         builder.setTitle("Choose Services");
@@ -104,18 +105,15 @@ public class UserProfileFragment extends Fragment {
             }
         });
 
-        // create the builder
-        builder.create();
-
         // create the alert dialog with the
         // alert dialog builder instance
-        AlertDialog alertDialog = builder.create();
+        Dialog alertDialog = builder.create();
         alertDialog.show();
     }
 
     private void makeUserReceiverCollection() {
 
-        ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.pb_progressbar_in_profile_fragment);
+        ProgressBar progressBar = getView().findViewById(R.id.pb_progressbar_in_profile_fragment);
         progressBar.setVisibility(View.VISIBLE);
 
         firebaseAuth = FirebaseAuth.getInstance();

@@ -51,7 +51,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                                     .commit();
                         else if(userObj.getProfile() == null) {
                             Bundle bundle = new Bundle();
-                            bundle.putSerializable(getString(R.string.user), (Serializable) userObj);
+                            bundle.putSerializable(getString(R.string.user), userObj);
                             UserProfileFragment userProfileFragment = new UserProfileFragment();
                             userProfileFragment.setArguments(bundle);
                             getSupportFragmentManager().beginTransaction()

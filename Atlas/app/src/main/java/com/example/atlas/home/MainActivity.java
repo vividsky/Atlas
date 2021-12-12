@@ -3,8 +3,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,11 +20,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.ServiceReceiver;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
+import com.example.atlas.adapters.ServiceProviderAdapter;
+import com.example.atlas.adapters.ServiceReceiverAdapter;
 import com.example.atlas.authentication.AuthenticationActivity;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,20 +38,27 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
+    static ArrayList<ServiceProvider> serviceProvidersArrayList;
+    static ArrayList<ServiceReceiver> serviceReceiversArrayList;
+
     FragmentManager fragmentManager;
     BottomNavigationView bottomNavigationView;
+    FrameLayout homeLayout;
 
     private DrawerLayout drawerLayout;
     private TextView mUserName;
     private TextView mUserEmail;
-
+    private SwipeRefreshLayout swipeRefresh;
+    private ProgressBar progressBar;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -64,10 +78,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.main_activity_drawer_layout);
+        homeLayout = findViewById(R.id.auth_fragment_container);
         NavigationView navigationView = findViewById(R.id.nav_view);
         View navigationHeaderView = navigationView.getHeaderView(0);
         mUserName = navigationHeaderView.findViewById(R.id.tv_username_in_nav_view);
         mUserEmail = navigationHeaderView.findViewById(R.id.tv_user_email_in_nav_view);
+        swipeRefresh = findViewById(R.id.swipe_refresh);
+        progressBar = findViewById(R.id.main_activity_progress_bar);
+        serviceProvidersArrayList = new ArrayList<>();
+        serviceReceiversArrayList = new ArrayList<>();
+
+        progressBar.setVisibility(View.VISIBLE);
 
         // side navigation view
         navigationView.setNavigationItemSelectedListener(this);
@@ -81,77 +102,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        // TODO: instead of fetching all users and SP's and SR's in each fragment we can fetch them here and send it to fragments
-        // get the current user to send it to fragments
-        firebaseFirestore.collection(getString(R.string.user))
-                .document(firebaseAuth.getCurrentUser().getUid())
-                .get().addOnCompleteListener(task -> {
-                    User userObj;
-                    if (task.isSuccessful()) {
-                        userObj = task.getResult().toObject(User.class);
-                        if (userObj != null) {
-                            mUserName.setText(userObj.getName());
-                            mUserEmail.setText(userObj.getEmail());
-                            user = userObj;
-                            if(userObj.getProfile().equals(getString(R.string.service_provider))) {
-                                // get the service provider to send it to fragments
-                                firebaseFirestore.collection(getString(R.string.service_provider))
-                                        .document(firebaseAuth.getCurrentUser().getUid())
-                                        .get().addOnCompleteListener(task1 -> {
-                                    ServiceProvider serviceProviderObj;
-                                    if (task1.isSuccessful()) {
-                                        serviceProviderObj = task1.getResult().toObject(ServiceProvider.class);
-                                        if (serviceProviderObj != null) {
-                                            serviceProvider = serviceProviderObj;
-                                        } else {
-                                            Log.w(TAG, "serviceProviderObj is null");
-                                        }
-                                    } else {
-                                        Log.w(TAG, task1.getException().getMessage());
-                                    }
-                                });
-                            } else if(userObj.getProfile().equals(getString(R.string.service_receiver))) {
-                                // get the service receiver to send it to fragments
-                                firebaseFirestore.collection(getString(R.string.service_receiver))
-                                        .document(firebaseAuth.getCurrentUser().getUid())
-                                        .get().addOnCompleteListener(task2 -> {
-                                    ServiceReceiver serviceReceiverObj;
-                                    if (task2.isSuccessful()) {
-                                        serviceReceiverObj = task2.getResult().toObject(ServiceReceiver.class);
-                                        if (serviceReceiverObj != null) {
-                                            serviceReceiver = serviceReceiverObj;
-                                        } else {
-                                            Log.w(TAG, "serviceProviderObj is null");
-                                        }
-                                    } else {
-                                        Log.w(TAG, task2.getException().getMessage());
-                                    }
-                                });
-                            }
-                        } else {
-                            Log.w(TAG, "userObj is null");
-                        }
-                    } else {
-                        Log.w(TAG, task.getException().getMessage());
-                    }
+        swipeRefresh.setOnRefreshListener( () -> {
+            serviceReceiversArrayList.clear();
+            serviceProvidersArrayList.clear();
+            passDataToFragments();
+            swipeRefresh.setRefreshing(false);
         });
 
-
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.main_activity_container, new HomeFragment())
-                .commit();
+        passDataToFragments();
 
         // set bottom navigation bar
         bottomNavigationView = findViewById(R.id.nv_bottom);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.menu_home:
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.main_activity_container, new HomeFragment())
-                            .commit();
+                    switchToHomeFragment();
                     break;
                 case R.id.menu_starred:
                     fragmentManager
@@ -173,6 +138,93 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    private void passDataToFragments() {
+        // TODO: instead of fetching all users and SP's and SR's in each fragment we can fetch them here and send it to fragments
+        // get the current user to send it to fragments
+        firebaseFirestore.collection(getString(R.string.user))
+                .document(firebaseAuth.getCurrentUser().getUid())
+                .get().addOnCompleteListener(task -> {
+            User userObj;
+            if (task.isSuccessful()) {
+                userObj = task.getResult().toObject(User.class);
+                if (userObj != null) {
+                    mUserName.setText(userObj.getName());
+                    mUserEmail.setText(userObj.getEmail());
+                    user = userObj;
+                    if(userObj.getProfile().equals(getString(R.string.service_provider))) {
+                        // get the service provider to send it to fragments
+                        firebaseFirestore.collection(getString(R.string.service_provider))
+                                .document(firebaseAuth.getCurrentUser().getUid())
+                                .get().addOnCompleteListener(task1 -> {
+                            ServiceProvider serviceProviderObj;
+                            if (task1.isSuccessful()) {
+                                serviceProviderObj = task1.getResult().toObject(ServiceProvider.class);
+                                if (serviceProviderObj != null) {
+                                    serviceProvider = serviceProviderObj;
+                                } else {
+                                    Log.w(TAG, "serviceProviderObj is null");
+                                }
+                            } else {
+                                Log.w(TAG, task1.getException().getMessage());
+                            }
+                        });
+
+                        // Fetching all serviceReceivers to show content on home fragment
+                        firebaseFirestore.collection(getString(R.string.service_receiver)).get()
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        for (QueryDocumentSnapshot sp : task1.getResult()) {
+                                            ServiceReceiver xx = sp.toObject(ServiceReceiver.class);
+                                            serviceReceiversArrayList.add(xx);
+                                        }
+                                        switchToHomeFragment();
+                                    } else {
+                                        Log.i(TAG, task.getException().getMessage());
+                                    }
+                                });
+
+                    } else if(userObj.getProfile().equals(getString(R.string.service_receiver))) {
+                        // get the service receiver to send it to fragments
+                        firebaseFirestore.collection(getString(R.string.service_receiver))
+                                .document(firebaseAuth.getCurrentUser().getUid())
+                                .get().addOnCompleteListener(task2 -> {
+                            ServiceReceiver serviceReceiverObj;
+                            if (task2.isSuccessful()) {
+                                serviceReceiverObj = task2.getResult().toObject(ServiceReceiver.class);
+                                if (serviceReceiverObj != null) {
+                                    serviceReceiver = serviceReceiverObj;
+                                } else {
+                                    Log.w(TAG, "serviceProviderObj is null");
+                                }
+                            } else {
+                                Log.w(TAG, task2.getException().getMessage());
+                            }
+                        });
+
+                        // Fetching all serviceProviders to show content on home fragment
+                        firebaseFirestore.collection(getString(R.string.service_provider)).get()
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        for (QueryDocumentSnapshot sp : task1.getResult()) {
+                                            ServiceProvider xx = sp.toObject(ServiceProvider.class);
+                                            serviceProvidersArrayList.add(xx);
+                                        }
+                                        switchToHomeFragment();
+                                    } else {
+                                        Log.i(TAG, task.getException().getMessage());
+                                    }
+                                });
+                    }
+                } else {
+                    Log.w(TAG, "userObj is null");
+                }
+            } else {
+                Log.w(TAG, task.getException().getMessage());
+            }
+            progressBar.setVisibility(View.GONE);
+        });
+    }
+
     // if drawer is open, on back press drawer gets closed else we override super
     @Override
     public void onBackPressed() {
@@ -184,9 +236,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.refresh_menu, menu);
+        MenuItem item = menu.findItem(R.id.menu_item_refresh);
+        item.setOnMenuItemClickListener(menuItem -> {
+            progressBar.setVisibility(View.VISIBLE);
+            serviceReceiversArrayList.clear();
+            serviceProvidersArrayList.clear();
+            passDataToFragments();
+            return true;
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.nav_update_profile:
+                bottomNavigationView.setVisibility(View.GONE);
 
                 // put in bundle and set FragmentClass Arguments
                 Bundle bundle = new Bundle();
@@ -200,6 +267,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.main_activity_container, fragObj)
+                        .addToBackStack(null)
                         .commit();
                 break;
 
@@ -241,7 +309,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void deleteUser(String email) {
         String password = "Shradha123@";
 
-
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         // Get auth credentials from the user for re-authentication. The example below shows
         // email and password credentials but there are multiple possible providers,
@@ -271,5 +338,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     });
         }
+    }
+    private void switchToHomeFragment() {
+        Bundle homeBundle = new Bundle();
+        homeBundle.putSerializable(getString(R.string.user), user);
+        homeBundle.putSerializable(getString(R.string.service_provider), serviceProvidersArrayList);
+        homeBundle.putSerializable(getString(R.string.service_receiver), serviceReceiversArrayList);
+        HomeFragment homeFragment = new HomeFragment();
+        homeFragment.setArguments(homeBundle);
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_activity_container, homeFragment)
+                .commit();
+
     }
 }
