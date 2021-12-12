@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
+
 public class AuthenticationActivity extends AppCompatActivity {
 
     private static final String TAG = AuthenticationActivity.class.getSimpleName();
@@ -48,9 +50,12 @@ public class AuthenticationActivity extends AppCompatActivity {
                                     .replace(R.id.auth_fragment_container, new UserDetailsFragment())
                                     .commit();
                         else if(userObj.getProfile() == null) {
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.auth_fragment_container, new UserProfileFragment())
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(getString(R.string.user), (Serializable) userObj);
+                            UserProfileFragment userProfileFragment = new UserProfileFragment();
+                            userProfileFragment.setArguments(bundle);
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.auth_fragment_container, userProfileFragment)
                                     .commit();
                         }
                         else {

@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 /**
@@ -160,9 +161,20 @@ public class UserDetailsFragment extends Fragment {
 
             // to indicate user save was successful
             Toast.makeText(getContext(), "Successfully Saved", Toast.LENGTH_SHORT).show();
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.auth_fragment_container, new UserProfileFragment())
-                    .commit();
+            user.get().addOnCompleteListener(task -> {
+                User userObj;
+                if(task.isSuccessful()) {
+                    userObj = task.getResult().toObject(User.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(getString(R.string.user), (Serializable) userObj);
+                    UserProfileFragment userProfileFragment = new UserProfileFragment();
+                    userProfileFragment.setArguments(bundle);
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.auth_fragment_container, userProfileFragment)
+                            .commit();
+                }
+            });
+
 
         });
 

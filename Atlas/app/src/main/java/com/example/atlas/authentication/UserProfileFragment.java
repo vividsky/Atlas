@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class UserProfileFragment extends Fragment {
@@ -33,6 +34,7 @@ public class UserProfileFragment extends Fragment {
     private ArrayList<String> servicesSelected = new ArrayList<>();
     private String[] servicesList;
     private boolean[] checkedItems;
+    private User userObj;
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -40,6 +42,9 @@ public class UserProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        userObj = (User) getArguments().getSerializable(getString(R.string.user));
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
@@ -55,10 +60,14 @@ public class UserProfileFragment extends Fragment {
         Button buttonServiceProvider = view.findViewById(R.id.b_profile_type_sp);
 
         buttonServiceProvider.setOnClickListener(view1 -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(getString(R.string.user), (Serializable) userObj);
+            ServiceProviderDetailsFragment serviceProviderDetailsFragment = new ServiceProviderDetailsFragment();
+            serviceProviderDetailsFragment.setArguments(bundle);
             getParentFragmentManager()
                     .beginTransaction()
                     .addToBackStack(null)
-                    .replace(R.id.auth_fragment_container, new ServiceProviderDetailsFragment())
+                    .replace(R.id.auth_fragment_container, serviceProviderDetailsFragment)
                     .commit();
         });
 
@@ -112,44 +121,32 @@ public class UserProfileFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        firebaseFirestore.collection(getString(R.string.user))
+        firebaseFirestore.collection(getString(R.string.service_receiver))
                 .document(firebaseAuth.getCurrentUser().getUid())
-                .get()
-                .addOnCompleteListener(task -> {
-                    User userObj = null;
-                    if (task.isSuccessful()) {
-                        userObj = task.getResult().toObject(User.class);
+                .set(new ServiceReceiver(servicesSelected, userObj))
+                .addOnCompleteListener(task2 -> {
+                    progressBar.setVisibility(View.GONE);
+                    if (task2.isSuccessful()) {
+                        // Update type of user
+
+                        // getting the document users by its id because its unique always
+                        DocumentReference currentUser = firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid());
+
+                        // Update user profile
+                        currentUser.update("profile", getString(R.string.service_receiver)).addOnSuccessListener(success -> {
+                            Log.d(TAG, "profile successfully updated");
+                        }).addOnFailureListener(failure -> {
+                            Log.d(TAG, "profile updating failed");
+                        });
+
+                        Toast.makeText(getContext(), "Service Receiver details saved successfully.", Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
                     } else {
-                        Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), task2.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
-                    firebaseFirestore.collection(getString(R.string.service_receiver))
-                            .document(firebaseAuth.getCurrentUser().getUid())
-                            .set(new ServiceReceiver(servicesSelected, userObj))
-                            .addOnCompleteListener(task2 -> {
-                                progressBar.setVisibility(View.GONE);
-                                if (task2.isSuccessful()) {
-                                    // Update type of user
-
-                                    // getting the document users by its id because its unique always
-                                    DocumentReference currentUser = firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid());
-
-                                    // Update user profile
-                                    currentUser.update("profile", getString(R.string.service_receiver)).addOnSuccessListener(success -> {
-                                        Log.d(TAG, "profile successfully updated");
-                                    }).addOnFailureListener(failure -> {
-                                        Log.d(TAG, "profile updating failed");
-                                    });
-
-                                    Toast.makeText(getContext(), "Service Receiver details saved successfully.", Toast.LENGTH_LONG).show();
-
-                                    Intent intent = new Intent(getContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    getActivity().finish();
-                                } else {
-                                    Toast.makeText(getContext(), task2.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                }
-                            });
-
                 });
 
     }

@@ -38,6 +38,8 @@ public class ServiceProviderDetailsFragment extends Fragment {
     String[] options;
     boolean[] checkedItems;
 
+    User userObj;
+
     ImageButton speciality;
     Button mSaveButton;
     EditText mExperience;
@@ -50,6 +52,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        userObj = (User) getArguments().getSerializable(getString(R.string.user));
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_service_provider_details, container, false);
     }
@@ -94,34 +97,25 @@ public class ServiceProviderDetailsFragment extends Fragment {
                 firebaseAuth = FirebaseAuth.getInstance();
                 firebaseFirestore = FirebaseFirestore.getInstance();
 
-                DocumentReference documentReference = firebaseFirestore.collection(getString(R.string.user))
-                        .document(firebaseAuth.getCurrentUser().getUid());
+                firebaseFirestore.collection(getString(R.string.service_provider))
+                        .document(firebaseAuth.getCurrentUser().getUid())
+                        .set(new ServiceProvider(checkedSpecialities, experience, expectedWage, vehicleOwned[0], userObj))
+                        .addOnCompleteListener(task2 -> {
+                            if (task2.isSuccessful()) {
 
-                documentReference.get()
-                    .addOnCompleteListener(task -> {
-                        User user = null;
-                        if (task.isSuccessful()) {
-                            user = task.getResult().toObject(User.class);
-                        } else {
-                            Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                                // getting the document users by its id because its unique always
+                                DocumentReference currentUser = firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid());
 
-                        firebaseFirestore.collection(getString(R.string.service_provider))
-                                .document(firebaseAuth.getCurrentUser().getUid())
-                                .set(new ServiceProvider(checkedSpecialities, experience, expectedWage, vehicleOwned[0], user))
-                                .addOnCompleteListener(task2 -> {
-                                    if (task2.isSuccessful()) {
-                                        documentReference.update("profile",getString(R.string.service_provider));
-                                        progressBar.setVisibility(View.GONE);
-                                        Toast.makeText(getContext(), "Service Provider details saved successfully.", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(getContext(), MainActivity.class));
-                                        getActivity().finish();
-                                    } else {
-                                        Toast.makeText(getContext(), task2.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                                currentUser.update("profile",getString(R.string.service_provider));
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getContext(), "Service Provider details saved successfully.", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getContext(), MainActivity.class));
+                                getActivity().finish();
+                            } else {
+                                Toast.makeText(getContext(), task2.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-                    });
             }
         });
     }
