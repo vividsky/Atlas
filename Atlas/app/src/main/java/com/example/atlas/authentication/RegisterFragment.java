@@ -36,15 +36,15 @@ public class RegisterFragment extends Fragment {
 
     public static final String TAG = RegisterFragment.class.getSimpleName();
 
-    Button mSignUp;
-    TextInputLayout mEmailId;
-    TextInputLayout mContact;
-    TextInputLayout mPassword;
-    TextInputLayout mConfirmPassword;
-    ProgressBar mProgressBar;
+    private Button mSignUp;
+    private TextInputLayout mEmailId;
+    private TextInputLayout mContact;
+    private TextInputLayout mPassword;
+    private TextInputLayout mConfirmPassword;
+    private ProgressBar mProgressBar;
 
-    FirebaseAuth firebaseAuth;
-    FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

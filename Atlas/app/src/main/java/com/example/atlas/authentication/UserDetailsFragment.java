@@ -38,10 +38,10 @@ public class UserDetailsFragment extends Fragment {
     private RadioGroup mGender;
     private Button mSave;
 
-    String name;
-    String address;
-    String alternateContact;
-    String[] gender;
+    private String name;
+    private String address;
+    private String alternateContact;
+    private String[] gender;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
