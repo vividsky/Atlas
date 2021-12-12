@@ -1,8 +1,9 @@
 package com.example.atlas.Models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ServiceReceiver {
+public class ServiceReceiver implements Serializable {
     public User getUserDetails() {
         return userDetails;
     }

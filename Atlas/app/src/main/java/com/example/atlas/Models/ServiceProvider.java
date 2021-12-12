@@ -1,8 +1,9 @@
 package com.example.atlas.Models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ServiceProvider {
+public class ServiceProvider implements Serializable {
     public ArrayList<String> specialities;
     public String experience;
     public String expectedWage;
