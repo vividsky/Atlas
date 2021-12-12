@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // set bottom navigation bar
         fragmentManager = getSupportFragmentManager();
         bottomNavigationView = findViewById(R.id.nv_bottom);
         fragmentManager
@@ -93,14 +95,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mUserName = navigationHeaderView.findViewById(R.id.tv_username_in_nav_view);
         mUserEmail = navigationHeaderView.findViewById(R.id.tv_user_email_in_nav_view);
 
+        // side navigation view
         navigationView.setNavigationItemSelectedListener(this);
-
-
         // set hamburger icon to open drawer
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
