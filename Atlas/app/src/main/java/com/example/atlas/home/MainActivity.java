@@ -26,17 +26,13 @@ import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.ServiceReceiver;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
-import com.example.atlas.adapters.ServiceProviderAdapter;
-import com.example.atlas.adapters.ServiceReceiverAdapter;
 import com.example.atlas.authentication.AuthenticationActivity;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 

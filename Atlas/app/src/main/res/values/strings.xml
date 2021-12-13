@@ -15,8 +15,8 @@
     <string name="month">Month</string>
     <string name="year">Year</string>
 
-    <string name="gender_female">Female</string>
-    <string name="gender_male">Male</string>
+    <string name="gender_female">F</string>
+    <string name="gender_male">M</string>
 
     <string name="vehicle_owned_no">No</string>
     <string name="vehicle_owned_yes">Yes</string>

@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -23,6 +25,7 @@ import com.example.atlas.Models.User;
 import com.example.atlas.R;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -36,6 +39,7 @@ public class EditUserProfileFragment extends Fragment {
 
     User userObj;
     ServiceProvider serviceProviderObj;
+    DrawerLayout mDrawerLayout;
 
     private TextInputLayout mEditContact;
     private TextInputLayout mEditName;
@@ -54,6 +58,7 @@ public class EditUserProfileFragment extends Fragment {
     private EditText mConfirmNewPassword;
     private Button mChangePassword;
     private Button mSaveNewPassword;
+    Toolbar toolbar;
     private Button mSave;
 
     @Override
@@ -63,6 +68,15 @@ public class EditUserProfileFragment extends Fragment {
         // hiding bottom navigation
         BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nv_bottom);
         bottomNavigationView.setVisibility(View.GONE);
+
+        toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("Profile");
+        toolbar.setNavigationIcon(null);
+
+        mDrawerLayout = getActivity().findViewById(R.id.main_activity_drawer_layout);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+
 
         // hiding swipe refresh
         SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh);

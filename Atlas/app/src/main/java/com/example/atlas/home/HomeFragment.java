@@ -4,6 +4,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +37,8 @@ public class HomeFragment extends Fragment {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     static RecyclerView recyclerView;
+    Toolbar toolbar;
+    DrawerLayout mDrawerLayout;
     static ServiceProviderAdapter serviceProviderAdapter;
     static ServiceReceiverAdapter serviceReceiverAdapter;
     static ArrayList<ServiceProvider> serviceProvidersArrayList;
@@ -47,6 +52,18 @@ public class HomeFragment extends Fragment {
 
         BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nv_bottom);
         bottomNavigationView.setVisibility(View.VISIBLE);
+
+        toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
+
+        mDrawerLayout = getActivity().findViewById(R.id.main_activity_drawer_layout);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+        // set hamburger icon to open drawer
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
         SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh);
         swipeRefresh.setEnabled(true);
