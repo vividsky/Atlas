@@ -5,9 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,6 +22,7 @@ import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,10 +34,6 @@ public class EditUserProfileFragment extends Fragment {
 
     public static final String TAG = EditUserProfileFragment.class.getSimpleName();
 
-    private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseFirestore;
-
-    private String userProfileType;
     User userObj;
     ServiceProvider serviceProviderObj;
 
@@ -57,13 +57,19 @@ public class EditUserProfileFragment extends Fragment {
     private Button mSave;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        // hiding bottom navigation
+        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nv_bottom);
+        bottomNavigationView.setVisibility(View.GONE);
+
+        // hiding swipe refresh
+        SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh);
+        swipeRefresh.setEnabled(false);
+
+        // to get the options and hide it then
+        setHasOptionsMenu(true);
 
         userObj = (User) getArguments().getSerializable(getString(R.string.user));
         if(userObj.getProfile().equals(getString(R.string.service_provider))) {
@@ -109,9 +115,6 @@ public class EditUserProfileFragment extends Fragment {
             mEditProfile.check(R.id.rb_edit_sp);
 
             // set experience, wage, vehicle owned
-            firebaseAuth = FirebaseAuth.getInstance();
-            firebaseFirestore = FirebaseFirestore.getInstance();
-
             if (serviceProviderObj != null) {
                 mEditExperience.getEditText().setText(serviceProviderObj.getExperience());
                 mEditExpectedWage.getEditText().setText(serviceProviderObj.getExpectedWage());
@@ -163,5 +166,12 @@ public class EditUserProfileFragment extends Fragment {
 
 
 
+    }
+
+    // hide the menu item refresh
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.menu_item_refresh).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
     }
 }

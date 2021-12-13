@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,15 +39,17 @@ public class HomeFragment extends Fragment {
     static ArrayList<ServiceProvider> serviceProvidersArrayList;
     static ArrayList<ServiceReceiver> serviceReceiversArrayList;
     static User user;
-    BottomNavigationView bottomNavigationView;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        bottomNavigationView = getActivity().findViewById(R.id.nv_bottom);
+        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nv_bottom);
         bottomNavigationView.setVisibility(View.VISIBLE);
+
+        SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh);
+        swipeRefresh.setEnabled(true);
 
         user = (User) getArguments().getSerializable(getString(R.string.user));
         serviceProvidersArrayList = (ArrayList<ServiceProvider>) getArguments().getSerializable(getString(R.string.service_provider));

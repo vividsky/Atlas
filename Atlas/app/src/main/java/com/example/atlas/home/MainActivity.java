@@ -271,7 +271,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.nav_update_profile:
-                bottomNavigationView.setVisibility(View.GONE);
 
                 // put in bundle and set FragmentClass Arguments
                 Bundle bundle = new Bundle();
