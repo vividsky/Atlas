@@ -175,7 +175,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     if (task1.isSuccessful()) {
                                         for (QueryDocumentSnapshot sp : task1.getResult()) {
                                             ServiceReceiver xx = sp.toObject(ServiceReceiver.class);
-                                            serviceReceiversArrayList.add(xx);
+
+                                            ArrayList<String>
+                                                    copyArray = new ArrayList<>(xx.getRequirements());
+
+                                            // Store the comparison output
+                                            // in ArrayList copyArray
+                                            copyArray.retainAll(serviceProvider.getSpecialities());
+                                            if(!copyArray.isEmpty()) {
+                                                serviceReceiversArrayList.add(xx);
+                                            }
                                         }
                                         switchToHomeFragment();
                                     } else {
@@ -207,7 +216,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     if (task1.isSuccessful()) {
                                         for (QueryDocumentSnapshot sp : task1.getResult()) {
                                             ServiceProvider xx = sp.toObject(ServiceProvider.class);
-                                            serviceProvidersArrayList.add(xx);
+
+                                            ArrayList<String>
+                                                    copyArray = new ArrayList<>(xx.getSpecialities());
+
+                                            // Store the comparison output
+                                            // in ArrayList copyArray
+                                            copyArray.retainAll(serviceReceiver.getRequirements());
+                                            if(!copyArray.isEmpty()) {
+                                                serviceProvidersArrayList.add(xx);
+                                            }
                                         }
                                         switchToHomeFragment();
                                     } else {
