@@ -357,6 +357,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     });
         }
     }
+
     private void switchToHomeFragment() {
         Bundle homeBundle = new Bundle();
         homeBundle.putSerializable(getString(R.string.user), user);
