@@ -169,6 +169,9 @@ public class EditUserProfileFragment extends Fragment {
 
         mSaveNewPassword.setOnClickListener(v -> {
             // TODO: if successfully changed
+            //  1. old pass != new pass.
+            //  2. new pass must follow pass standard requirements.
+            //  3. toast to indicate save was successful on cloud.
 
             mChangePassword.setVisibility(View.VISIBLE);
             mOldPassword.setVisibility(View.GONE);
@@ -176,10 +179,6 @@ public class EditUserProfileFragment extends Fragment {
             mConfirmNewPassword.setVisibility(View.GONE);
             mSaveNewPassword.setVisibility(View.GONE);
         });
-
-
-        // valid checks on clicking save
-
 
 
     }
@@ -196,6 +195,7 @@ public class EditUserProfileFragment extends Fragment {
         inflater.inflate(R.menu.save_menu, menu);
         MenuItem item = menu.findItem(R.id.menu_item_save);
         item.setOnMenuItemClickListener(menuItem -> {
+            // TODO: add valid checks on views on clicking save.
             Toast.makeText(getContext(), "Editing data will be enabled soon.", Toast.LENGTH_LONG).show();
             return true;
         });
