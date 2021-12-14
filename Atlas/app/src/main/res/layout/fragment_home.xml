@@ -8,14 +8,6 @@
     android:orientation="vertical"
     tools:context=".home.MainActivity">
 
-    <TextView
-        android:id="@+id/welcome_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Welcome"
-        android:textSize="42sp"
-        android:gravity="center_horizontal"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_activity_recycler_view"
         android:layout_height="wrap_content"

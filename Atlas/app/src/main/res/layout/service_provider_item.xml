@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingTop="24dp"
-    android:paddingEnd="24dp"
-    android:paddingStart="24dp">
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:text="Speciality: "
             android:textSize="16sp"
             android:textStyle="bold"/>
@@ -51,7 +51,7 @@
             android:text="F"/>
         <TextView
             android:id="@+id/sp_tv_experience"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="5 Years"
@@ -100,7 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="8dp">
+        android:paddingBottom="5dp">
 
         <TextView
             android:id="@+id/sp_tv_vehicle_owned"
@@ -113,18 +113,18 @@
             android:id="@+id/sp_tv_contact"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
             android:src="@drawable/ic_chat"/>
         <ImageView
             android:id="@+id/ib_sp_starred"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
             android:src="@drawable/ic_unstarred"/>
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
             android:src="@drawable/ic_share"/>
     </LinearLayout>
 
