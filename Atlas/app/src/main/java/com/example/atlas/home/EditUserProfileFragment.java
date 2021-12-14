@@ -196,7 +196,7 @@ public class EditUserProfileFragment extends Fragment {
         inflater.inflate(R.menu.save_menu, menu);
         MenuItem item = menu.findItem(R.id.menu_item_save);
         item.setOnMenuItemClickListener(menuItem -> {
-            Toast.makeText(getContext(), "editing data will be enabled soon.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Editing data will be enabled soon.", Toast.LENGTH_LONG).show();
             return true;
         });
         super.onCreateOptionsMenu(menu, inflater);
