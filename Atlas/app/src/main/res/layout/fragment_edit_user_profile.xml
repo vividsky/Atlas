@@ -151,14 +151,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="SP" />
+                        android:text="SP"
+                        android:enabled="false"/>
 
                     <RadioButton
                         android:id="@+id/rb_edit_sr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="SR" />
+                        android:text="SR"
+                        android:enabled="false" />
 
                 </RadioGroup>
             </LinearLayout>
@@ -342,17 +344,17 @@
                 android:textSize="16sp"
                 android:visibility="gone" />
 
+
             <Button
-                android:id="@+id/bv_save_edit_profile"
+                android:id="@+id/bv_change_speciality_or_requirements"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="60dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="60dp"
-                android:layout_marginBottom="48dp"
                 android:padding="15dp"
-                android:text="Save" />
+                android:text="Change Specialities" />
 
         </LinearLayout>
     </ScrollView>

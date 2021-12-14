@@ -12,6 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.User;
@@ -105,7 +107,7 @@ public class EditUserProfileFragment extends Fragment {
         mEditLLVehicleOwned = view.findViewById(R.id.ll_edit_vehicle_owned);
         mEditVehicleOwned = view.findViewById(R.id.rg_edit_vehicle_owned);
         mEditGender = view.findViewById(R.id.rg_edit_gender);
-        mSave = view.findViewById(R.id.bv_save_edit_profile);
+//        mSave = view.findViewById(R.id.bv_save_edit_profile);
 
 
         // setting user's data
@@ -187,5 +189,17 @@ public class EditUserProfileFragment extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.menu_item_refresh).setVisible(false);
         super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.save_menu, menu);
+        MenuItem item = menu.findItem(R.id.menu_item_save);
+        item.setOnMenuItemClickListener(menuItem -> {
+            Toast.makeText(getContext(), "editing data will be enabled soon.", Toast.LENGTH_LONG).show();
+            return true;
+        });
+        super.onCreateOptionsMenu(menu, inflater);
+
     }
 }
