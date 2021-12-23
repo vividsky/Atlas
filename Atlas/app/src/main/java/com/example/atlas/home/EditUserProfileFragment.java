@@ -52,7 +52,6 @@ public class EditUserProfileFragment extends Fragment {
     private TextInputLayout mEditExpectedWage;
     private LinearLayout mEditLLVehicleOwned;
     private RadioGroup mEditGender;
-    private RadioGroup mEditProfile;
     private RadioGroup mEditVehicleOwned;
 
     private EditText mOldPassword;
@@ -99,7 +98,6 @@ public class EditUserProfileFragment extends Fragment {
         mEditName = view.findViewById(R.id.et_edit_name);
         mEditEmail = view.findViewById(R.id.et_edit_email);
         mEditGender = view.findViewById(R.id.rg_edit_gender);
-        mEditProfile = view.findViewById(R.id.rg_edit_profile);
         mEditAddress = view.findViewById(R.id.et_edit_address);
         mEditAlternateContact = view.findViewById(R.id.et_edit_alternate_contact);
         mEditExperience = view.findViewById(R.id.et_edit_experience);
@@ -121,29 +119,6 @@ public class EditUserProfileFragment extends Fragment {
         }
         mEditAddress.getEditText().setText(userObj.getAddress());
         mEditAlternateContact.getEditText().setText(userObj.getAlternateContact());
-
-        if(userObj.getProfile().equals(getString(R.string.service_receiver))) {
-            mEditProfile.check(R.id.rb_edit_sr);
-            mEditExperience.setVisibility(View.GONE);
-            mEditExpectedWage.setVisibility(View.GONE);
-            mEditLLVehicleOwned.setVisibility(View.GONE);
-        } else {
-            mEditProfile.check(R.id.rb_edit_sp);
-
-            // set experience, wage, vehicle owned
-            if (serviceProviderObj != null) {
-                mEditExperience.getEditText().setText(serviceProviderObj.getExperience());
-                mEditExpectedWage.getEditText().setText(serviceProviderObj.getExpectedWage());
-
-                if(serviceProviderObj.getVehicleOwned().equals(getString(R.string.vehicle_owned_yes))) {
-                    mEditVehicleOwned.check(R.id.rb_edit_vehicle_owned_yes);
-                } else {
-                    mEditVehicleOwned.check(R.id.rb_edit_vehicle_owned_no);
-                }
-            } else {
-                Log.w(TAG, "serviceProviderObj is null");
-            }
-        }
 
         return view;
     }
