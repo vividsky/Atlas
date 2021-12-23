@@ -120,6 +120,27 @@ public class EditUserProfileFragment extends Fragment {
         mEditAddress.getEditText().setText(userObj.getAddress());
         mEditAlternateContact.getEditText().setText(userObj.getAlternateContact());
 
+        if(userObj.getProfile().equals(getString(R.string.service_receiver))) {
+            mEditExperience.setVisibility(View.GONE);
+            mEditExpectedWage.setVisibility(View.GONE);
+            mEditLLVehicleOwned.setVisibility(View.GONE);
+        } else {
+
+            // set experience, wage, vehicle owned
+            if (serviceProviderObj != null) {
+                mEditExperience.getEditText().setText(serviceProviderObj.getExperience());
+                mEditExpectedWage.getEditText().setText(serviceProviderObj.getExpectedWage());
+
+                if(serviceProviderObj.getVehicleOwned().equals(getString(R.string.vehicle_owned_yes))) {
+                    mEditVehicleOwned.check(R.id.rb_edit_vehicle_owned_yes);
+                } else {
+                    mEditVehicleOwned.check(R.id.rb_edit_vehicle_owned_no);
+                }
+            } else {
+                Log.i(TAG, "serviceProviderObj is null");
+            }
+        }
+
         return view;
     }
 
