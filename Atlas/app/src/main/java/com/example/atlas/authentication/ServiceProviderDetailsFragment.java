@@ -28,6 +28,7 @@ import com.example.atlas.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.model.Document;
 
 public class ServiceProviderDetailsFragment extends Fragment {
 
@@ -95,9 +96,11 @@ public class ServiceProviderDetailsFragment extends Fragment {
                 firebaseAuth = FirebaseAuth.getInstance();
                 firebaseFirestore = FirebaseFirestore.getInstance();
 
-                firebaseFirestore.collection(getString(R.string.service_provider))
-                        .document(firebaseAuth.getCurrentUser().getUid())
-                        .set(new ServiceProvider(checkedSpeciality, experience, expectedWage, vehicleOwned[0], userObj))
+                // TODO save it as a document and make id field in service provider
+                DocumentReference documentReference = firebaseFirestore.collection(getString(R.string.service_provider)).document();
+                ServiceProvider serviceProvider = new ServiceProvider(documentReference.getId(),
+                        checkedSpeciality, experience, expectedWage, vehicleOwned[0], userObj);
+                documentReference.set(serviceProvider)
                         .addOnCompleteListener(task2 -> {
                             if (task2.isSuccessful()) {
 
@@ -113,6 +116,25 @@ public class ServiceProviderDetailsFragment extends Fragment {
                                 Toast.makeText(getContext(), task2.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
+
+//                firebaseFirestore.collection(getString(R.string.service_provider))
+//                        .document(firebaseAuth.getCurrentUser().getUid())
+//                        .set(new ServiceProvider(checkedSpeciality, experience, expectedWage, vehicleOwned[0], userObj))
+//                        .addOnCompleteListener(task2 -> {
+//                            if (task2.isSuccessful()) {
+//
+//                                // getting the document users by its id because its unique always
+//                                DocumentReference currentUser = firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid());
+//
+//                                currentUser.update("profile",getString(R.string.service_provider));
+//                                progressBar.setVisibility(View.GONE);
+//                                Toast.makeText(getContext(), "Service Provider details saved successfully.", Toast.LENGTH_SHORT).show();
+//                                startActivity(new Intent(getContext(), MainActivity.class));
+//                                getActivity().finish();
+//                            } else {
+//                                Toast.makeText(getContext(), task2.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
 
             }
         });

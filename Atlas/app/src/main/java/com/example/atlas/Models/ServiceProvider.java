@@ -9,16 +9,22 @@ public class ServiceProvider implements Serializable {
     public String experience;
     public String expectedWage;
     public String  vehicleOwned;
+    public String id;
     public User userDetails;
 
     public ServiceProvider() {}
 
-    public ServiceProvider(String speciality, String experience, String expectedWage, String vehicleOwned, User userDetails) {
+    public ServiceProvider(String id, String speciality, String experience, String expectedWage, String vehicleOwned, User userDetails) {
+        this.id  = id;
         this.speciality = speciality;
         this.experience = experience;
         this.expectedWage = expectedWage;
         this.vehicleOwned = vehicleOwned;
         this.userDetails = userDetails;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getSpeciality() {
