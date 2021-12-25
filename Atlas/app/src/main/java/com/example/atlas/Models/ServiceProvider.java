@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class ServiceProvider implements Serializable {
 
-    public ArrayList<String> specialities;
+    public String speciality;
     public String experience;
     public String expectedWage;
     public String  vehicleOwned;
@@ -13,16 +13,16 @@ public class ServiceProvider implements Serializable {
 
     public ServiceProvider() {}
 
-    public ServiceProvider(ArrayList<String> specialities, String experience, String expectedWage, String vehicleOwned, User userDetails) {
-        this.specialities = specialities;
+    public ServiceProvider(String speciality, String experience, String expectedWage, String vehicleOwned, User userDetails) {
+        this.speciality = speciality;
         this.experience = experience;
         this.expectedWage = expectedWage;
         this.vehicleOwned = vehicleOwned;
         this.userDetails = userDetails;
     }
 
-    public ArrayList<String> getSpecialities() {
-        return specialities;
+    public String getSpeciality() {
+        return speciality;
     }
 
     public String getExperience() {

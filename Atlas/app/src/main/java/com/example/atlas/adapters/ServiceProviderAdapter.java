@@ -4,18 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
-import com.example.atlas.home.MainActivity;
 
 import java.util.List;
 
@@ -56,7 +53,7 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
         TextView experience;
         TextView expectedWage;
         TextView vehicleOwned;
-        TextView specialities;
+        TextView speciality;
         ImageView starred;
 
         public ContentViewHolder(@NonNull View itemView) {
@@ -68,7 +65,7 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
             experience = itemView.findViewById(R.id.sp_tv_experience);
             expectedWage = itemView.findViewById(R.id.sp_tv_expected_wage);
             vehicleOwned = itemView.findViewById(R.id.sp_tv_vehicle_owned);
-            specialities = itemView.findViewById(R.id.tv_sp_speciality);
+            speciality = itemView.findViewById(R.id.tv_sp_speciality);
             starred = itemView.findViewById(R.id.ib_sp_starred);
 
             starred.setOnClickListener(view -> {
@@ -90,7 +87,7 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
             address.setText(userDetails.getAddress());
             experience.setText("Exp : " + serviceProviderDetails.experience + " Years");
             expectedWage.setText(serviceProviderDetails.getExpectedWage());
-            specialities.setText(serviceProviderDetails.getSpecialities().toString());
+            speciality.setText(serviceProviderDetails.getSpeciality());
         }
     }
 }

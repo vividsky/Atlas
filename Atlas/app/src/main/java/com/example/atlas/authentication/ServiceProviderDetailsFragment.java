@@ -29,14 +29,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
-
 public class ServiceProviderDetailsFragment extends Fragment {
 
     private static final String TAG = "ServiceProviderDetails";
-    private static ArrayList<String> checkedSpecialities = new ArrayList<>();
+    private static String checkedSpeciality = "";
     String[] options;
-    boolean[] checkedItems;
+    int[] checkedItem;
 
     User userObj;
 
@@ -62,7 +60,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
          options = getResources().getStringArray(R.array.speciality);
-         checkedItems = new boolean[options.length];
+         checkedItem = new int[]{-1};
 
         speciality = view.findViewById(R.id.iv_speciality);
         mExperience = view.findViewById(R.id.et_experience);
@@ -84,7 +82,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
         });
 
         mSaveButton.setOnClickListener(view1 -> {
-            if (checkedSpecialities.isEmpty()) {
+            if (checkedSpeciality.isEmpty()) {
                 Toast.makeText(getContext(), "Please choose atleast one Speciality", Toast.LENGTH_SHORT).show();
             } else {
 
@@ -99,7 +97,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
 
                 firebaseFirestore.collection(getString(R.string.service_provider))
                         .document(firebaseAuth.getCurrentUser().getUid())
-                        .set(new ServiceProvider(checkedSpecialities, experience, expectedWage, vehicleOwned[0], userObj))
+                        .set(new ServiceProvider(checkedSpeciality, experience, expectedWage, vehicleOwned[0], userObj))
                         .addOnCompleteListener(task2 -> {
                             if (task2.isSuccessful()) {
 
@@ -125,16 +123,12 @@ public class ServiceProviderDetailsFragment extends Fragment {
 
         dialogBuilder.setTitle("Choose Specialities");
 
-        dialogBuilder.setMultiChoiceItems(R.array.speciality, checkedItems , (dialog, indexSelected, isChecked) -> {
-            checkedItems[indexSelected] = isChecked;
+        dialogBuilder.setSingleChoiceItems(R.array.speciality, checkedItem[0], (dialog, which) -> {
+            checkedItem[0] = which;
         });
 
         dialogBuilder.setPositiveButton("Save", ((dialogInterface, id) -> {
-            for (int i = 0; i < options.length; i++) {
-                if (checkedItems[i]) {
-                    checkedSpecialities.add(options[i]);
-                }
-            }
+            checkedSpeciality = options[checkedItem[0]];
         }));
 
         Dialog dialog = dialogBuilder.create();

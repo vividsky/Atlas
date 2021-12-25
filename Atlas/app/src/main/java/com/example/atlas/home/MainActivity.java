@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -170,16 +169,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
                                         for (QueryDocumentSnapshot sp : task1.getResult()) {
-                                            ServiceReceiver xx = sp.toObject(ServiceReceiver.class);
+                                            ServiceReceiver srObj = sp.toObject(ServiceReceiver.class);
 
-                                            ArrayList<String>
-                                                    copyArray = new ArrayList<>(xx.getRequirements());
+                                            ArrayList<String> requirements = new ArrayList<>(srObj.getRequirements());
+                                            String speciality = serviceProvider.getSpeciality();
 
                                             // Store the comparison output
-                                            // in ArrayList copyArray
-                                            copyArray.retainAll(serviceProvider.getSpecialities());
-                                            if(!copyArray.isEmpty()) {
-                                                serviceReceiversArrayList.add(xx);
+                                            // in ArrayList requirements
+                                            for (String requirement: requirements) {
+                                                if (requirement.equals(speciality)) {
+                                                    serviceReceiversArrayList.add(srObj);
+                                                }
                                             }
                                         }
                                         switchToHomeFragment();
@@ -211,16 +211,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
                                         for (QueryDocumentSnapshot sp : task1.getResult()) {
-                                            ServiceProvider xx = sp.toObject(ServiceProvider.class);
+                                            ServiceProvider spObj = sp.toObject(ServiceProvider.class);
 
-                                            ArrayList<String>
-                                                    copyArray = new ArrayList<>(xx.getSpecialities());
+                                            String speciality = spObj.getSpeciality();
+                                            ArrayList<String> requirements = new ArrayList<>(serviceReceiver.getRequirements());
 
                                             // Store the comparison output
-                                            // in ArrayList copyArray
-                                            copyArray.retainAll(serviceReceiver.getRequirements());
-                                            if(!copyArray.isEmpty()) {
-                                                serviceProvidersArrayList.add(xx);
+                                            // in ArrayList requirements
+                                            for (String requirement: requirements) {
+                                                if (requirement.equals(speciality)) {
+                                                    serviceProvidersArrayList.add(spObj);
+                                                }
                                             }
                                         }
                                         switchToHomeFragment();
