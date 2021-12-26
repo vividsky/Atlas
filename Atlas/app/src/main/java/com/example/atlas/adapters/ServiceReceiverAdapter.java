@@ -17,6 +17,7 @@ import com.example.atlas.Models.User;
 import com.example.atlas.R;
 
 import java.util.List;
+// TODO to implement same as service provider but chatRoom id should be taken care of
 
 public class ServiceReceiverAdapter extends RecyclerView.Adapter<ServiceReceiverAdapter.ContentViewHolder> {
     static final String TAG = ServiceReceiverAdapter.class.getSimpleName();

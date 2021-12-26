@@ -57,10 +57,12 @@ public class ChatroomAdapter extends RecyclerView.Adapter<ChatroomAdapter.Conten
         void bind(int index) {
             Chatroom chatroom = chatroomList.get(index);
             name.setText(chatroom.getName());
+
             name.setOnClickListener(v -> {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("chatId", chatroom.getChatId());
+                bundle.putString("userId", chatroom.getUserId());
                 MessageFragment messageFragment = new MessageFragment();
                 messageFragment.setArguments(bundle);
 

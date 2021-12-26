@@ -110,18 +110,19 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="7"/>
         <ImageView
-            android:id="@+id/sp_tv_contact"
+            android:id="@+id/sp_iv_sendMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"
             android:src="@drawable/ic_chat"/>
         <ImageView
-            android:id="@+id/ib_sp_starred"
+            android:id="@+id/sp_iv_starred"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"
             android:src="@drawable/ic_unstarred"/>
         <ImageView
+            android:id="@+id/sp_iv_share"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"

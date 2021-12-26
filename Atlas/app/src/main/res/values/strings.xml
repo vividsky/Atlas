@@ -41,5 +41,6 @@
 
     <string name="chat_room_id">chat id</string>
     <string name="chatrooms">Chatroom</string>
+    <string name="messages">Message</string>
 
 </resources>
