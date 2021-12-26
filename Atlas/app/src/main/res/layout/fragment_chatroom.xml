@@ -5,12 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".home.ChatRoomFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Chat Fragment"
-        android:textSize="42sp"
-        android:gravity="center"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatroom_recycler_view"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
 
 <!--    TODO: recyclerview for chat heads
               item layout for chat heads with name
