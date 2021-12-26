@@ -119,9 +119,9 @@ public class UserProfileFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        firebaseFirestore.collection(getString(R.string.service_receiver))
-                .document(firebaseAuth.getCurrentUser().getUid())
-                .set(new ServiceReceiver(servicesSelected, userObj))
+        DocumentReference documentReference = firebaseFirestore.collection(getString(R.string.service_receiver))
+                .document(firebaseAuth.getCurrentUser().getUid());
+        documentReference.set(new ServiceReceiver(documentReference.getId(), servicesSelected, userObj))
                 .addOnCompleteListener(task2 -> {
                     progressBar.setVisibility(View.GONE);
                     if (task2.isSuccessful()) {
