@@ -97,7 +97,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
                 firebaseFirestore = FirebaseFirestore.getInstance();
 
                 // TODO save it as a document and make id field in service provider
-                DocumentReference documentReference = firebaseFirestore.collection(getString(R.string.service_provider)).document();
+                DocumentReference documentReference = firebaseFirestore.collection(getString(R.string.service_provider)).document(firebaseAuth.getCurrentUser().getUid());
                 ServiceProvider serviceProvider = new ServiceProvider(documentReference.getId(),
                         checkedSpeciality, experience, expectedWage, vehicleOwned[0], userObj);
                 documentReference.set(serviceProvider)

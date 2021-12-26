@@ -68,16 +68,6 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
             speciality = itemView.findViewById(R.id.tv_sp_speciality);
             starred = itemView.findViewById(R.id.ib_sp_starred);
 
-            starred.setOnClickListener(view -> {
-                if (!isStarred) {
-                    starred.setImageResource(R.drawable.ic_starred);
-                    isStarred = true;
-                } else {
-                    starred.setImageResource(R.drawable.ic_unstarred);
-                    isStarred = false;
-                }
-            });
-
         }
         void bind(int listIndex) {
             ServiceProvider serviceProviderDetails = serviceProvider.get(listIndex);
@@ -88,6 +78,15 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
             experience.setText("Exp : " + serviceProviderDetails.experience + " Years");
             expectedWage.setText(serviceProviderDetails.getExpectedWage());
             speciality.setText(serviceProviderDetails.getSpeciality());
+            starred.setOnClickListener(view -> {
+                if (!isStarred) {
+                    starred.setImageResource(R.drawable.ic_starred);
+                    isStarred = true;
+                } else {
+                    starred.setImageResource(R.drawable.ic_unstarred);
+                    isStarred = false;
+                }
+            });
         }
     }
 }
