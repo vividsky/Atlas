@@ -2,7 +2,6 @@ package com.example.atlas.home;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -16,9 +15,8 @@ import android.view.ViewGroup;
 
 import com.example.atlas.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
-public class ChatFragment extends Fragment {
+public class ChatRoomFragment extends Fragment {
     Toolbar toolbar;
     DrawerLayout mDrawerLayout;
 
@@ -50,7 +48,7 @@ public class ChatFragment extends Fragment {
         setHasOptionsMenu(true);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat, container, false);
+        return inflater.inflate(R.layout.fragment_chatroom, container, false);
     }
 
     // hide the menu item refresh

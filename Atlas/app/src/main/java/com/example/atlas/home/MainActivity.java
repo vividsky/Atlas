@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case R.id.menu_chat:
                     fragmentManager
                             .beginTransaction()
-                            .replace(R.id.main_activity_container, new ChatFragment())
+                            .replace(R.id.main_activity_container, new ChatRoomFragment())
                             .commit();
                     break;
                 default:

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home.ChatRoomFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Chat Fragment"
+        android:textSize="42sp"
+        android:gravity="center"/>
+
+<!--    TODO: recyclerview for chat heads
+              item layout for chat heads with name
+              model i.e chatroom attributes name and chat id
+              inflate these items or documents of collection "chatroom"-->
+<!--    TODO: when user(Nidhi) taps button chat, collection chatroom is created for her
+              and the text receiver(Shradha) with a document with common ids for both
+              and "name as opposites -> Shradha's chatroom document has name nidhi and vice versa"
+              and Nidhi will be redirected to new chat fragment where she can chat.
+              and shradha can open chat room fragment to see her chatroomm is inflated by nidhi's chat head-->
+<!--    TODO: chat fragment working-->
+</FrameLayout>
