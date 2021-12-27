@@ -17,11 +17,9 @@ import java.util.List;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
     List<Message> messageList;
-    FirebaseAuth firebaseAuth;
-//    static final int SELF_MESSAGE_TEXT = 0;
-//    static final int OTHER_MESSAGE_TEXT = 1;
-        static final int SELF_MESSAGE_TEXT = 0;
-        static final int OTHER_MESSAGE_TEXT = 1;
+
+    static final int SELF_MESSAGE_TEXT = 0;
+    static final int OTHER_MESSAGE_TEXT = 1;
 
     public MessageAdapter(List<Message> messageList) {
         this.messageList = messageList;

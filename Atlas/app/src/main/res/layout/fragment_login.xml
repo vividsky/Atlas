@@ -30,7 +30,7 @@
             android:drawableStart="@drawable/ic_baseline_person_24"
             android:drawablePadding="10dp"
             android:hint="Email"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:paddingTop="20dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
