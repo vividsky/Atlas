@@ -25,6 +25,11 @@ public class ServiceReceiver implements Serializable {
         return userDetails;
     }
 
+    public String getId() {
+        return id;
+    }
+
+
 }
 
 
