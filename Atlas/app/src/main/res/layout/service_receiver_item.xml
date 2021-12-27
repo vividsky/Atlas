@@ -71,7 +71,7 @@
             android:layout_weight="7"
             android:text="69/21, Surya Nagar, Rohtak." />
         <ImageView
-            android:id="@+id/sr_iv_contact"
+            android:id="@+id/sr_iv_sendMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"
