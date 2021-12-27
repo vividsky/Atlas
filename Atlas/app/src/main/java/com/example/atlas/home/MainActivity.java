@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     static ArrayList<ServiceProvider> serviceProvidersArrayList;
     static ArrayList<ServiceReceiver> serviceReceiversArrayList;
+    static ArrayList<ServiceReceiver> starredServiceReceiversArrayList;
+    static ArrayList<ServiceProvider> starredServiceProvidersArrayList;
 
     FragmentManager fragmentManager;
     BottomNavigationView bottomNavigationView;
@@ -58,9 +61,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
 
-    private User user;
     private ServiceProvider serviceProvider;
-    private ServiceReceiver serviceReceiver;
+
+    private User user;
 
     @SuppressLint("ShowToast")
     @Override
@@ -78,10 +81,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View navigationHeaderView = navigationView.getHeaderView(0);
         mUserName = navigationHeaderView.findViewById(R.id.tv_username_in_nav_view);
         mUserEmail = navigationHeaderView.findViewById(R.id.tv_user_email_in_nav_view);
-        swipeRefresh = findViewById(R.id.swipe_refresh);
+        swipeRefresh = findViewById(R.id.swipe_refresh_home);
         progressBar = findViewById(R.id.main_activity_progress_bar);
         serviceProvidersArrayList = new ArrayList<>();
         serviceReceiversArrayList = new ArrayList<>();
+        starredServiceProvidersArrayList = new ArrayList<>();
+        starredServiceReceiversArrayList = new ArrayList<>();
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -100,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         swipeRefresh.setOnRefreshListener( () -> {
             serviceReceiversArrayList.clear();
             serviceProvidersArrayList.clear();
+            starredServiceReceiversArrayList.clear();
+            starredServiceProvidersArrayList.clear();
             passDataToFragments();
             swipeRefresh.setRefreshing(false);
         });
@@ -114,13 +121,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     switchToHomeFragment();
                     break;
                 case R.id.menu_starred:
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.main_activity_container, new StarredUsersFragment())
-                            .commit();
+                    switchToStarredFragment();
                     break;
                 case R.id.menu_chat:
-                    fragmentManager
+                    getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.main_activity_container, new ChatRoomFragment())
                             .commit();
@@ -144,9 +148,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (task.isSuccessful()) {
                 userObj = task.getResult().toObject(User.class);
                 if (userObj != null) {
+
+                    user = userObj;
                     mUserName.setText(userObj.getName());
                     mUserEmail.setText(userObj.getEmail());
-                    user = userObj;
+                    ArrayList<String> starredUsers = userObj.getStarredUsers();
+
                     if(userObj.getProfile().equals(getString(R.string.service_provider))) {
                         // get the service provider to send it to fragments
                         firebaseFirestore.collection(getString(R.string.service_provider))
@@ -157,6 +164,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 serviceProviderObj = task1.getResult().toObject(ServiceProvider.class);
                                 if (serviceProviderObj != null) {
                                     serviceProvider = serviceProviderObj;
+                                    // Fetching all serviceReceivers to show content on home fragment
+                                    firebaseFirestore.collection(getString(R.string.service_receiver)).get()
+                                            .addOnCompleteListener(task2 -> {
+                                                if (task2.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot sp : task2.getResult()) {
+                                                        ServiceReceiver srObj = sp.toObject(ServiceReceiver.class);
+
+                                                        ArrayList<String> requirements = new ArrayList<>(srObj.getRequirements());
+                                                        if (starredUsers.contains(srObj.getId())) {
+                                                            starredServiceReceiversArrayList.add(srObj);
+                                                        }
+                                                        String speciality = serviceProviderObj.getSpeciality();
+
+                                                        // Store the comparison output
+                                                        // in ArrayList requirements
+                                                        for (String requirement: requirements) {
+                                                            if (requirement.equals(speciality)) {
+                                                                serviceReceiversArrayList.add(srObj);
+                                                            }
+                                                        }
+                                                    }
+                                                    switchToHomeFragment();
+
+                                                } else {
+                                                    Log.i(TAG, task.getException().getMessage());
+                                                }
+                                            });
                                 } else {
                                     Log.w(TAG, "serviceProviderObj is null");
                                 }
@@ -165,71 +199,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             }
                         });
 
-                        // Fetching all serviceReceivers to show content on home fragment
-                        firebaseFirestore.collection(getString(R.string.service_receiver)).get()
-                                .addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        for (QueryDocumentSnapshot sp : task1.getResult()) {
-                                            ServiceReceiver srObj = sp.toObject(ServiceReceiver.class);
-
-                                            ArrayList<String> requirements = new ArrayList<>(srObj.getRequirements());
-                                            String speciality = serviceProvider.getSpeciality();
-
-                                            // Store the comparison output
-                                            // in ArrayList requirements
-                                            for (String requirement: requirements) {
-                                                if (requirement.equals(speciality)) {
-                                                    serviceReceiversArrayList.add(srObj);
-                                                }
-                                            }
-                                        }
-                                        switchToHomeFragment();
-                                    } else {
-                                        Log.i(TAG, task.getException().getMessage());
-                                    }
-                                });
-
                     } else if(userObj.getProfile().equals(getString(R.string.service_receiver))) {
                         // get the service receiver to send it to fragments
                         firebaseFirestore.collection(getString(R.string.service_receiver))
                                 .document(firebaseAuth.getCurrentUser().getUid())
                                 .get().addOnCompleteListener(task2 -> {
-                            ServiceReceiver serviceReceiverObj;
+                            ServiceReceiver serviceReceiver;
                             if (task2.isSuccessful()) {
-                                serviceReceiverObj = task2.getResult().toObject(ServiceReceiver.class);
-                                if (serviceReceiverObj != null) {
-                                    serviceReceiver = serviceReceiverObj;
+                                serviceReceiver = task2.getResult().toObject(ServiceReceiver.class);
+                                if (serviceReceiver != null) {
+                                    // Fetching all serviceProviders to show content on home fragment
+                                    firebaseFirestore.collection(getString(R.string.service_provider)).get()
+                                            .addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot sp : task1.getResult()) {
+                                                        ServiceProvider spObj = sp.toObject(ServiceProvider.class);
+
+                                                        String speciality = spObj.getSpeciality();
+                                                        ArrayList<String> requirements = new ArrayList<>(serviceReceiver.getRequirements());
+
+                                                        if (starredUsers.contains(spObj.getId())) {
+                                                            starredServiceProvidersArrayList.add(spObj);
+                                                        }
+
+                                                        // Store the comparison output
+                                                        // in ArrayList requirements
+                                                        for (String requirement: requirements) {
+                                                            if (requirement.equals(speciality)) {
+                                                                serviceProvidersArrayList.add(spObj);
+                                                            }
+                                                        }
+                                                    }
+                                                    switchToHomeFragment();
+                                                } else {
+                                                    Log.i(TAG, task.getException().getMessage());
+                                                }
+                                            });
                                 } else {
-                                    Log.w(TAG, "serviceProviderObj is null");
+                                    Log.w(TAG, "serviceReceiverObj is null");
                                 }
                             } else {
                                 Log.w(TAG, task2.getException().getMessage());
                             }
                         });
-
-                        // Fetching all serviceProviders to show content on home fragment
-                        firebaseFirestore.collection(getString(R.string.service_provider)).get()
-                                .addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        for (QueryDocumentSnapshot sp : task1.getResult()) {
-                                            ServiceProvider spObj = sp.toObject(ServiceProvider.class);
-
-                                            String speciality = spObj.getSpeciality();
-                                            ArrayList<String> requirements = new ArrayList<>(serviceReceiver.getRequirements());
-
-                                            // Store the comparison output
-                                            // in ArrayList requirements
-                                            for (String requirement: requirements) {
-                                                if (requirement.equals(speciality)) {
-                                                    serviceProvidersArrayList.add(spObj);
-                                                }
-                                            }
-                                        }
-                                        switchToHomeFragment();
-                                    } else {
-                                        Log.i(TAG, task.getException().getMessage());
-                                    }
-                                });
                     }
                 } else {
                     Log.w(TAG, "userObj is null");
@@ -368,5 +380,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .replace(R.id.main_activity_container, homeFragment)
                 .commit();
 
+    }
+    private void switchToStarredFragment() {
+        Bundle starredBundle = new Bundle();
+        starredBundle.putSerializable(getString(R.string.user), user);
+        starredBundle.putSerializable(getString(R.string.starred_service_provider), starredServiceProvidersArrayList);
+        starredBundle.putSerializable(getString(R.string.starred_service_receiver), starredServiceReceiversArrayList);
+        StarredFragment starredFragment = new StarredFragment();
+        starredFragment.setArguments(starredBundle);
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_activity_container, starredFragment)
+                .commit();
     }
 }
