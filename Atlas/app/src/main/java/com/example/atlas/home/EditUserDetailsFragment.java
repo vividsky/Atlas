@@ -18,8 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -27,23 +25,23 @@ import android.widget.Toast;
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.Serializable;
 import java.util.regex.Pattern;
 
-public class EditUserProfileFragment extends Fragment {
+public class EditUserDetailsFragment extends Fragment {
 
-    public static final String TAG = EditUserProfileFragment.class.getSimpleName();
+    public static final String TAG = EditUserDetailsFragment.class.getSimpleName();
 
     User userObj;
     ServiceProvider serviceProviderObj;
+    FirebaseAuth firebaseAuth;
+    FirebaseFirestore firebaseFirestore;
+
     DrawerLayout mDrawerLayout;
     Toolbar toolbar;
 
@@ -66,13 +64,6 @@ public class EditUserProfileFragment extends Fragment {
     private String expectedWage;
     private String[] gender = new String[1];
     private String[] vehicleOwned = new String[1];
-
-
-    private EditText mOldPassword;
-    private EditText mNewPassword;
-    private EditText mConfirmNewPassword;
-    private Button mChangePassword;
-    private Button mSaveNewPassword;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -104,7 +95,7 @@ public class EditUserProfileFragment extends Fragment {
             serviceProviderObj = (ServiceProvider) getArguments().getSerializable(getString(R.string.service_provider));
         }
 
-        View view = inflater.inflate(R.layout.fragment_edit_user_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_user_details, container, false);
         mEditContact = view.findViewById(R.id.et_edit_contact);
         mEditName = view.findViewById(R.id.et_edit_name);
         mEditEmail = view.findViewById(R.id.et_edit_email);
@@ -163,53 +154,26 @@ public class EditUserProfileFragment extends Fragment {
 
         // updating gender on radio button click
         mEditGender.setOnCheckedChangeListener((group, id) -> {
-            if (id == R.id.rb_gender_male) {
+            if (id == R.id.rb_edit_gender_male) {
+                Log.d(TAG, gender[0]);
                 gender[0] = getString(R.string.gender_male);
             }
-            if (id == R.id.rb_gender_female) {
+            if (id == R.id.rb_edit_gender_female) {
+                Log.d(TAG, gender[0]);
                 gender[0] = getString(R.string.gender_female);
             }
         });
 
         if(userObj.getProfile().equals(getString(R.string.service_provider))) {
             mEditVehicleOwned.setOnCheckedChangeListener((group, id) -> {
-                if (id == R.id.rb_vehicle_owned_yes) {
+                if (id == R.id.rb_edit_vehicle_owned_yes) {
                     vehicleOwned[0] = getString(R.string.vehicle_owned_yes);
                 }
-                if (id == R.id.rb_vehicle_owned_no) {
+                if (id == R.id.rb_edit_vehicle_owned_no) {
                     vehicleOwned[0] = getString(R.string.vehicle_owned_no);
                 }
             });
         }
-
-        mChangePassword = view.findViewById(R.id.bv_change_password);
-        mOldPassword = view.findViewById(R.id.et_edit_old_password);
-        mNewPassword = view.findViewById(R.id.et_edit_new_password);
-        mConfirmNewPassword = view.findViewById(R.id.et_edit_confirm_new_password);
-        mSaveNewPassword = view.findViewById(R.id.bv_save_new_password);
-
-        // changing password
-        mChangePassword.setOnClickListener(v -> {
-            mChangePassword.setVisibility(View.GONE);
-            mOldPassword.setVisibility(View.VISIBLE);
-            mNewPassword.setVisibility(View.VISIBLE);
-            mConfirmNewPassword.setVisibility(View.VISIBLE);
-            mSaveNewPassword.setVisibility(View.VISIBLE);
-        });
-
-        mSaveNewPassword.setOnClickListener(v -> {
-            // TODO: if successfully changed
-            //  1. old pass != new pass.
-            //  2. new pass must follow pass standard requirements.
-            //  3. toast to indicate save was successful on cloud.
-
-            mChangePassword.setVisibility(View.VISIBLE);
-            mOldPassword.setVisibility(View.GONE);
-            mNewPassword.setVisibility(View.GONE);
-            mConfirmNewPassword.setVisibility(View.GONE);
-            mSaveNewPassword.setVisibility(View.GONE);
-        });
-
 
     }
 
@@ -315,8 +279,92 @@ public class EditUserProfileFragment extends Fragment {
                 }
             }
 
-            // saving new update data to cloud in User as well as sp/sp collection
-            Toast.makeText(getContext(), "in process.", Toast.LENGTH_LONG).show();
+            // saving new updated data to cloud in User as well as sp/sp collection
+            firebaseAuth = FirebaseAuth.getInstance();
+            firebaseFirestore = FirebaseFirestore.getInstance();
+
+            // getting the document users by its id because its unique always
+            DocumentReference userDocumentReference = firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid());
+
+            /* Updates
+             * 1. name
+             * 2. gender
+             * 3. address
+             * 4. alternate contact
+             */
+            userDocumentReference.update("name", name).addOnSuccessListener(success -> {
+                Log.d(TAG, "name successfully updated");
+            }).addOnFailureListener(failure -> {
+                Log.d(TAG, "name updating failed");
+            });
+
+            userDocumentReference.update("email", email).addOnSuccessListener(success -> {
+                Log.d(TAG, "email successfully updated");
+            }).addOnFailureListener(failure -> {
+                Log.d(TAG, "email updating failed");
+            });
+
+            userDocumentReference.update("gender", gender[0]).addOnSuccessListener(success -> {
+                Log.d(TAG, gender[0] + "gender successfully updated");
+            }).addOnFailureListener(failure -> {
+                Log.d(TAG, "gender updating failed");
+            });
+
+            userDocumentReference.update("address", address).addOnSuccessListener(success -> {
+                Log.d(TAG, "address successfully updated");
+            }).addOnFailureListener(failure -> {
+                Log.d(TAG, "address updating failed");
+            });
+
+            userDocumentReference.update("alternateContact", alternateContact).addOnSuccessListener(success -> {
+                Log.d(TAG, "alternate Contact successfully updated");
+            }).addOnFailureListener(failure -> {
+                Log.d(TAG, "alternate Contact updating failed");
+            });
+
+            // to indicate user save was successful
+            Toast.makeText(getContext(), "Successfully Saved", Toast.LENGTH_SHORT).show();
+            userDocumentReference.get().addOnCompleteListener(task -> {
+                User updatedUserObj;
+                if(task.isSuccessful()) {
+                    updatedUserObj = task.getResult().toObject(User.class);
+
+                    if(userObj.getProfile().equals(getString(R.string.service_provider))) {
+                        // getting the document user SP by its id because its unique always
+                        DocumentReference serviceProviderDocumentReference = firebaseFirestore.collection(getString(R.string.service_provider)).document(firebaseAuth.getCurrentUser().getUid());
+
+                        serviceProviderDocumentReference.update("experience", experience).addOnSuccessListener(success -> {
+                            Log.d(TAG, "experience successfully updated");
+                        }).addOnFailureListener(failure -> {
+                            Log.d(TAG, "experience updating failed");
+                        });
+
+                        serviceProviderDocumentReference.update("expectedWage", expectedWage).addOnSuccessListener(success -> {
+                            Log.d(TAG, "expectedWage successfully updated");
+                        }).addOnFailureListener(failure -> {
+                            Log.d(TAG, "expectedWage updating failed");
+                        });
+
+                        serviceProviderDocumentReference.update("vehicleOwned", vehicleOwned[0]).addOnSuccessListener(success -> {
+                            Log.d(TAG, "vehicleOwned successfully updated");
+                        }).addOnFailureListener(failure -> {
+                            Log.d(TAG, "vehicleOwned updating failed");
+                        });
+
+                        serviceProviderDocumentReference.update("userDetails", updatedUserObj).addOnSuccessListener(success -> {
+                            Log.d(TAG, "user successfully updated");
+                        }).addOnFailureListener(failure -> {
+                            Log.d(TAG, "user updating failed");
+                        });
+
+                    } else {
+                        DocumentReference serviceReceiverDocumentReference = firebaseFirestore.collection(getString(R.string.service_receiver)).document(firebaseAuth.getCurrentUser().getUid());
+
+                        serviceReceiverDocumentReference.update("userDetails", updatedUserObj);
+                    }
+
+                }
+            });
             return true;
         });
         super.onCreateOptionsMenu(menu, inflater);

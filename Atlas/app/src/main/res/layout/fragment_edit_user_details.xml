@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.EditUserProfileFragment">
+    tools:context=".home.EditUserDetailsFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -233,71 +233,6 @@
 
                 </RadioGroup>
             </LinearLayout>
-
-            <Button
-                android:id="@+id/bv_change_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="60dp"
-                android:padding="15dp"
-                android:text="Change Password" />
-
-            <EditText
-                android:id="@+id/et_edit_old_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="60dp"
-                android:gravity="center"
-                android:hint="Old Password"
-                android:padding="10dp"
-                android:textColor="@color/purple_500"
-                android:textSize="16sp"
-                android:visibility="gone" />
-
-            <EditText
-                android:id="@+id/et_edit_new_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="60dp"
-                android:gravity="center"
-                android:hint="New Password"
-                android:textColor="@color/purple_500"
-                android:textSize="16sp"
-                android:visibility="gone" />
-
-            <EditText
-                android:id="@+id/et_edit_confirm_new_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="60dp"
-                android:gravity="center"
-                android:hint="Confirm New Password"
-                android:textColor="@color/purple_500"
-                android:textSize="16sp"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/bv_save_new_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="60dp"
-                android:padding="15dp"
-                android:text="Confirm"
-                android:textSize="16sp"
-                android:visibility="gone" />
-
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

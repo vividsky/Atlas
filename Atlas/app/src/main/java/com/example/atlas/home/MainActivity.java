@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if(user.getProfile().equals(getString(R.string.service_provider))) {
                     bundle.putSerializable(getString(R.string.service_provider), (Serializable) serviceProvider);
                 }
-                EditUserProfileFragment fragObj = new EditUserProfileFragment();
+                EditUserDetailsFragment fragObj = new EditUserDetailsFragment();
                 fragObj.setArguments(bundle);
 
                 getSupportFragmentManager()
