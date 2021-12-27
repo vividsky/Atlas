@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atlas.Models.Chatroom;
@@ -106,7 +108,6 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
                     String uniqueChatroomId = currentUserId + serviceProviderId;
                     User user;
                     if (task.isSuccessful()) {
-                        // TODO make id as sum of both users id
                         DocumentReference drChatId = firebaseFirestore.collection("User").document(firebaseAuth.getCurrentUser().getUid())
                                 .collection("Chatroom").document(uniqueChatroomId);
                         drChatId.set(new Chatroom(userDetails.getName(), drChatId.getId(), serviceProviderId));
@@ -124,9 +125,8 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
                         MessageFragment messageFragment = new MessageFragment();
                         messageFragment.setArguments(bundle);
 
-                        Activity activity = (MainActivity) context;
-                        activity.getFragmentManager()
-                                .beginTransaction()
+                        FragmentManager manager = ((AppCompatActivity) context).getSupportFragmentManager();
+                        manager.beginTransaction()
                                 .replace(R.id.main_activity_container, messageFragment)
                                 .addToBackStack(null)
                                 .commit();

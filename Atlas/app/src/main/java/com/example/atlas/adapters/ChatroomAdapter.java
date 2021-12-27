@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atlas.Models.Chatroom;
@@ -66,9 +68,8 @@ public class ChatroomAdapter extends RecyclerView.Adapter<ChatroomAdapter.Conten
                 MessageFragment messageFragment = new MessageFragment();
                 messageFragment.setArguments(bundle);
 
-                Activity activity = (MainActivity) context;
-                activity.getFragmentManager()
-                        .beginTransaction()
+                FragmentManager manager = ((AppCompatActivity) context).getSupportFragmentManager();
+                manager.beginTransaction()
                         .replace(R.id.main_activity_container, messageFragment)
                         .addToBackStack(null)
                         .commit();
