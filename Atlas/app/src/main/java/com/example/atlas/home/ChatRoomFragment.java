@@ -23,8 +23,6 @@ import com.example.atlas.R;
 import com.example.atlas.adapters.ChatroomAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -46,13 +44,12 @@ public class ChatRoomFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // showing bottom navigation
-        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nv_bottom);
-        bottomNavigationView.setVisibility(View.VISIBLE);
 
+        // set toolbar head to "Atlas"
         toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
 
+        // showing side navigation
         mDrawerLayout = getActivity().findViewById(R.id.main_activity_drawer_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
@@ -62,12 +59,17 @@ public class ChatRoomFragment extends Fragment {
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        // showing bottom navigation
+        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nv_bottom);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+
         // hiding swipe refresh
         SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh);
         swipeRefresh.setEnabled(false);
 
         // to get the options and hide it then
         setHasOptionsMenu(true);
+
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_chatroom, container, false);
@@ -76,6 +78,7 @@ public class ChatRoomFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         recyclerView = view.findViewById(R.id.chatroom_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);

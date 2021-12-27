@@ -1,16 +1,20 @@
 package com.example.atlas.home;
 
-import android.app.Fragment;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -19,6 +23,7 @@ import android.widget.ImageView;
 import com.example.atlas.Models.Message;
 import com.example.atlas.R;
 import com.example.atlas.adapters.MessageAdapter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,23 +35,46 @@ import java.util.List;
 public class MessageFragment extends Fragment {
 
     private static final String TAG = MessageFragment.class.getSimpleName();
-    FirebaseAuth firebaseAuth;
-    FirebaseFirestore firebaseFirestore;
 
-    String chatroomId;
-    String userId;
-
+    Toolbar toolbar;
+    DrawerLayout mDrawerLayout;
     RecyclerView messageRecyclerView;
     MessageAdapter messageAdapter;
     List<Message> messageList;
     EditText textMessage;
     ImageView sendMessage;
 
+    String chatroomId;
+    String userId;
+
+    FirebaseAuth firebaseAuth;
+    FirebaseFirestore firebaseFirestore;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // TODO hide bottom navigation and side navigation and swipe refresh and refresh
+
+        // set toolbar head to "Atlas" and remove hamburger icon from it
+        toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
+        toolbar.setNavigationIcon(null);
+
+        // hiding side navigation
+        mDrawerLayout = getActivity().findViewById(R.id.main_activity_drawer_layout);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        // hiding bottom navigation
+        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nv_bottom);
+        bottomNavigationView.setVisibility(View.GONE);
+
+        // hiding swipe refresh
+        SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh);
+        swipeRefresh.setEnabled(false);
+
+        // to get the options and hide refresh menu item then
+        setHasOptionsMenu(true);
+
         return inflater.inflate(R.layout.fragment_message, container, false);
     }
 
@@ -114,4 +142,12 @@ public class MessageFragment extends Fragment {
                     }
                 });
     }
+
+    // hide the menu item refresh
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.menu_item_refresh).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+    }
+
 }
