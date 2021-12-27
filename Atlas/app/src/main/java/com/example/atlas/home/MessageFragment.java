@@ -91,6 +91,7 @@ public class MessageFragment extends Fragment {
 
         textMessage = view.findViewById(R.id.et_send_message);
         sendMessage = view.findViewById(R.id.iv_send_message);
+        //TODO: to do scheduling
         setUpRecyclerView(view);
 
         sendMessage.setOnClickListener(view1 -> {
