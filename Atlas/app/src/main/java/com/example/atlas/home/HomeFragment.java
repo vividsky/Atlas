@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
 
         } else if (profile.equals(getString(R.string.service_provider))) {
 
-            serviceReceiverAdapter = new ServiceReceiverAdapter(serviceReceiversArrayList);
+            serviceReceiverAdapter = new ServiceReceiverAdapter(serviceReceiversArrayList, getContext());
             recyclerView.setHasFixedSize(true);
             recyclerView.setAdapter(serviceReceiverAdapter);
 
