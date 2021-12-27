@@ -53,7 +53,7 @@
                     android:drawableStart="@drawable/ic_baseline_person_24"
                     android:drawablePadding="10dp"
                     android:hint="Name *"
-                    android:inputType="phone"
+                    android:inputType="text"
                     android:textColor="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +72,7 @@
                     android:drawableStart="@drawable/ic_baseline_email_24"
                     android:drawablePadding="10dp"
                     android:hint="Email *"
-                    android:inputType="phone"
+                    android:inputType="textEmailAddress"
                     android:textColor="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,51 +119,6 @@
                 </RadioGroup>
             </LinearLayout>
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="24dp"-->
-<!--                android:layout_marginTop="16dp"-->
-<!--                android:layout_marginEnd="24dp"-->
-<!--                android:orientation="horizontal">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="1.3"-->
-<!--                    android:gravity="center_vertical"-->
-<!--                    android:paddingStart="10dp"-->
-<!--                    android:paddingEnd="10dp"-->
-<!--                    android:text="Profile"-->
-<!--                    android:textColor="@color/purple_700"-->
-<!--                    android:textSize="18sp" />-->
-
-<!--                <RadioGroup-->
-<!--                    android:id="@+id/rg_edit_profile"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <RadioButton-->
-<!--                        android:id="@+id/rb_edit_sp"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:text="SP"-->
-<!--                        android:enabled="false"/>-->
-
-<!--                    <RadioButton-->
-<!--                        android:id="@+id/rb_edit_sr"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:text="SR"-->
-<!--                        android:enabled="false" />-->
-
-<!--                </RadioGroup>-->
-<!--            </LinearLayout>-->
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_edit_address"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -179,7 +134,7 @@
                     android:drawableStart="@drawable/ic_baseline_location_on_24"
                     android:drawablePadding="10dp"
                     android:hint="Address *"
-                    android:inputType="phone"
+                    android:inputType="text"
                     android:textColor="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -217,7 +172,7 @@
                     android:drawableStart="@drawable/ic_experience"
                     android:drawablePadding="10dp"
                     android:hint="Experience (Yrs)"
-                    android:inputType="phone"
+                    android:inputType="number"
                     android:textColor="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -236,7 +191,7 @@
                     android:drawableStart="@drawable/ic_expected_wage"
                     android:drawablePadding="10dp"
                     android:hint="Expected Wage"
-                    android:inputType="phone"
+                    android:inputType="number"
                     android:textColor="@color/purple_500" />
             </com.google.android.material.textfield.TextInputLayout>
 
