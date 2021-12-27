@@ -1,6 +1,7 @@
 package com.example.atlas.Models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class User implements Serializable {
 
@@ -13,6 +14,7 @@ public class User implements Serializable {
     private String address;
     private String alternateContact;
     private String profile;
+    private ArrayList<String> starredUsers;
 
     public User(String id, String email, String contact, String password) {
         this.id = id;
@@ -42,12 +44,12 @@ public class User implements Serializable {
     public void setAlternateContact(String alternateContact) {
         this.alternateContact = alternateContact;
     }
-    public void setProfile(String profile) { this.profile = profile;}
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
 
     // getters
-    public String getUserId() {
-        return id;
-    }
 
     public String getEmail() {
         return email;
@@ -57,17 +59,16 @@ public class User implements Serializable {
         return profile;
     }
 
-
     public String getContact() {
         return contact;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getGender() {
@@ -80,6 +81,10 @@ public class User implements Serializable {
 
     public String getAlternateContact() {
         return alternateContact;
+    }
+
+    public ArrayList<String> getStarredUsers() {
+        return starredUsers;
     }
 }
 
