@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
-    public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String TAG = HomeFragment.class.getSimpleName();
 
     static RecyclerView recyclerView;
     Toolbar toolbar;

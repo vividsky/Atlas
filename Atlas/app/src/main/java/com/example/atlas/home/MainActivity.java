@@ -134,7 +134,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void passDataToFragments() {
-        // TODO: instead of fetching all users and SP's and SR's in each fragment we can fetch them here and send it to fragments
+        // instead of fetching all users and SP's and SR's in each fragment we fetch them here and send it to fragments
+
         // get the current user to send it to fragments
         firebaseFirestore.collection(getString(R.string.user))
                 .document(firebaseAuth.getCurrentUser().getUid())
