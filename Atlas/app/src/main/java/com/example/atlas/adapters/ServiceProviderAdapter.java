@@ -30,17 +30,17 @@ import java.util.List;
 public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProviderAdapter.ContentViewHolder> {
     static final String TAG = ServiceProviderAdapter.class.getSimpleName();
 
+    List<ServiceProvider> serviceProvider;
+    Context context;
+    boolean isStarred;
+
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
-    List<ServiceProvider> serviceProvider;
-    boolean isStarred;
-    Context context;
 
     public ServiceProviderAdapter(List<ServiceProvider> serviceProvider, Context context) {
         this.serviceProvider = serviceProvider;
         this.context = context;
     }
-
 
     @NonNull
     @Override
@@ -82,8 +82,8 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
             speciality = itemView.findViewById(R.id.tv_sp_speciality);
             starred = itemView.findViewById(R.id.sp_iv_starred);
             sendMessage = itemView.findViewById(R.id.sp_iv_sendMessage);
-
         }
+
         void bind(int listIndex) {
             ServiceProvider serviceProviderDetails = serviceProvider.get(listIndex);
             User userDetails = serviceProviderDetails.getUserDetails();
