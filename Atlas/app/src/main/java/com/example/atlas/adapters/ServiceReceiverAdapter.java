@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,15 +23,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
-// TODO to implement same as service provider but chatRoom id should be taken care of
 
 public class ServiceReceiverAdapter extends RecyclerView.Adapter<ServiceReceiverAdapter.ContentViewHolder> {
     static final String TAG = ServiceReceiverAdapter.class.getSimpleName();
 
-    Context context;
     List<ServiceReceiver> serviceReceiver;
-    boolean isStarred;
+    Context context;
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -125,14 +125,45 @@ public class ServiceReceiverAdapter extends RecyclerView.Adapter<ServiceReceiver
                         });
             });
 
+            String serviceReceiverId = serviceReceiverDetails.getId();
+            firebaseFirestore.collection("User")
+                    .document(firebaseAuth.getCurrentUser().getUid())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        User user;
+                        if (task.isSuccessful()) {
+                            user = task.getResult().toObject(User.class);
+                            ArrayList<String> starredSet = user.getStarredUsers();
+                            if (starredSet.contains(serviceReceiverId)) {
+                                starred.setImageResource(R.drawable.ic_starred);
+                            } else {
+                                starred.setImageResource(R.drawable.ic_unstarred);
+                            }
+                        }
+                    });
+
             starred.setOnClickListener(view -> {
-                if (!isStarred) {
-                    starred.setImageResource(R.drawable.ic_starred);
-                    isStarred = true;
-                } else {
-                    starred.setImageResource(R.drawable.ic_unstarred);
-                    isStarred = false;
-                }
+                DocumentReference currentUserDR =  firebaseFirestore.collection("User")
+                        .document(firebaseAuth.getCurrentUser().getUid());
+                currentUserDR
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            User user;
+                            if (task.isSuccessful()) {
+                                user = task.getResult().toObject(User.class);
+                                ArrayList<String> starredUsers = user.getStarredUsers();
+                                if (starredUsers.contains(serviceReceiverId)) {
+                                    starred.setImageResource(R.drawable.ic_unstarred);
+                                    starredUsers.remove(serviceReceiverId);
+                                    Toast.makeText(context, "User unstarred successfully.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    starred.setImageResource(R.drawable.ic_starred);
+                                    starredUsers.add(serviceReceiverId);
+                                    Toast.makeText(context, "User starred successfully.", Toast.LENGTH_SHORT).show();
+                                }
+                                currentUserDR.update("starredUsers", starredUsers);
+                            }
+                        });
             });
         }
     }

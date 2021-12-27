@@ -2,11 +2,13 @@ package com.example.atlas.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProviderAdapter.ContentViewHolder> {
@@ -29,7 +33,6 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
 
     List<ServiceProvider> serviceProvider;
     Context context;
-    boolean isStarred;
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -91,9 +94,10 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
             expectedWage.setText(serviceProviderDetails.getExpectedWage());
             speciality.setText(serviceProviderDetails.getSpeciality());
 
+            firebaseAuth = FirebaseAuth.getInstance();
+            firebaseFirestore = FirebaseFirestore.getInstance();
+
             sendMessage.setOnClickListener(view -> {
-                firebaseAuth = FirebaseAuth.getInstance();
-                firebaseFirestore = FirebaseFirestore.getInstance();
 
                 DocumentReference currentUserDocumentReference =
                         firebaseFirestore.collection("User").document(firebaseAuth.getCurrentUser().getUid());
@@ -131,18 +135,45 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
                 });
             });
 
-            // TODO: if current user's starredUsersList has this sp id then mark his imageview star as filled star else unfilled star.
-            //      set onclick listener now see if it was starred i.e there in starred list of current user unstar it and vice versa.
-            //      later make a new custom Adapter class to feed starred list users to recycler view of Starred fragment.
+            String serviceProviderId = serviceProviderDetails.getId();
+            firebaseFirestore.collection("User")
+                    .document(firebaseAuth.getCurrentUser().getUid())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        User user;
+                        if (task.isSuccessful()) {
+                            user = task.getResult().toObject(User.class);
+                            ArrayList<String> starredSet = user.getStarredUsers();
+                            if (starredSet.contains(serviceProviderId)) {
+                                starred.setImageResource(R.drawable.ic_starred);
+                            } else {
+                                starred.setImageResource(R.drawable.ic_unstarred);
+                            }
+                        }
+                    });
 
             starred.setOnClickListener(view -> {
-                if (!isStarred) {
-                    starred.setImageResource(R.drawable.ic_starred);
-                    isStarred = true;
-                } else {
-                    starred.setImageResource(R.drawable.ic_unstarred);
-                    isStarred = false;
-                }
+                DocumentReference currentUserDR =  firebaseFirestore.collection("User")
+                        .document(firebaseAuth.getCurrentUser().getUid());
+                currentUserDR
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            User user;
+                            if (task.isSuccessful()) {
+                                user = task.getResult().toObject(User.class);
+                                ArrayList<String> starredUsers = user.getStarredUsers();
+                                if (starredUsers.contains(serviceProviderId)) {
+                                    starred.setImageResource(R.drawable.ic_unstarred);
+                                    starredUsers.remove(serviceProviderId);
+                                    Toast.makeText(context, "User unstarred successfully.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    starred.setImageResource(R.drawable.ic_starred);
+                                    starredUsers.add(serviceProviderId);
+                                    Toast.makeText(context, "User starred successfully.", Toast.LENGTH_SHORT).show();
+                                }
+                                currentUserDR.update("starredUsers", starredUsers);
+                            }
+                        });
             });
         }
     }
