@@ -21,6 +21,7 @@ public class User implements Serializable {
         this.email = email;
         this.contact = contact;
         this.password = password;
+        this.starredUsers = new ArrayList<>();
     }
     public User() {}
 

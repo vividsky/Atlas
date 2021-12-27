@@ -6,11 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".home.MainActivity">
+    tools:context=".home.MainActivity"
+    android:background="@color/purple_200">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_activity_recycler_view"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"/>
 
 </LinearLayout>

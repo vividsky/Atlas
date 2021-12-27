@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +24,7 @@ import com.example.atlas.R;
 import com.example.atlas.adapters.ServiceProviderAdapter;
 import com.example.atlas.adapters.ServiceReceiverAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
@@ -65,7 +60,7 @@ public class HomeFragment extends Fragment {
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh);
+        SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh_home);
         swipeRefresh.setEnabled(true);
 
         user = (User) getArguments().getSerializable(getString(R.string.user));

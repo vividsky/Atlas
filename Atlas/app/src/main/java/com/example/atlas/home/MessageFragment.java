@@ -24,7 +24,6 @@ import com.example.atlas.Models.Message;
 import com.example.atlas.R;
 import com.example.atlas.adapters.MessageAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -69,7 +68,7 @@ public class MessageFragment extends Fragment {
         bottomNavigationView.setVisibility(View.GONE);
 
         // hiding swipe refresh
-        SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh);
+        SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh_home);
         swipeRefresh.setEnabled(false);
 
         // to get the options and hide refresh menu item then

@@ -42,5 +42,7 @@
     <string name="chat_room_id">chat id</string>
     <string name="chatrooms">Chatroom</string>
     <string name="messages">Message</string>
+    <string name="starred_service_provider">StarredServiceProvider</string>
+    <string name="starred_service_receiver">StarredServiceReceiver</string>
 
 </resources>

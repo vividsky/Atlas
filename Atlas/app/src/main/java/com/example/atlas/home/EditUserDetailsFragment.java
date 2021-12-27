@@ -83,7 +83,7 @@ public class EditUserDetailsFragment extends Fragment {
         bottomNavigationView.setVisibility(View.GONE);
 
         // hiding swipe refresh
-        SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh);
+        SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh_home);
         swipeRefresh.setEnabled(false);
 
         // to get the options and hide it then
