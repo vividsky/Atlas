@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +14,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atlas.Models.Chatroom;
-import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.ServiceReceiver;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
@@ -46,7 +44,7 @@ public class ServiceReceiverAdapter extends RecyclerView.Adapter<ServiceReceiver
     @Override
     public ContentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.service_receiver_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_service_receiver, parent, false);
         return new ContentViewHolder(view);
     }
 

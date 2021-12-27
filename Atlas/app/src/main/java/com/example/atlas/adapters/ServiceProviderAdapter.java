@@ -1,9 +1,7 @@
 package com.example.atlas.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,6 @@ import com.example.atlas.Models.Chatroom;
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
-import com.example.atlas.home.MainActivity;
 import com.example.atlas.home.MessageFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -46,7 +43,7 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
     @Override
     public ContentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.service_provider_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_service_provider, parent, false);
         return new ContentViewHolder(view);
     }
 
@@ -133,6 +130,10 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
                     }
                 });
             });
+
+            // TODO: if current user's starredUsersList has this sp id then mark his imageview star as filled star else unfilled star.
+            //      set onclick listener now see if it was starred i.e there in starred list of current user unstar it and vice versa.
+            //      later make a new custom Adapter class to feed starred list users to recycler view of Starred fragment.
 
             starred.setOnClickListener(view -> {
                 if (!isStarred) {
