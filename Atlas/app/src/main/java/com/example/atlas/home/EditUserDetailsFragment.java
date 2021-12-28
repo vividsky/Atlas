@@ -1,5 +1,6 @@
 package com.example.atlas.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
+import com.example.atlas.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -238,7 +240,8 @@ public class EditUserDetailsFragment extends Fragment {
                 return false;
             }
 
-            if (!TextUtils.isEmpty(alternateContact) && !Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
+            if (!TextUtils.isEmpty(alternateContact) &&
+                    !Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
                     .matcher(alternateContact).matches()) {
                 mEditAlternateContact.setError("Please enter a valid Contact detail.");
                 return false;
@@ -273,7 +276,8 @@ public class EditUserDetailsFragment extends Fragment {
                     mEditExpectedWage.setError("Expected Wage is required.If not, Enter 0.");
                     return false;
                 }
-                if (!Pattern.compile("([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-9][0-9][0-9][0-9][0-9])").matcher(expectedWage).matches()) {
+                if (!Pattern.compile("([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-9][0-9][0-9][0-9][0-9])")
+                        .matcher(expectedWage).matches()) {
                     mEditExpectedWage.setError("Please enter a valid amount.");
                     return false;
                 }
@@ -284,7 +288,7 @@ public class EditUserDetailsFragment extends Fragment {
             firebaseFirestore = FirebaseFirestore.getInstance();
 
             // getting the document users by its id because its unique always
-            DocumentReference userDocumentReference = firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid());
+            DocumentReference userDocumentReference = Utils.getCurrentUserDocumentReference();
 
             /* Updates
              * 1. name
@@ -292,82 +296,41 @@ public class EditUserDetailsFragment extends Fragment {
              * 3. address
              * 4. alternate contact
              */
-            userDocumentReference.update("name", name).addOnSuccessListener(success -> {
-                Log.d(TAG, "name successfully updated");
-            }).addOnFailureListener(failure -> {
-                Log.d(TAG, "name updating failed");
-            });
+            userDocumentReference.update("name", name);
+            userDocumentReference.update("email", email);
+            userDocumentReference.update("gender", gender[0]);
+            userDocumentReference.update("address", address);
+            userDocumentReference.update("alternateContact", alternateContact);
 
-            userDocumentReference.update("email", email).addOnSuccessListener(success -> {
-                Log.d(TAG, "email successfully updated");
-            }).addOnFailureListener(failure -> {
-                Log.d(TAG, "email updating failed");
-            });
+            userDocumentReference.get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    User updatedUserObj = task.getResult().toObject(User.class);
+                    if(updatedUserObj.getProfile().equals(getString(R.string.service_provider))) {
+                        DocumentReference serviceProviderDR = Utils.getCurrentServiceProviderDocumentReference();
+                        serviceProviderDR.update("experience", experience);
+                        serviceProviderDR.update("expectedWage", expectedWage);
+                        serviceProviderDR.update("vehicleOwned", vehicleOwned[0]);
+                        serviceProviderDR.update("userDetails", updatedUserObj);
 
-            userDocumentReference.update("gender", gender[0]).addOnSuccessListener(success -> {
-                Log.d(TAG, gender[0] + "gender successfully updated");
-            }).addOnFailureListener(failure -> {
-                Log.d(TAG, "gender updating failed");
-            });
-
-            userDocumentReference.update("address", address).addOnSuccessListener(success -> {
-                Log.d(TAG, "address successfully updated");
-            }).addOnFailureListener(failure -> {
-                Log.d(TAG, "address updating failed");
-            });
-
-            userDocumentReference.update("alternateContact", alternateContact).addOnSuccessListener(success -> {
-                Log.d(TAG, "alternate Contact successfully updated");
-            }).addOnFailureListener(failure -> {
-                Log.d(TAG, "alternate Contact updating failed");
+                    } else {
+                        DocumentReference serviceReceiverDR = Utils.getCurrentServiceReceiverDocumentReference();
+                        serviceReceiverDR.update("userDetails", updatedUserObj);
+                    }
+                }
             });
 
             // to indicate user save was successful
             Toast.makeText(getContext(), "Successfully Saved", Toast.LENGTH_SHORT).show();
-            userDocumentReference.get().addOnCompleteListener(task -> {
-                User updatedUserObj;
-                if(task.isSuccessful()) {
-                    updatedUserObj = task.getResult().toObject(User.class);
-
-                    if(userObj.getProfile().equals(getString(R.string.service_provider))) {
-                        // getting the document user SP by its id because its unique always
-                        DocumentReference serviceProviderDocumentReference = firebaseFirestore.collection(getString(R.string.service_provider)).document(firebaseAuth.getCurrentUser().getUid());
-
-                        serviceProviderDocumentReference.update("experience", experience).addOnSuccessListener(success -> {
-                            Log.d(TAG, "experience successfully updated");
-                        }).addOnFailureListener(failure -> {
-                            Log.d(TAG, "experience updating failed");
-                        });
-
-                        serviceProviderDocumentReference.update("expectedWage", expectedWage).addOnSuccessListener(success -> {
-                            Log.d(TAG, "expectedWage successfully updated");
-                        }).addOnFailureListener(failure -> {
-                            Log.d(TAG, "expectedWage updating failed");
-                        });
-
-                        serviceProviderDocumentReference.update("vehicleOwned", vehicleOwned[0]).addOnSuccessListener(success -> {
-                            Log.d(TAG, "vehicleOwned successfully updated");
-                        }).addOnFailureListener(failure -> {
-                            Log.d(TAG, "vehicleOwned updating failed");
-                        });
-
-                        serviceProviderDocumentReference.update("userDetails", updatedUserObj).addOnSuccessListener(success -> {
-                            Log.d(TAG, "user successfully updated");
-                        }).addOnFailureListener(failure -> {
-                            Log.d(TAG, "user updating failed");
-                        });
-
-                    } else {
-                        DocumentReference serviceReceiverDocumentReference = firebaseFirestore.collection(getString(R.string.service_receiver)).document(firebaseAuth.getCurrentUser().getUid());
-
-                        serviceReceiverDocumentReference.update("userDetails", updatedUserObj);
-                    }
-
-                }
-            });
             return true;
         });
         super.onCreateOptionsMenu(menu, inflater);
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        startActivity(new Intent(getActivity(), MainActivity.class));
+        getActivity().finish();
     }
 }
