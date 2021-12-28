@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
+import com.example.atlas.Utils;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -164,9 +165,9 @@ public class RegisterFragment extends Fragment {
                             if (createUserTask.isSuccessful()) {
                                 Log.d(TAG, "createUserWithEmail:success");
                                 // creating user model to save it in fireStore
-                                User mUser = new User(firebaseAuth.getCurrentUser().getUid(), email, contact, password);
+                                User mUser = new User(firebaseAuth.getCurrentUser().getUid(), email, contact);
 
-                                firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid()).set(mUser)
+                                Utils.getCurrentUserDocumentReference().set(mUser)
                                         .addOnCompleteListener(isUserCreatedTask -> {
 
                                             // once done with sign up, progress bar visibility set to GONE
