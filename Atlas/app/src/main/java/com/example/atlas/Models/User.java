@@ -8,7 +8,6 @@ public class User implements Serializable {
     private String id;
     private String email;
     private String contact;
-    private String password;
     private String name;
     private String gender;
     private String address;
@@ -16,39 +15,13 @@ public class User implements Serializable {
     private String profile;
     private ArrayList<String> starredUsers;
 
-    public User(String id, String email, String contact, String password) {
+    public User(String id, String email, String contact) {
         this.id = id;
         this.email = email;
         this.contact = contact;
-        this.password = password;
         this.starredUsers = new ArrayList<>();
     }
     public User() {}
-
-    //    setters
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setAlternateContact(String alternateContact) {
-        this.alternateContact = alternateContact;
-    }
-
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }
 
     // getters
 
