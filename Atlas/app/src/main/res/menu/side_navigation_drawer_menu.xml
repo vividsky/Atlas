@@ -8,19 +8,13 @@
             android:title="@string/profile"/>
     </group>
 
-    <item android:title="@string/preferences">
-        <menu>
-            <item android:id="@+id/nav_sort_by"
-                android:icon="@drawable/ic_baseline_sort_24"
-                android:title="@string/sort_by" />
-            <item android:id="@+id/nav_filter_by"
-                android:icon="@drawable/ic_baseline_filter_alt_24"
-                android:title="@string/filter_by" />
-        </menu>
-    </item>
 
     <item android:title="@string/useful_corner">
         <menu>
+
+            <item android:title= "@string/preferences"
+                android:id="@+id/item_preferences"
+                android:icon="@drawable/ic_preference"/>
             <item android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_baseline_settings_24"
                 android:title="@string/settings" />
