@@ -85,9 +85,10 @@ public class ServiceReceiverAdapter extends RecyclerView.Adapter<ServiceReceiver
             address.setText(userDetails.getAddress());
             requirements.setText(serviceReceiverDetails.getRequirements().toString());
 
+            firebaseAuth = FirebaseAuth.getInstance();
+            firebaseFirestore = FirebaseFirestore.getInstance();
+
             sendMessage.setOnClickListener(view -> {
-                firebaseAuth = FirebaseAuth.getInstance();
-                firebaseFirestore = FirebaseFirestore.getInstance();
 
                 DocumentReference currentUserDocumentReference =
                         firebaseFirestore.collection("User").document(firebaseAuth.getCurrentUser().getUid());

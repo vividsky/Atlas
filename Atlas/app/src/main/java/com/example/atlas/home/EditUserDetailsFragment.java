@@ -265,7 +265,7 @@ public class EditUserDetailsFragment extends Fragment {
                     mEditExperience.setError("Experience is required.If not, Enter 0.");
                     return false;
                 }
-                if (!Pattern.compile("[0-9]+(\\.[0-9][0-9]?)?").matcher(experience).matches()) {
+                if (!Pattern.compile("[0-9]|[1-9][0-9]").matcher(experience).matches()) {
                     mEditExperience.setError("Please enter a valid experience years.");
                     return false;
                 }
