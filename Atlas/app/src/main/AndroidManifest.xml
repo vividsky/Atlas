@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.atlas">
+
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_logo_foreground"
-        android:roundIcon="@mipmap/app_logo_foreground"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/app_logo_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.Atlas">
+        <activity android:name=".PreferenceActivity"></activity>
         <activity
             android:name=".home.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Atlas.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.Atlas.NoActionBar"></activity>
         <activity
             android:name=".authentication.AuthenticationActivity"
             android:exported="true">

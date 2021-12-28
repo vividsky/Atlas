@@ -45,4 +45,9 @@
     <string name="starred_service_provider">StarredServiceProvider</string>
     <string name="starred_service_receiver">StarredServiceReceiver</string>
 
+    <string name="experience">experience</string>
+    <string name="wage">expectedWage</string>
+    <string name="gender">Gender</string>
+    <string name="speciality">Speciality</string>
+
 </resources>

@@ -14,4 +14,24 @@
         <item >@string/year</item>
     </string-array>
 
+    <string-array name="preference_sort_by_labels">
+        <item>@string/experience</item>
+        <item>@string/wage</item>
+    </string-array>
+
+    <string-array name="preference_sort_by_values">
+        <item>@string/experience</item>
+        <item>@string/wage</item>
+    </string-array>
+
+    <string-array name="preference_filter_by_labels">
+        <item>@string/gender</item>
+        <item>@string/speciality</item>
+    </string-array>
+
+    <string-array name="preference_filter_by_values">
+        <item>@string/gender</item>
+        <item>@string/speciality</item>
+    </string-array>
+
 </resources>

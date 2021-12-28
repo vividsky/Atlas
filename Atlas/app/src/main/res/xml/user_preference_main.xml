@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/preferences">
+
+    <ListPreference
+        android:title="Sort"
+        android:key="@string/sort_by"
+        android:icon="@drawable/ic_baseline_sort_24"
+        android:entries="@array/preference_sort_by_labels"
+        android:entryValues="@array/preference_sort_by_values"/>
+
+<!--    <CheckBoxPreference-->
+<!--        android:title="Filter"-->
+<!--        android:key="@string/filter_by"-->
+<!--        android:icon="@drawable/ic_baseline_filter_alt_24"-->
+<!--        android:entries="@array/preference_filter_by_labels"-->
+<!--        android:entryValues="@array/preference_filter_by_values"/>-->
+
+</PreferenceScreen>
