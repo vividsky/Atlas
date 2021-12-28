@@ -11,17 +11,20 @@
         android:roundIcon="@mipmap/app_logo_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.Atlas">
-        <activity android:name=".PreferenceActivity"></activity>
+
+        <activity
+            android:name=".PreferenceActivity"
+            android:exported="true"
+            android:parentActivityName=".home.MainActivity"/>
         <activity
             android:name=".home.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Atlas.NoActionBar"></activity>
+            android:theme="@style/Theme.Atlas.NoActionBar" />
         <activity
             android:name=".authentication.AuthenticationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
