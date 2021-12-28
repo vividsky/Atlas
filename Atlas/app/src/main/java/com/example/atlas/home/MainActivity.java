@@ -25,8 +25,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.ServiceReceiver;
 import com.example.atlas.Models.User;
-import com.example.atlas.PreferenceActivity;
+import com.example.atlas.UsefulCorner.PreferenceActivity;
 import com.example.atlas.R;
+import com.example.atlas.UsefulCorner.SettingsActivity;
 import com.example.atlas.Utils;
 import com.example.atlas.authentication.AuthenticationActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -324,11 +325,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_preferences:
-                // TODO if user is of type serviceProvider, then hide it
                 startActivity(new Intent(MainActivity.this, PreferenceActivity.class));
                 finish();
                 break;
 
+            case R.id.nav_settings:
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                intent.putExtra("UserEmail", user.getEmail());
+                startActivity(intent);
+                break;
             case R.id.nav_logout:
                 new AlertDialog.Builder(this)
                         .setTitle("Log out")

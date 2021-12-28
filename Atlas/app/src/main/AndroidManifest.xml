@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.atlas">
+    package="com.example.atlas" >
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
@@ -10,10 +10,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/app_logo_foreground"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Atlas">
-
+        android:theme="@style/Theme.Atlas" >
         <activity
-            android:name=".PreferenceActivity"
+            android:name=".UsefulCorner.SettingsActivity"
+            android:exported="true"
+            android:parentActivityName=".home.MainActivity"/>
+        <activity
+            android:name=".UsefulCorner.PreferenceActivity"
             android:exported="true" />
         <activity
             android:name=".home.MainActivity"
@@ -21,9 +24,10 @@
             android:theme="@style/Theme.Atlas.NoActionBar" />
         <activity
             android:name=".authentication.AuthenticationActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

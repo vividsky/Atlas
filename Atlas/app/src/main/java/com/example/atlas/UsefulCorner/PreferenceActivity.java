@@ -1,9 +1,7 @@
-package com.example.atlas;
+package com.example.atlas.UsefulCorner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +10,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.widget.Toast;
 
+import com.example.atlas.R;
 import com.example.atlas.home.MainActivity;
 
 public class PreferenceActivity extends AppCompatActivity {
