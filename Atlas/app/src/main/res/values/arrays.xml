@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="speciality">
+    <string-array name="speciality_label">
         <item >@string/cook</item>
         <item >@string/maid</item>
         <item >@string/driver</item>
@@ -24,14 +24,23 @@
         <item>@string/wage</item>
     </string-array>
 
-    <string-array name="preference_filter_by_labels">
-        <item>@string/gender</item>
-        <item>@string/speciality</item>
+    <string-array name="preference_filter_by_gender_labels">
+        <item>@string/gender_male_label</item>
+        <item>@string/gender_female_label</item>
     </string-array>
 
-    <string-array name="preference_filter_by_values">
-        <item>@string/gender</item>
-        <item>@string/speciality</item>
+    <string-array name="preference_filter_by_gender_values">
+        <item>@string/gender_male</item>
+        <item>@string/gender_female</item>
+    </string-array>
+
+    <string-array name="speciality_values">
+        <item >@string/cook</item>
+        <item >@string/maid</item>
+        <item >@string/driver</item>
+        <item >@string/daily_wager</item>
+        <item >@string/babysitter</item>
+        <item >@string/tutor</item>
     </string-array>
 
 </resources>

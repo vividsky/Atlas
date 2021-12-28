@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.widget.Toast;
 
 import com.example.atlas.home.MainActivity;
 
@@ -30,14 +31,18 @@ public class PreferenceActivity extends AppCompatActivity {
 
             addPreferencesFromResource(R.xml.user_preference_main);
             Preference sortBy = findPreference(getString(R.string.sort_by));
-            sortBy.setOnPreferenceChangeListener(this);
+            Preference filterByGender = findPreference(getString(R.string.filter_by_gender));
+            Preference filterBySpeciality = findPreference(getString(R.string.filter_by_speciality));
 
-//        Preference filterBy = findPreference(getString(R.string.filter_by));
+            sortBy.setOnPreferenceChangeListener(this);
+            filterByGender.setOnPreferenceChangeListener(this);
+            filterBySpeciality.setOnPreferenceChangeListener(this);
         }
 
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
+            Toast.makeText(getContext(), "Preference Changed Successfully", Toast.LENGTH_SHORT).show();
             String stringValue = value.toString();
             if (preference instanceof ListPreference) {
                 ListPreference listPreference = (ListPreference) preference;

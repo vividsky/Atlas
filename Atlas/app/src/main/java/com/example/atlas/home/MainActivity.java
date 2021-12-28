@@ -1,5 +1,4 @@
 package com.example.atlas.home;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -33,8 +31,6 @@ import com.example.atlas.Utils;
 import com.example.atlas.authentication.AuthenticationActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -43,6 +39,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -68,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ServiceProvider serviceProvider;
     private User user;
     private String sortBy;
+    private Set<String> gender;
+    private Set<String> specialities;
 
     private static ArrayList<ServiceProvider> serviceProvidersArrayList;
     private static ArrayList<ServiceReceiver> serviceReceiversArrayList;
@@ -102,6 +103,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // side navigation view
         navigationView.setNavigationItemSelectedListener(this);
+
+//        DocumentReference userDR = Utils.getCurrentUserDocumentReference().get()
+//                .addOnCompleteListener(task -> {
+//                    User userObj;
+//                    if(task.isSuccessful()) {
+//
+//                    }
+//                })
 
         // set hamburger icon to open drawer
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
@@ -142,6 +151,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sortBy = sharedPreferences.getString(getString(R.string.sort_by), getString(R.string.experience));
+
+
+        Set<String> defaultGenders = new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.preference_filter_by_gender_values)));
+        gender = sharedPreferences.getStringSet(getString(R.string.filter_by_gender), defaultGenders);
+
+        Set<String> defaultSpecialities = new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.speciality_values)));
+        specialities = sharedPreferences.getStringSet(getString(R.string.filter_by_speciality), defaultSpecialities);
+
         passDataToFragments();
 
     }
@@ -153,13 +170,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (task.isSuccessful()) {
                 userObj = task.getResult().toObject(User.class);
                 if (userObj != null) {
-
                     user = userObj;
                     mUserName.setText(userObj.getName());
                     mUserEmail.setText(userObj.getEmail());
                     ArrayList<String> starredUsers = userObj.getStarredUsers();
 
                     if(userObj.getProfile().equals(getString(R.string.service_provider))) {
+                        // hide preference menu item for ServiceProvider
+                        navigationView.getMenu().findItem(R.id.nav_preferences).setVisible(false);
+
                         // get the service provider to send it to fragments
                         Utils.getCurrentServiceProviderDocumentReference().get().addOnCompleteListener(task1 -> {
                             ServiceProvider serviceProviderObj;
@@ -230,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                                         // Store the comparison output
                                                         // in ArrayList requirements
                                                         for (String requirement: requirements) {
-                                                            if (requirement.equals(speciality)) {
+                                                            if (requirement.equals(speciality) && specialities.contains(requirement) && gender.contains(spObj.getUserDetails().getGender())) {
                                                                 serviceProvidersArrayList.add(spObj);
                                                             }
                                                         }
@@ -304,9 +323,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .commit();
                 break;
 
-            case R.id.item_preferences:
+            case R.id.nav_preferences:
                 // TODO if user is of type serviceProvider, then hide it
                 startActivity(new Intent(MainActivity.this, PreferenceActivity.class));
+                finish();
                 break;
 
             case R.id.nav_logout:

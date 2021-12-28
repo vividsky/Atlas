@@ -4,17 +4,29 @@
     android:title="@string/preferences">
 
     <ListPreference
+        android:summary="@string/experience"
         android:title="Sort"
         android:key="@string/sort_by"
         android:icon="@drawable/ic_baseline_sort_24"
         android:entries="@array/preference_sort_by_labels"
         android:entryValues="@array/preference_sort_by_values"/>
 
-<!--    <CheckBoxPreference-->
-<!--        android:title="Filter"-->
-<!--        android:key="@string/filter_by"-->
-<!--        android:icon="@drawable/ic_baseline_filter_alt_24"-->
-<!--        android:entries="@array/preference_filter_by_labels"-->
-<!--        android:entryValues="@array/preference_filter_by_values"/>-->
+    <PreferenceCategory
+        android:title="Filter"
+        android:icon="@drawable/ic_baseline_filter_alt_24">
+        <MultiSelectListPreference
+            android:title="Gender"
+            android:key="@string/filter_by_gender"
+            android:entries="@array/preference_filter_by_gender_labels"
+            android:entryValues="@array/preference_filter_by_gender_values"/>
+        <MultiSelectListPreference
+            android:title="Speciality"
+            android:key="@string/filter_by_speciality"
+            android:entries="@array/speciality_label"
+            android:entryValues="@array/speciality_values"/>
+
+    </PreferenceCategory>
+
+
 
 </PreferenceScreen>

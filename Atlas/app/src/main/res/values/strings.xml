@@ -42,12 +42,20 @@
     <string name="chat_room_id">chat id</string>
     <string name="chatrooms">Chatroom</string>
     <string name="messages">Message</string>
+
     <string name="starred_service_provider">StarredServiceProvider</string>
     <string name="starred_service_receiver">StarredServiceReceiver</string>
 
     <string name="experience">experience</string>
     <string name="wage">expectedWage</string>
+
     <string name="gender">Gender</string>
     <string name="speciality">Speciality</string>
+
+    <string name="filter_by_gender">filter_by_gender</string>
+    <string name="filter_by_speciality">filter_by_speciality</string>
+
+    <string name="gender_male_label">Male</string>
+    <string name="gender_female_label">Female</string>
 
 </resources>
