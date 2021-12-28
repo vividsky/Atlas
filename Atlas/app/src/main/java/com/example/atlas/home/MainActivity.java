@@ -48,67 +48,68 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
-    static ArrayList<ServiceProvider> serviceProvidersArrayList;
-    static ArrayList<ServiceReceiver> serviceReceiversArrayList;
-    static ArrayList<ServiceReceiver> starredServiceReceiversArrayList;
-    static ArrayList<ServiceProvider> starredServiceProvidersArrayList;
-
-    String sortBy;
-
     FragmentManager fragmentManager;
     BottomNavigationView bottomNavigationView;
+    NavigationView navigationView;
+    View navigationHeaderView;
     FrameLayout homeLayout;
+    Toolbar toolbar;
 
     private DrawerLayout drawerLayout;
-    private TextView mUserName;
-    private TextView mUserEmail;
     private SwipeRefreshLayout swipeRefresh;
     private ProgressBar progressBar;
+    private TextView mUserName;
+    private TextView mUserEmail;
+
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
 
     private ServiceProvider serviceProvider;
-
     private User user;
+    private String sortBy;
 
-    @SuppressLint("ShowToast")
+    private static ArrayList<ServiceProvider> serviceProvidersArrayList;
+    private static ArrayList<ServiceReceiver> serviceReceiversArrayList;
+    private static ArrayList<ServiceReceiver> starredServiceReceiversArrayList;
+    private static ArrayList<ServiceProvider> starredServiceProvidersArrayList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // set custom toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawerLayout = findViewById(R.id.main_activity_drawer_layout);
-        homeLayout = findViewById(R.id.auth_fragment_container);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        View navigationHeaderView = navigationView.getHeaderView(0);
-        mUserName = navigationHeaderView.findViewById(R.id.tv_username_in_nav_view);
-        mUserEmail = navigationHeaderView.findViewById(R.id.tv_user_email_in_nav_view);
-        swipeRefresh = findViewById(R.id.swipe_refresh_home);
-        progressBar = findViewById(R.id.main_activity_progress_bar);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
         serviceProvidersArrayList = new ArrayList<>();
         serviceReceiversArrayList = new ArrayList<>();
         starredServiceProvidersArrayList = new ArrayList<>();
         starredServiceReceiversArrayList = new ArrayList<>();
 
+        drawerLayout = findViewById(R.id.main_activity_drawer_layout);
+        homeLayout = findViewById(R.id.auth_fragment_container);
+        navigationView = findViewById(R.id.nav_view);
+        bottomNavigationView = findViewById(R.id.nv_bottom);
+        navigationHeaderView = navigationView.getHeaderView(0);
+        mUserName = navigationHeaderView.findViewById(R.id.tv_username_in_nav_view);
+        mUserEmail = navigationHeaderView.findViewById(R.id.tv_user_email_in_nav_view);
+        swipeRefresh = findViewById(R.id.swipe_refresh_home);
+        progressBar = findViewById(R.id.main_activity_progress_bar);
+        toolbar = findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
         progressBar.setVisibility(View.VISIBLE);
 
         // side navigation view
         navigationView.setNavigationItemSelectedListener(this);
+
         // set hamburger icon to open drawer
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-
+        //swipe refresh feature
         swipeRefresh.setOnRefreshListener( () -> {
             serviceReceiversArrayList.clear();
             serviceProvidersArrayList.clear();
@@ -118,14 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             swipeRefresh.setRefreshing(false);
         });
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sortBy = sharedPreferences.getString(getString(R.string.sort_by), getString(R.string.experience));
-        Log.i(TAG, sortBy);
-
-        passDataToFragments();
-
         // set bottom navigation bar
-        bottomNavigationView = findViewById(R.id.nv_bottom);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.menu_home:
@@ -146,11 +140,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         });
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sortBy = sharedPreferences.getString(getString(R.string.sort_by), getString(R.string.experience));
+        passDataToFragments();
+
     }
 
     private void passDataToFragments() {
-        // instead of fetching all users and SP's and SR's in each fragment we fetch them here and send it to fragments
-
         // get the current user to send it to fragments
         Utils.getCurrentUserDocumentReference().get().addOnCompleteListener(task -> {
             User userObj;
@@ -262,9 +258,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    // if drawer is open, on back press drawer gets closed else we override super
+
     @Override
     public void onBackPressed() {
+        // if drawer is open, on back press drawer gets closed else we override super
         if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
@@ -420,6 +417,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commit();
 
     }
+
     private void switchToStarredFragment() {
         Bundle starredBundle = new Bundle();
         starredBundle.putSerializable(getString(R.string.user), user);
