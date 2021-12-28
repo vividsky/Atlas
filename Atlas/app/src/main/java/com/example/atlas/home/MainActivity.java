@@ -1,7 +1,9 @@
 package com.example.atlas.home;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +27,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.ServiceReceiver;
 import com.example.atlas.Models.User;
+import com.example.atlas.PreferenceActivity;
 import com.example.atlas.R;
+import com.example.atlas.Utils;
 import com.example.atlas.authentication.AuthenticationActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -33,6 +37,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -47,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     static ArrayList<ServiceReceiver> serviceReceiversArrayList;
     static ArrayList<ServiceReceiver> starredServiceReceiversArrayList;
     static ArrayList<ServiceProvider> starredServiceProvidersArrayList;
+
+    String sortBy;
 
     FragmentManager fragmentManager;
     BottomNavigationView bottomNavigationView;
@@ -111,6 +118,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             swipeRefresh.setRefreshing(false);
         });
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sortBy = sharedPreferences.getString(getString(R.string.sort_by), getString(R.string.experience));
+        Log.i(TAG, sortBy);
+
         passDataToFragments();
 
         // set bottom navigation bar
@@ -141,9 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // instead of fetching all users and SP's and SR's in each fragment we fetch them here and send it to fragments
 
         // get the current user to send it to fragments
-        firebaseFirestore.collection(getString(R.string.user))
-                .document(firebaseAuth.getCurrentUser().getUid())
-                .get().addOnCompleteListener(task -> {
+        Utils.getCurrentUserDocumentReference().get().addOnCompleteListener(task -> {
             User userObj;
             if (task.isSuccessful()) {
                 userObj = task.getResult().toObject(User.class);
@@ -156,16 +165,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     if(userObj.getProfile().equals(getString(R.string.service_provider))) {
                         // get the service provider to send it to fragments
-                        firebaseFirestore.collection(getString(R.string.service_provider))
-                                .document(firebaseAuth.getCurrentUser().getUid())
-                                .get().addOnCompleteListener(task1 -> {
+                        Utils.getCurrentServiceProviderDocumentReference().get().addOnCompleteListener(task1 -> {
                             ServiceProvider serviceProviderObj;
                             if (task1.isSuccessful()) {
                                 serviceProviderObj = task1.getResult().toObject(ServiceProvider.class);
                                 if (serviceProviderObj != null) {
                                     serviceProvider = serviceProviderObj;
                                     // Fetching all serviceReceivers to show content on home fragment
-                                    firebaseFirestore.collection(getString(R.string.service_receiver)).get()
+                                    firebaseFirestore.collection(getString(R.string.service_receiver))
+                                            .get()
                                             .addOnCompleteListener(task2 -> {
                                                 if (task2.isSuccessful()) {
                                                     for (QueryDocumentSnapshot sp : task2.getResult()) {
@@ -201,15 +209,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     } else if(userObj.getProfile().equals(getString(R.string.service_receiver))) {
                         // get the service receiver to send it to fragments
-                        firebaseFirestore.collection(getString(R.string.service_receiver))
-                                .document(firebaseAuth.getCurrentUser().getUid())
+                        Utils.getCurrentServiceReceiverDocumentReference()
                                 .get().addOnCompleteListener(task2 -> {
                             ServiceReceiver serviceReceiver;
                             if (task2.isSuccessful()) {
                                 serviceReceiver = task2.getResult().toObject(ServiceReceiver.class);
                                 if (serviceReceiver != null) {
                                     // Fetching all serviceProviders to show content on home fragment
-                                    firebaseFirestore.collection(getString(R.string.service_provider)).get()
+                                    firebaseFirestore.collection(getString(R.string.service_provider))
+                                            .orderBy(sortBy)
+                                            .get()
                                             .addOnCompleteListener(task1 -> {
                                                 if (task1.isSuccessful()) {
                                                     for (QueryDocumentSnapshot sp : task1.getResult()) {
@@ -298,6 +307,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .commit();
                 break;
 
+            case R.id.item_preferences:
+                // TODO if user is of type serviceProvider, then hide it
+                startActivity(new Intent(MainActivity.this, PreferenceActivity.class));
+                break;
+
             case R.id.nav_logout:
                 new AlertDialog.Builder(this)
                         .setTitle("Log out")
@@ -320,8 +334,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_delete_account:
-//                deleteUser(mUserEmail.getText().toString());
-                Toast.makeText(this, "Sorry, We love our users and cannot delete your account :)", Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder(this)
+                        .setTitle("Delete Account")
+                        .setMessage("Are you sure you want to Delete your account?")
+
+                        // Specifying a listener allows you to take an action before dismissing the dialog.
+                        // The dialog is automatically dismissed when a dialog button is clicked.
+                        .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                            // Continue with delete operation
+                            deleteCurrentUser();
+                        })
+
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(R.drawable.ic_baseline_logout_24)
+                        .show();
                 break;
 
             default:
@@ -332,39 +359,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    private void deleteCurrentUser() {
 
-    private void deleteUser(String email) {
-        String password = "Shradha123@";
+        DocumentReference currentUserDR = Utils.getCurrentUserDocumentReference();
 
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        // Get auth credentials from the user for re-authentication. The example below shows
-        // email and password credentials but there are multiple possible providers,
-        // such as GoogleAuthProvider or FacebookAuthProvider.
-        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+        currentUserDR.get().addOnCompleteListener(fetchCurrentUser -> {
+            String profile;
+            // To delete ServiceProvider/ ServiceReceiver
+            if (fetchCurrentUser.isSuccessful()) {
 
-        // Prompt the user to re-provide their sign-in credentials
-        if (user != null) {
-            user.reauthenticate(credential)
-                    .addOnCompleteListener(task -> {
-                        if(task.isSuccessful()) {
-                            Log.d(TAG, "onComplete: authentication complete");
-                            user.delete()
-                                    .addOnCompleteListener(task1 -> {
-                                        if (task1.isSuccessful()) {
-                                            Log.d(TAG, "User account deleted.");
-                                            startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
-                                            finish();
-                                            Toast.makeText(MainActivity.this, "Deleted User Successfully,", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            Log.d(TAG, "User account deleted failed due to task1.");
-                                        }
-                                    });
-                        } else {
-                            Log.d(TAG, "Authentication failed");
-                        }
+                User user = fetchCurrentUser.getResult().toObject(User.class);
+                profile = user.getProfile();
 
-                    });
-        }
+                if (profile.equals(getString(R.string.service_provider))) {
+                    Utils.getCurrentServiceProviderDocumentReference().delete();
+                } else {
+                    Utils.getCurrentServiceReceiverDocumentReference().delete();
+                }
+
+                // To delete CurrentUser
+                currentUserDR
+                        .delete()
+                        .addOnCompleteListener(deleteCurrentUserFromDatabase -> {
+                            if (deleteCurrentUserFromDatabase.isSuccessful()) {
+                                Log.d(TAG, "User data deleted successfully");
+                                FirebaseUser firebaseUser = Utils.getCurrentFirebaseUser();
+                                firebaseUser.delete()
+                                        .addOnCompleteListener(deleteUserAuthentication -> {
+                                            if (deleteUserAuthentication.isSuccessful()) {
+                                                Log.d(TAG, "User account deleted.");
+                                                Toast.makeText(this, "Account deleted successfully", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
+                                                finish();
+                                            } else {
+                                                Log.i(TAG, deleteUserAuthentication.getException().getMessage());
+                                            }
+                                        });
+                            } else {
+                                Log.d(TAG, deleteCurrentUserFromDatabase.getException().getMessage());
+                            }
+                        });
+
+            } else {
+                Log.d(TAG, fetchCurrentUser.getException().getMessage());
+            }
+        });
     }
 
     private void switchToHomeFragment() {
