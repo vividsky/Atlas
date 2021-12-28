@@ -28,7 +28,6 @@ import com.example.atlas.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.model.Document;
 
 public class ServiceProviderDetailsFragment extends Fragment {
 
@@ -60,7 +59,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-         options = getResources().getStringArray(R.array.speciality);
+         options = getResources().getStringArray(R.array.speciality_label);
          checkedItem = new int[]{-1};
 
         speciality = view.findViewById(R.id.iv_speciality);
@@ -144,7 +143,7 @@ public class ServiceProviderDetailsFragment extends Fragment {
 
         dialogBuilder.setTitle("Choose Specialities");
 
-        dialogBuilder.setSingleChoiceItems(R.array.speciality, checkedItem[0], (dialog, which) -> {
+        dialogBuilder.setSingleChoiceItems(R.array.speciality_label, checkedItem[0], (dialog, which) -> {
             checkedItem[0] = which;
         });
 

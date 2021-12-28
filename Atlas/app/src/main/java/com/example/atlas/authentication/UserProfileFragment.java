@@ -54,7 +54,7 @@ public class UserProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        servicesList = getResources().getStringArray(R.array.speciality);
+        servicesList = getResources().getStringArray(R.array.speciality_label);
         checkedItems = new boolean[servicesList.length];
 
         Button buttonInNeedOfService = view.findViewById(R.id.b_profile_type_sin);
@@ -88,7 +88,7 @@ public class UserProfileFragment extends Fragment {
         builder.setTitle("Choose Services");
 
         // now this is the function which sets the alert dialog for multiple item selection ready
-        builder.setMultiChoiceItems(R.array.speciality, checkedItems, (dialog, which, isChecked) -> {
+        builder.setMultiChoiceItems(R.array.speciality_label, checkedItems, (dialog, which, isChecked) -> {
             checkedItems[which] = isChecked;
         });
 
