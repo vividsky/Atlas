@@ -13,7 +13,8 @@ public class Chatroom {
 
     }
 
-    public Chatroom() {}
+    public Chatroom() {
+    }
 
     public String getName() {
         return name;

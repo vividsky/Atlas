@@ -10,14 +10,12 @@ public class Message {
         this.sentBy = sentBy;
         this.text = text;
     }
-    public Message() {}
+
+    public Message() {
+    }
 
     public String getSentBy() {
         return sentBy;
-    }
-
-    public void setSentBy(String sentBy) {
-        this.sentBy = sentBy;
     }
 
     public String getText() {
@@ -28,11 +26,4 @@ public class Message {
         this.text = text;
     }
 
-    public long getSentAt() {
-        return sentAt;
-    }
-
-    public void setSentAt(long sentAt) {
-        this.sentAt = sentAt;
-    }
 }

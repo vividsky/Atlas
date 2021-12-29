@@ -2,7 +2,6 @@ package com.example.atlas.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProviderAdapter.ContentViewHolder> {
@@ -103,36 +101,36 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
                         firebaseFirestore.collection("User").document(firebaseAuth.getCurrentUser().getUid());
 
                 currentUserDocumentReference.get()
-                .addOnCompleteListener(task -> {
-                    String currentUserId = currentUserDocumentReference.getId();
-                    String serviceProviderId = serviceProviderDetails.getId();
-                    String uniqueChatroomId = currentUserId + serviceProviderId;
-                    User user;
-                    if (task.isSuccessful()) {
-                        DocumentReference drChatId = firebaseFirestore.collection("User").document(firebaseAuth.getCurrentUser().getUid())
-                                .collection("Chatroom").document(uniqueChatroomId);
-                        drChatId.set(new Chatroom(userDetails.getName(), drChatId.getId(), serviceProviderId));
+                        .addOnCompleteListener(task -> {
+                            String currentUserId = currentUserDocumentReference.getId();
+                            String serviceProviderId = serviceProviderDetails.getId();
+                            String uniqueChatroomId = currentUserId + serviceProviderId;
+                            User user;
+                            if (task.isSuccessful()) {
+                                DocumentReference drChatId = firebaseFirestore.collection("User").document(firebaseAuth.getCurrentUser().getUid())
+                                        .collection("Chatroom").document(uniqueChatroomId);
+                                drChatId.set(new Chatroom(userDetails.getName(), drChatId.getId(), serviceProviderId));
 
-                        user = task.getResult().toObject(User.class);
-                        firebaseFirestore.collection("User").document(serviceProviderId)
-                                .collection("Chatroom").document(drChatId.getId())
-                                .set(new Chatroom(user.getName(), drChatId.getId(), currentUserId));
+                                user = task.getResult().toObject(User.class);
+                                firebaseFirestore.collection("User").document(serviceProviderId)
+                                        .collection("Chatroom").document(drChatId.getId())
+                                        .set(new Chatroom(user.getName(), drChatId.getId(), currentUserId));
 
 
-                        Bundle bundle = new Bundle();
-                        bundle.putString("userId", serviceProviderId);
-                        bundle.putString("chatId", drChatId.getId());
+                                Bundle bundle = new Bundle();
+                                bundle.putString("userId", serviceProviderId);
+                                bundle.putString("chatId", drChatId.getId());
 
-                        MessageFragment messageFragment = new MessageFragment();
-                        messageFragment.setArguments(bundle);
+                                MessageFragment messageFragment = new MessageFragment();
+                                messageFragment.setArguments(bundle);
 
-                        FragmentManager manager = ((AppCompatActivity) context).getSupportFragmentManager();
-                        manager.beginTransaction()
-                                .replace(R.id.main_activity_container, messageFragment)
-                                .addToBackStack(null)
-                                .commit();
-                    }
-                });
+                                FragmentManager manager = ((AppCompatActivity) context).getSupportFragmentManager();
+                                manager.beginTransaction()
+                                        .replace(R.id.main_activity_container, messageFragment)
+                                        .addToBackStack(null)
+                                        .commit();
+                            }
+                        });
             });
 
             String serviceProviderId = serviceProviderDetails.getId();
@@ -153,7 +151,7 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
                     });
 
             starred.setOnClickListener(view -> {
-                DocumentReference currentUserDR =  firebaseFirestore.collection("User")
+                DocumentReference currentUserDR = firebaseFirestore.collection("User")
                         .document(firebaseAuth.getCurrentUser().getUid());
                 currentUserDR
                         .get()

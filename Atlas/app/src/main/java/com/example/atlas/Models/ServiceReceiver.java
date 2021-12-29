@@ -9,7 +9,8 @@ public class ServiceReceiver implements Serializable {
     public ArrayList<String> requirements;
     public String id;
 
-    public ServiceReceiver() {}
+    public ServiceReceiver() {
+    }
 
     public ServiceReceiver(String id, ArrayList<String> requirements, User userDetails) {
         this.id = id;

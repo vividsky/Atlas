@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".authentication.ServiceProviderDetailsFragment">
 
@@ -12,51 +11,53 @@
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:orientation="horizontal">
-    <TextView
-        android:id="@+id/tv_speciality"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:layout_gravity="center_vertical"
-        android:text="Speciality"
-        android:textColor="@color/purple_700"
-        android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tv_speciality"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:text="Speciality"
+            android:textColor="@color/purple_700"
+            android:textSize="24sp" />
+
         <ImageButton
             android:id="@+id/iv_speciality"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
-            android:src="@drawable/ic_arrow_down"
-            android:clickable="true"/>
+            android:layout_weight="1"
+            android:clickable="true"
+            android:src="@drawable/ic_arrow_down" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="24dp">
+        android:layout_margin="24dp"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/et_experience"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:hint="Experience (Optional)"
             android:drawableStart="@drawable/ic_experience"
             android:drawablePadding="10dp"
-            android:inputType="numberDecimal"/>
+            android:hint="Experience (Optional)"
+            android:inputType="numberDecimal" />
 
         <TextView
             android:id="@+id/tv_year"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="24dp"
-            android:spinnerMode="dropdown"
             android:layout_weight="1"
             android:gravity="center"
+            android:spinnerMode="dropdown"
             android:text="Years"
-            android:textColor="@color/purple_700"/>
+            android:textColor="@color/purple_700" />
     </LinearLayout>
 
     <EditText
@@ -64,16 +65,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        android:hint="Expected Wage (Optional)"
         android:drawableStart="@drawable/ic_expected_wage"
         android:drawablePadding="10dp"
-        android:inputType="number"/>
+        android:hint="Expected Wage (Optional)"
+        android:inputType="number" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="24dp">
+        android:layout_margin="24dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_vehicle_owned"
@@ -82,29 +83,29 @@
             android:layout_weight="2"
             android:gravity="center_vertical"
             android:text="Vehicle Owned?"
-            android:textColor="@color/purple_700"/>
+            android:textColor="@color/purple_700" />
 
         <RadioGroup
             android:id="@+id/rg_vehicle_owned"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:checkedButton="@id/rb_vehicle_owned_no">
+            android:checkedButton="@id/rb_vehicle_owned_no"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/rb_vehicle_owned_yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Yes"/>
+                android:text="Yes" />
 
             <RadioButton
                 android:id="@+id/rb_vehicle_owned_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="No"/>
+                android:text="No" />
 
         </RadioGroup>
 
@@ -114,16 +115,16 @@
         android:id="@+id/button_service_provider_details_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="24dp"
         android:layout_gravity="center"
-        android:text="Save"/>
+        android:layout_margin="24dp"
+        android:text="Save" />
 
     <ProgressBar
         android:id="@+id/pb_service_provider_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 
 </LinearLayout>

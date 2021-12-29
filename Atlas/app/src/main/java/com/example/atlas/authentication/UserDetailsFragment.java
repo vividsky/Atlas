@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -96,7 +95,7 @@ public class UserDetailsFragment extends Fragment {
              * 3. address
              * 4. alternate contact
              * 5. services
-            */
+             */
             if (TextUtils.isEmpty(name)) {
                 mName.setError("Name is required.");
                 return;
@@ -163,7 +162,7 @@ public class UserDetailsFragment extends Fragment {
             Toast.makeText(getContext(), "Successfully Saved", Toast.LENGTH_SHORT).show();
             user.get().addOnCompleteListener(task -> {
                 User userObj;
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     userObj = task.getResult().toObject(User.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(getString(R.string.user), (Serializable) userObj);

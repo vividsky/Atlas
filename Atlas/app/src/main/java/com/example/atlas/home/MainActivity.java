@@ -1,4 +1,5 @@
 package com.example.atlas.home;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,8 +26,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.ServiceReceiver;
 import com.example.atlas.Models.User;
-import com.example.atlas.UsefulCorner.PreferenceActivity;
 import com.example.atlas.R;
+import com.example.atlas.UsefulCorner.PreferenceActivity;
 import com.example.atlas.UsefulCorner.SettingsActivity;
 import com.example.atlas.Utils;
 import com.example.atlas.authentication.AuthenticationActivity;
@@ -47,34 +48,28 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
-
+    private static ArrayList<ServiceProvider> serviceProvidersArrayList;
+    private static ArrayList<ServiceReceiver> serviceReceiversArrayList;
+    private static ArrayList<ServiceReceiver> starredServiceReceiversArrayList;
+    private static ArrayList<ServiceProvider> starredServiceProvidersArrayList;
     FragmentManager fragmentManager;
     BottomNavigationView bottomNavigationView;
     NavigationView navigationView;
     View navigationHeaderView;
     FrameLayout homeLayout;
     Toolbar toolbar;
-
     private DrawerLayout drawerLayout;
     private SwipeRefreshLayout swipeRefresh;
     private ProgressBar progressBar;
     private TextView mUserName;
     private TextView mUserEmail;
-
-
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-
     private ServiceProvider serviceProvider;
     private User user;
     private String sortBy;
     private Set<String> gender;
     private Set<String> specialities;
-
-    private static ArrayList<ServiceProvider> serviceProvidersArrayList;
-    private static ArrayList<ServiceReceiver> serviceReceiversArrayList;
-    private static ArrayList<ServiceReceiver> starredServiceReceiversArrayList;
-    private static ArrayList<ServiceProvider> starredServiceProvidersArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         //swipe refresh feature
-        swipeRefresh.setOnRefreshListener( () -> {
+        swipeRefresh.setOnRefreshListener(() -> {
             serviceReceiversArrayList.clear();
             serviceProvidersArrayList.clear();
             starredServiceReceiversArrayList.clear();
@@ -176,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     mUserEmail.setText(userObj.getEmail());
                     ArrayList<String> starredUsers = userObj.getStarredUsers();
 
-                    if(userObj.getProfile().equals(getString(R.string.service_provider))) {
+                    if (userObj.getProfile().equals(getString(R.string.service_provider))) {
                         // hide preference menu item for ServiceProvider
                         navigationView.getMenu().findItem(R.id.nav_preferences).setVisible(false);
 
@@ -203,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                                         // Store the comparison output
                                                         // in ArrayList requirements
-                                                        for (String requirement: requirements) {
+                                                        for (String requirement : requirements) {
                                                             if (requirement.equals(speciality)) {
                                                                 serviceReceiversArrayList.add(srObj);
                                                             }
@@ -223,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             }
                         });
 
-                    } else if(userObj.getProfile().equals(getString(R.string.service_receiver))) {
+                    } else if (userObj.getProfile().equals(getString(R.string.service_receiver))) {
                         // get the service receiver to send it to fragments
                         Utils.getCurrentServiceReceiverDocumentReference()
                                 .get().addOnCompleteListener(task2 -> {
@@ -249,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                                         // Store the comparison output
                                                         // in ArrayList requirements
-                                                        for (String requirement: requirements) {
+                                                        for (String requirement : requirements) {
                                                             if (requirement.equals(speciality) && specialities.contains(requirement) && gender.contains(spObj.getUserDetails().getGender())) {
                                                                 serviceProvidersArrayList.add(spObj);
                                                             }
@@ -282,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         // if drawer is open, on back press drawer gets closed else we override super
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -305,13 +300,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.nav_update_profile:
 
                 // put in bundle and set FragmentClass Arguments
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(getString(R.string.user), (Serializable) user);
-                if(user.getProfile().equals(getString(R.string.service_provider))) {
+                if (user.getProfile().equals(getString(R.string.service_provider))) {
                     bundle.putSerializable(getString(R.string.service_provider), (Serializable) serviceProvider);
                 }
                 EditUserDetailsFragment fragObj = new EditUserDetailsFragment();

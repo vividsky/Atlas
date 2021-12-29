@@ -1,6 +1,14 @@
 package com.example.atlas.home;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,15 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.example.atlas.Models.Message;
 import com.example.atlas.R;
@@ -128,9 +127,9 @@ public class MessageFragment extends Fragment {
                 .collection(getString(R.string.chatrooms)).document(chatroomId)
                 .collection(getString(R.string.messages)).orderBy("sentAt").get()
                 .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()) {
+                    if (task.isSuccessful()) {
                         Message message;
-                        for (QueryDocumentSnapshot messageQuery: task.getResult()) {
+                        for (QueryDocumentSnapshot messageQuery : task.getResult()) {
                             message = messageQuery.toObject(Message.class);
                             messageList.add(message);
                         }

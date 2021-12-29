@@ -2,14 +2,6 @@ package com.example.atlas.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -22,6 +14,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.User;
@@ -93,7 +92,7 @@ public class EditUserDetailsFragment extends Fragment {
 
         // getting values from bundles
         userObj = (User) getArguments().getSerializable(getString(R.string.user));
-        if(userObj.getProfile().equals(getString(R.string.service_provider))) {
+        if (userObj.getProfile().equals(getString(R.string.service_provider))) {
             serviceProviderObj = (ServiceProvider) getArguments().getSerializable(getString(R.string.service_provider));
         }
 
@@ -117,7 +116,7 @@ public class EditUserDetailsFragment extends Fragment {
         mEditAddress.getEditText().setText(userObj.getAddress());
         mEditAlternateContact.getEditText().setText(userObj.getAlternateContact());
 
-        if(userObj.getGender().equals(getString(R.string.gender_female))) {
+        if (userObj.getGender().equals(getString(R.string.gender_female))) {
             gender[0] = getString(R.string.gender_female);
             mEditGender.check(R.id.rb_edit_gender_female);
         } else {
@@ -125,7 +124,7 @@ public class EditUserDetailsFragment extends Fragment {
             mEditGender.check(R.id.rb_edit_gender_male);
         }
 
-        if(userObj.getProfile().equals(getString(R.string.service_receiver))) {
+        if (userObj.getProfile().equals(getString(R.string.service_receiver))) {
             mEditExperience.setVisibility(View.GONE);
             mEditExpectedWage.setVisibility(View.GONE);
             mEditLLVehicleOwned.setVisibility(View.GONE);
@@ -135,7 +134,7 @@ public class EditUserDetailsFragment extends Fragment {
                 mEditExperience.getEditText().setText(serviceProviderObj.getExperience());
                 mEditExpectedWage.getEditText().setText(serviceProviderObj.getExpectedWage());
 
-                if(serviceProviderObj.getVehicleOwned().equals(getString(R.string.vehicle_owned_yes))) {
+                if (serviceProviderObj.getVehicleOwned().equals(getString(R.string.vehicle_owned_yes))) {
                     vehicleOwned[0] = getString(R.string.vehicle_owned_yes);
                     mEditVehicleOwned.check(R.id.rb_edit_vehicle_owned_yes);
                 } else {
@@ -166,7 +165,7 @@ public class EditUserDetailsFragment extends Fragment {
             }
         });
 
-        if(userObj.getProfile().equals(getString(R.string.service_provider))) {
+        if (userObj.getProfile().equals(getString(R.string.service_provider))) {
             mEditVehicleOwned.setOnCheckedChangeListener((group, id) -> {
                 if (id == R.id.rb_edit_vehicle_owned_yes) {
                     vehicleOwned[0] = getString(R.string.vehicle_owned_yes);
@@ -242,13 +241,13 @@ public class EditUserDetailsFragment extends Fragment {
 
             if (!TextUtils.isEmpty(alternateContact) &&
                     !Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$")
-                    .matcher(alternateContact).matches()) {
+                            .matcher(alternateContact).matches()) {
                 mEditAlternateContact.setError("Please enter a valid Contact detail.");
                 return false;
             }
 
             //if Service Provider
-            if(userObj.getProfile().equals(getString(R.string.service_provider))) {
+            if (userObj.getProfile().equals(getString(R.string.service_provider))) {
                 experience = mEditExperience.getEditText().getText().toString();
                 expectedWage = mEditExpectedWage.getEditText().getText().toString();
 
@@ -303,9 +302,9 @@ public class EditUserDetailsFragment extends Fragment {
             userDocumentReference.update("alternateContact", alternateContact);
 
             userDocumentReference.get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     User updatedUserObj = task.getResult().toObject(User.class);
-                    if(updatedUserObj.getProfile().equals(getString(R.string.service_provider))) {
+                    if (updatedUserObj.getProfile().equals(getString(R.string.service_provider))) {
                         DocumentReference serviceProviderDR = Utils.getCurrentServiceProviderDocumentReference();
                         serviceProviderDR.update("experience", experience);
                         serviceProviderDR.update("expectedWage", expectedWage);

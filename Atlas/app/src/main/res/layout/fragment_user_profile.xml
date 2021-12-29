@@ -22,8 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1"
         android:layout_margin="48dp"
+        android:layout_weight="1"
         android:text="Service Provider"
         android:textSize="42sp" />
 
@@ -39,8 +39,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1"
         android:layout_margin="48dp"
+        android:layout_weight="1"
         android:text="In need of Service"
         android:textSize="42sp" />
 

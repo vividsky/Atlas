@@ -1,14 +1,5 @@
 package com.example.atlas.UsefulCorner;
 
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.atlas.R;
-import com.example.atlas.Utils;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,6 +8,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.atlas.R;
+import com.example.atlas.Utils;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.regex.Pattern;
 
@@ -99,25 +98,25 @@ public class SettingsActivity extends AppCompatActivity {
             FirebaseUser firebaseUser = Utils.getCurrentFirebaseUser();
             AuthCredential authCredential = EmailAuthProvider.getCredential(email, oldPassword);
             firebaseUser.reauthenticate(authCredential)
-            .addOnCompleteListener(task1 -> {
-                if(task1.isSuccessful()) {
-                    Log.d(TAG, "task1 was successful");
-                    firebaseUser.updatePassword(newPassword).addOnCompleteListener(task2 -> {
-                        if(task2.isSuccessful()) {
-                            Toast.makeText(this, "Password updated Successfully.", Toast.LENGTH_SHORT).show();
-                            mChangePassword.setVisibility(View.VISIBLE);
-                            mOldPassword.setVisibility(View.GONE);
-                            mNewPassword.setVisibility(View.GONE);
-                            mConfirmNewPassword.setVisibility(View.GONE);
-                            mSaveNewPassword.setVisibility(View.GONE);
+                    .addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            Log.d(TAG, "task1 was successful");
+                            firebaseUser.updatePassword(newPassword).addOnCompleteListener(task2 -> {
+                                if (task2.isSuccessful()) {
+                                    Toast.makeText(this, "Password updated Successfully.", Toast.LENGTH_SHORT).show();
+                                    mChangePassword.setVisibility(View.VISIBLE);
+                                    mOldPassword.setVisibility(View.GONE);
+                                    mNewPassword.setVisibility(View.GONE);
+                                    mConfirmNewPassword.setVisibility(View.GONE);
+                                    mSaveNewPassword.setVisibility(View.GONE);
+                                } else {
+                                    Toast.makeText(this, "Some error has occurred", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         } else {
-                            Toast.makeText(this, "Some error has occurred", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Invalid old password", Toast.LENGTH_SHORT).show();
                         }
                     });
-                } else {
-                    Toast.makeText(this, "Invalid old password", Toast.LENGTH_SHORT).show();
-                }
-            });
         });
     }
 }

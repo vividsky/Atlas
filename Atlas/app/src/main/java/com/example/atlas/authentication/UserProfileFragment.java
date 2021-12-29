@@ -4,11 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +12,14 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.atlas.home.MainActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.atlas.Models.ServiceReceiver;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
+import com.example.atlas.home.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,14 +30,12 @@ import java.util.ArrayList;
 public class UserProfileFragment extends Fragment {
 
     public static final String TAG = UserProfileFragment.class.getSimpleName();
-
-    private ArrayList<String> servicesSelected = new ArrayList<>();
+    FirebaseAuth firebaseAuth;
+    FirebaseFirestore firebaseFirestore;
+    private final ArrayList<String> servicesSelected = new ArrayList<>();
     private String[] servicesList;
     private boolean[] checkedItems;
     private User userObj;
-
-    FirebaseAuth firebaseAuth;
-    FirebaseFirestore firebaseFirestore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,7 +95,7 @@ public class UserProfileFragment extends Fragment {
                     servicesSelected.add(servicesList[i]);
                 }
             }
-            if(!servicesSelected.isEmpty()) {
+            if (!servicesSelected.isEmpty()) {
                 makeUserReceiverCollection();
             } else {
                 Toast.makeText(getContext(), "Please select at least one service.", Toast.LENGTH_SHORT).show();

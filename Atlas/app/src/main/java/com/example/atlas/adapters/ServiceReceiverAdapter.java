@@ -144,7 +144,7 @@ public class ServiceReceiverAdapter extends RecyclerView.Adapter<ServiceReceiver
                     });
 
             starred.setOnClickListener(view -> {
-                DocumentReference currentUserDR =  firebaseFirestore.collection("User")
+                DocumentReference currentUserDR = firebaseFirestore.collection("User")
                         .document(firebaseAuth.getCurrentUser().getUid());
                 currentUserDR
                         .get()

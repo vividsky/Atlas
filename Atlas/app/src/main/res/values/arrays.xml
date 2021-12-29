@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="speciality_label">
-        <item >@string/cook</item>
-        <item >@string/maid</item>
-        <item >@string/driver</item>
-        <item >@string/daily_wager</item>
-        <item >@string/babysitter</item>
-        <item >@string/tutor</item>
+        <item>@string/cook</item>
+        <item>@string/maid</item>
+        <item>@string/driver</item>
+        <item>@string/daily_wager</item>
+        <item>@string/babysitter</item>
+        <item>@string/tutor</item>
     </string-array>
 
     <string-array name="experience_variable">
-        <item >@string/month</item>
-        <item >@string/year</item>
+        <item>@string/month</item>
+        <item>@string/year</item>
     </string-array>
 
     <string-array name="preference_sort_by_labels">
@@ -35,12 +35,12 @@
     </string-array>
 
     <string-array name="speciality_values">
-        <item >@string/cook</item>
-        <item >@string/maid</item>
-        <item >@string/driver</item>
-        <item >@string/daily_wager</item>
-        <item >@string/babysitter</item>
-        <item >@string/tutor</item>
+        <item>@string/cook</item>
+        <item>@string/maid</item>
+        <item>@string/driver</item>
+        <item>@string/daily_wager</item>
+        <item>@string/babysitter</item>
+        <item>@string/tutor</item>
     </string-array>
 
 </resources>

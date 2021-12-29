@@ -2,19 +2,16 @@ package com.example.atlas.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.atlas.home.MainActivity;
 import com.example.atlas.Models.User;
 import com.example.atlas.R;
+import com.example.atlas.home.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.io.Serializable;
 
 public class AuthenticationActivity extends AppCompatActivity {
 
@@ -49,7 +46,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                                     .beginTransaction()
                                     .replace(R.id.auth_fragment_container, new UserDetailsFragment())
                                     .commit();
-                        else if(userObj.getProfile() == null) {
+                        else if (userObj.getProfile() == null) {
                             Bundle bundle = new Bundle();
                             bundle.putSerializable(getString(R.string.user), userObj);
                             UserProfileFragment userProfileFragment = new UserProfileFragment();
@@ -57,8 +54,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                             getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.auth_fragment_container, userProfileFragment)
                                     .commit();
-                        }
-                        else {
+                        } else {
                             startActivity(new Intent(AuthenticationActivity.this, MainActivity.class));
                             finish();
                         }

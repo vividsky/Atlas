@@ -21,7 +21,9 @@ public class User implements Serializable {
         this.contact = contact;
         this.starredUsers = new ArrayList<>();
     }
-    public User() {}
+
+    public User() {
+    }
 
     // getters
 

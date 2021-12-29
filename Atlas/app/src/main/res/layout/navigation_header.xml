@@ -4,16 +4,16 @@
     android:layout_height="176dp"
     android:background="#274472"
     android:gravity="bottom"
+    android:orientation="vertical"
     android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:orientation="vertical">
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="-10dp"
         android:paddingStart="-15dp"
         android:paddingEnd="-10dp"
-        android:layout_marginBottom="-10dp"
         android:src="@mipmap/app_logo_foreground" />
 
     <TextView

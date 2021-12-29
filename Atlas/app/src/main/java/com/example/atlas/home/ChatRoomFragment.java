@@ -1,6 +1,11 @@
 package com.example.atlas.home;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,12 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.atlas.Models.Chatroom;
 import com.example.atlas.R;
@@ -95,18 +94,18 @@ public class ChatRoomFragment extends Fragment {
         firebaseFirestore.collection(getString(R.string.user))
                 .document(firebaseAuth.getCurrentUser().getUid()).collection(getString(R.string.chatrooms))
                 .get().addOnCompleteListener(task -> {
-                    if(task.isSuccessful()) {
-                        Chatroom chatroom;
-                        for(QueryDocumentSnapshot chatroomQuery: task.getResult()) {
-                            chatroom = chatroomQuery.toObject(Chatroom.class);
-                            chatRoomsArrayList.add(chatroom);
-                        }
-                        chatroomAdapter = new ChatroomAdapter(chatRoomsArrayList, getContext());
-                        recyclerView.setHasFixedSize(true);
-                        recyclerView.setAdapter(chatroomAdapter);
-                    } else {
-                        Log.i(TAG, task.getException().getMessage());
-                    }
+            if (task.isSuccessful()) {
+                Chatroom chatroom;
+                for (QueryDocumentSnapshot chatroomQuery : task.getResult()) {
+                    chatroom = chatroomQuery.toObject(Chatroom.class);
+                    chatRoomsArrayList.add(chatroom);
+                }
+                chatroomAdapter = new ChatroomAdapter(chatRoomsArrayList, getContext());
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setAdapter(chatroomAdapter);
+            } else {
+                Log.i(TAG, task.getException().getMessage());
+            }
         });
 
     }

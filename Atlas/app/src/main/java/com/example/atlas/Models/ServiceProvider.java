@@ -1,22 +1,21 @@
 package com.example.atlas.Models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
 
 public class ServiceProvider implements Serializable {
 
     public String speciality;
     public String experience;
     public String expectedWage;
-    public String  vehicleOwned;
+    public String vehicleOwned;
     public String id;
     public User userDetails;
 
-    public ServiceProvider() {}
+    public ServiceProvider() {
+    }
 
     public ServiceProvider(String id, String speciality, String experience, String expectedWage, String vehicleOwned, User userDetails) {
-        this.id  = id;
+        this.id = id;
         this.speciality = speciality;
         this.experience = experience;
         this.expectedWage = expectedWage;

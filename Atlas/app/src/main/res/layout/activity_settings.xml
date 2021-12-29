@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,9 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="24dp"
+        android:text="Change Password"
         android:textColor="@color/black"
-        android:textSize="16sp"
-        android:text="Change Password" />
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/et_edit_old_password"
@@ -76,6 +75,6 @@
         android:layout_height="1dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/purple_700"/>
+        android:background="@color/purple_700" />
 
 </LinearLayout>

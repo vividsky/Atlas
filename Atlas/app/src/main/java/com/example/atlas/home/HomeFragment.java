@@ -1,6 +1,10 @@
 package com.example.atlas.home;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,11 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.atlas.Models.ServiceProvider;
 import com.example.atlas.Models.ServiceReceiver;
@@ -32,14 +31,13 @@ public class HomeFragment extends Fragment {
     public static final String TAG = HomeFragment.class.getSimpleName();
 
     static RecyclerView recyclerView;
-    Toolbar toolbar;
-    DrawerLayout mDrawerLayout;
     static ServiceProviderAdapter serviceProviderAdapter;
     static ServiceReceiverAdapter serviceReceiverAdapter;
     static ArrayList<ServiceProvider> serviceProvidersArrayList;
     static ArrayList<ServiceReceiver> serviceReceiversArrayList;
     static User user;
-
+    Toolbar toolbar;
+    DrawerLayout mDrawerLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

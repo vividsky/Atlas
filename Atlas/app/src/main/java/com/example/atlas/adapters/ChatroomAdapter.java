@@ -1,6 +1,5 @@
 package com.example.atlas.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atlas.Models.Chatroom;
 import com.example.atlas.R;
-import com.example.atlas.home.MainActivity;
 import com.example.atlas.home.MessageFragment;
 
 import java.util.List;
@@ -73,7 +71,7 @@ public class ChatroomAdapter extends RecyclerView.Adapter<ChatroomAdapter.Conten
                         .replace(R.id.main_activity_container, messageFragment)
                         .addToBackStack(null)
                         .commit();
-                    });
+            });
         }
     }
 }

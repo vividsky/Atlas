@@ -79,9 +79,9 @@ public class RegisterWithEmailFragment extends Fragment {
         signupToLogin.setText(ss);
         signupToLogin.setMovementMethod(LinkMovementMethod.getInstance());
 
-        mEmailId         = view.findViewById(R.id.et_email);
-        mContact         = view.findViewById(R.id.et_contact);
-        mPassword        =  view.findViewById(R.id.et_register_password);
+        mEmailId = view.findViewById(R.id.et_email);
+        mContact = view.findViewById(R.id.et_contact);
+        mPassword = view.findViewById(R.id.et_register_password);
         mConfirmPassword = view.findViewById(R.id.et_confirm_password);
 
         mProgressBar = view.findViewById(R.id.pb_progressbar);

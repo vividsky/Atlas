@@ -3,25 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_update_profile"
+        <item
+            android:id="@+id/nav_update_profile"
             android:icon="@drawable/ic_baseline_account_circle_24"
-            android:title="@string/profile"/>
+            android:title="@string/profile" />
     </group>
 
 
     <item android:title="@string/useful_corner">
         <menu>
 
-            <item android:title= "@string/preferences"
+            <item
                 android:id="@+id/nav_preferences"
-                android:icon="@drawable/ic_preference"/>
-            <item android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_preference"
+                android:title="@string/preferences" />
+            <item
+                android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_baseline_settings_24"
                 android:title="@string/settings" />
-            <item android:id="@+id/nav_logout"
+            <item
+                android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_baseline_logout_24"
                 android:title="@string/logout" />
-            <item android:id="@+id/nav_delete_account"
+            <item
+                android:id="@+id/nav_delete_account"
                 android:icon="@drawable/ic_baseline_delete_24"
                 android:title="@string/delete_account" />
         </menu>
