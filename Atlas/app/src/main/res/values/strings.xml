@@ -57,5 +57,5 @@
 
     <string name="gender_male_label">Male</string>
     <string name="gender_female_label">Female</string>
-
+    <string name="asking_for_login_with_phone">Sign in with Phone Number.</string>
 </resources>

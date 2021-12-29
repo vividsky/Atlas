@@ -33,9 +33,9 @@ import java.util.regex.Pattern;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class RegisterFragment extends Fragment {
+public class RegisterWithEmailFragment extends Fragment {
 
-    public static final String TAG = RegisterFragment.class.getSimpleName();
+    public static final String TAG = RegisterWithEmailFragment.class.getSimpleName();
 
     private Button mSignUp;
     private TextInputLayout mEmailId;

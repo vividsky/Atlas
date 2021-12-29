@@ -39,10 +39,12 @@ public class LoginFragment extends Fragment {
 
     private static final String TAG = "LoginFragment";
     TextView loginToSignup;
+    TextView loginToContact;
     Button loginButton;
     TextInputLayout email;
     TextInputLayout password;
     String signInText;
+    String signUpWithContactText;
     ProgressBar progressBar;
 
     FirebaseFirestore firebaseFirestore;
@@ -64,10 +66,15 @@ public class LoginFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         loginToSignup  = view.findViewById(R.id.tv_login_to_signup);
+        loginToContact = view.findViewById(R.id.tv_login_with_phone);
+
         loginButton    = view.findViewById(R.id.bv_login);
         email       = view.findViewById(R.id.et_login_email);
         password       = view.findViewById(R.id.et_password);
+
         signInText     = getString(R.string.asking_for_sign_up);
+        signUpWithContactText = getString(R.string.asking_for_login_with_phone);
+
         progressBar = view.findViewById(R.id.pb_login_page);
         SpannableString ss = new SpannableString(signInText);
 
@@ -76,7 +83,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View widget) {
                 getParentFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.auth_fragment_container, new RegisterFragment())
+                        .replace(R.id.auth_fragment_container, new RegisterWithEmailFragment())
                         .commit();
             }
         };
@@ -121,37 +128,22 @@ public class LoginFragment extends Fragment {
                     });
         });
 
-//        loginButton.setOnClickListener(view1 ->  {
-//            String phoneNumber = "+91" + email.getEditText().getText().toString();
-//            String smsCode = "123456";
-//
-//            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-//            FirebaseAuthSettings firebaseAuthSettings = firebaseAuth.getFirebaseAuthSettings();
-//
-//// Configure faking the auto-retrieval with the whitelisted numbers.
-//            firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(phoneNumber, smsCode);
-//
-//            PhoneAuthOptions options = PhoneAuthOptions.newBuilder(firebaseAuth)
-//                    .setPhoneNumber(phoneNumber)
-//                    .setTimeout(60L, TimeUnit.SECONDS)
-//                    .setActivity(getActivity())
-//                    .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-//                        @Override
-//                        public void onVerificationCompleted(PhoneAuthCredential credential) {
-//                           startActivity(new Intent(getContext(), MainActivity.class));
-//                        }
-//
-//                        @Override
-//                        public void onVerificationFailed(@NonNull FirebaseException e) {
-//                            Log.d(TAG, e.getLocalizedMessage());
-//                            Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-//                        }
-//
-//                        // ...
-//                    })
-//                    .build();
-//            PhoneAuthProvider.verifyPhoneNumber(options);
-//        });
+
+        SpannableString ssForContact = new SpannableString(signUpWithContactText);
+        // creating clickable span to be implemented as a link
+        ClickableSpan clickableSpanForContact = new ClickableSpan() {
+            public void onClick(View widget) {
+                getParentFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.auth_fragment_container, new RegisterWithContactFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        };
+        // setting the part of string to be act as a link
+        ssForContact.setSpan(clickableSpanForContact, signUpWithContactText.indexOf("Phone"), signUpWithContactText.indexOf('.'), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        loginToContact.setText(ssForContact);
+        loginToContact.setMovementMethod(LinkMovementMethod.getInstance());
     }
     private void isUserProfileSavedSuccessful() {
 

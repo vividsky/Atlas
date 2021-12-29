@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".authentication.RegisterFragment">
+    tools:context=".authentication.RegisterWithEmailFragment">
     <ImageView
         android:id="@+id/iv_app_icon_logo"
         android:layout_width="200dp"
@@ -77,8 +77,27 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
         android:gravity="center"
         android:text="@string/asking_for_sign_up"
         android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="or"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/tv_login_with_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/asking_for_login_with_phone"
+        android:textSize="16sp" />
+
 </LinearLayout>
