@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/message_text_other_shape"
         android:layout_gravity="start"
+        android:textColor="@color/black"
         android:padding="10dp"/>
 
 </LinearLayout>

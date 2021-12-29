@@ -111,6 +111,7 @@ public class ChatRoomFragment extends Fragment {
 
     }
 
+
     // hide the menu item refresh
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
