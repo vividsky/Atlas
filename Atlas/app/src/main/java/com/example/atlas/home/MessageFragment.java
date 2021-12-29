@@ -137,6 +137,7 @@ public class MessageFragment extends Fragment {
                         messageRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                         messageRecyclerView.setHasFixedSize(true);
                         messageRecyclerView.setAdapter(messageAdapter);
+                        messageRecyclerView.scrollToPosition(messageRecyclerView.getAdapter().getItemCount() - 1);
                     } else {
                         Log.i(TAG, task.getException().getMessage());
                     }
