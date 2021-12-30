@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class ServiceProvider implements Serializable {
 
     public String speciality;
-    public String experience;
-    public String expectedWage;
+    public int experience;
+    public int expectedWage;
     public String vehicleOwned;
     public String id;
     public User userDetails;
@@ -14,7 +14,7 @@ public class ServiceProvider implements Serializable {
     public ServiceProvider() {
     }
 
-    public ServiceProvider(String id, String speciality, String experience, String expectedWage, String vehicleOwned, User userDetails) {
+    public ServiceProvider(String id, String speciality, int experience, int expectedWage, String vehicleOwned, User userDetails) {
         this.id = id;
         this.speciality = speciality;
         this.experience = experience;
@@ -31,11 +31,11 @@ public class ServiceProvider implements Serializable {
         return speciality;
     }
 
-    public String getExperience() {
+    public int getExperience() {
         return experience;
     }
 
-    public String getExpectedWage() {
+    public int getExpectedWage() {
         return expectedWage;
     }
 

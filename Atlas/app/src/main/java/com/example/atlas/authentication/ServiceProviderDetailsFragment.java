@@ -88,8 +88,8 @@ public class ServiceProviderDetailsFragment extends Fragment {
                 progressBar.setVisibility(View.VISIBLE);
                 Log.d(TAG, "In button click");
 
-                String expectedWage = TextUtils.isEmpty(mExpectedWage.getText().toString()) ? "0" : mExpectedWage.getText().toString();
-                String experience = TextUtils.isEmpty(mExperience.getText().toString()) ? "0" : mExperience.getText().toString();
+                int expectedWage = Integer.parseInt(TextUtils.isEmpty(mExpectedWage.getText().toString()) ? "0" : mExpectedWage.getText().toString());
+                int experience = Integer.parseInt(TextUtils.isEmpty(mExperience.getText().toString()) ? "0" : mExperience.getText().toString());
 
                 firebaseAuth = FirebaseAuth.getInstance();
                 firebaseFirestore = FirebaseFirestore.getInstance();
@@ -113,25 +113,6 @@ public class ServiceProviderDetailsFragment extends Fragment {
                                 Toast.makeText(getContext(), task2.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
-
-//                firebaseFirestore.collection(getString(R.string.service_provider))
-//                        .document(firebaseAuth.getCurrentUser().getUid())
-//                        .set(new ServiceProvider(checkedSpeciality, experience, expectedWage, vehicleOwned[0], userObj))
-//                        .addOnCompleteListener(task2 -> {
-//                            if (task2.isSuccessful()) {
-//
-//                                // getting the document users by its id because its unique always
-//                                DocumentReference currentUser = firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid());
-//
-//                                currentUser.update("profile",getString(R.string.service_provider));
-//                                progressBar.setVisibility(View.GONE);
-//                                Toast.makeText(getContext(), "Service Provider details saved successfully.", Toast.LENGTH_SHORT).show();
-//                                startActivity(new Intent(getContext(), MainActivity.class));
-//                                getActivity().finish();
-//                            } else {
-//                                Toast.makeText(getContext(), task2.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
 
             }
         });

@@ -90,8 +90,8 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
             name.setText(userDetails.getName());
             gender.setText(userDetails.getGender());
             address.setText(userDetails.getAddress());
-            experience.setText("Exp : " + serviceProviderDetails.experience + " Years");
-            expectedWage.setText(serviceProviderDetails.getExpectedWage());
+            experience.setText("Exp : " + serviceProviderDetails.getExperience() + " Years");
+            expectedWage.setText(serviceProviderDetails.getExpectedWage() + "");
             speciality.setText(serviceProviderDetails.getSpeciality());
 
             firebaseAuth = FirebaseAuth.getInstance();
