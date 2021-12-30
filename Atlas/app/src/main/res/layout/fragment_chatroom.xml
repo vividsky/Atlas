@@ -5,6 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".home.ChatRoomFragment">
 
+    <ProgressBar
+        android:id="@+id/chatroom_fragment_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatroom_recycler_view"
         android:layout_width="match_parent"

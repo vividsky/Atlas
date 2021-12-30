@@ -4,7 +4,6 @@
     android:id="@+id/main_activity_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_200"
     android:orientation="vertical"
     tools:context=".home.MainActivity">
 

@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,13 +31,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatRoomFragment extends Fragment {
+
     public static final String TAG = ChatRoomFragment.class.getSimpleName();
+
+    private static List<Chatroom> chatRoomsArrayList;
 
     Toolbar toolbar;
     DrawerLayout mDrawerLayout;
-    RecyclerView recyclerView;
-    ChatroomAdapter chatroomAdapter;
-    List<Chatroom> chatRoomsArrayList;
+    RecyclerView mRecyclerView;
+    ProgressBar mProgressBar;
+    ChatroomAdapter mChatroomAdapter;
+
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
 
@@ -69,8 +75,6 @@ public class ChatRoomFragment extends Fragment {
         // to get the options and hide it then
         setHasOptionsMenu(true);
 
-
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_chatroom, container, false);
     }
 
@@ -78,11 +82,13 @@ public class ChatRoomFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.chatroom_recycler_view);
+        mProgressBar = view.findViewById(R.id.chatroom_fragment_progress_bar);
+        mRecyclerView = view.findViewById(R.id.chatroom_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
 
         chatRoomsArrayList = new ArrayList<>();
+        mProgressBar.setVisibility(View.VISIBLE);
         setUpRecyclerView();
 
     }
@@ -100,10 +106,12 @@ public class ChatRoomFragment extends Fragment {
                     chatroom = chatroomQuery.toObject(Chatroom.class);
                     chatRoomsArrayList.add(chatroom);
                 }
-                chatroomAdapter = new ChatroomAdapter(chatRoomsArrayList, getContext());
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setAdapter(chatroomAdapter);
+                mChatroomAdapter = new ChatroomAdapter(chatRoomsArrayList, getContext());
+                mRecyclerView.setHasFixedSize(true);
+                mRecyclerView.setAdapter(mChatroomAdapter);
+                mProgressBar.setVisibility(View.GONE);
             } else {
+                Toast.makeText(getContext(), "Some error has occurred", Toast.LENGTH_LONG).show();
                 Log.i(TAG, task.getException().getMessage());
             }
         });

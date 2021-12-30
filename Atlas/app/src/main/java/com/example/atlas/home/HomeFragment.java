@@ -30,41 +30,47 @@ public class HomeFragment extends Fragment {
 
     public static final String TAG = HomeFragment.class.getSimpleName();
 
-    static RecyclerView recyclerView;
-    static ServiceProviderAdapter serviceProviderAdapter;
-    static ServiceReceiverAdapter serviceReceiverAdapter;
-    static ArrayList<ServiceProvider> serviceProvidersArrayList;
-    static ArrayList<ServiceReceiver> serviceReceiversArrayList;
-    static User user;
-    Toolbar toolbar;
+    private static ArrayList<ServiceProvider> serviceProvidersArrayList;
+    private static ArrayList<ServiceReceiver> serviceReceiversArrayList;
+
+    Toolbar mToolbar;
     DrawerLayout mDrawerLayout;
+    RecyclerView mRecyclerView;
+    ServiceProviderAdapter serviceProviderAdapter;
+    ServiceReceiverAdapter serviceReceiverAdapter;
+
+    User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // showing bottom navigation
         BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nv_bottom);
         bottomNavigationView.setVisibility(View.VISIBLE);
 
-        toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.app_name);
+        // set toolbar head to "Atlas"
+        mToolbar = getActivity().findViewById(R.id.toolbar);
+        mToolbar.setTitle(R.string.app_name);
 
+        // showing side navigation
         mDrawerLayout = getActivity().findViewById(R.id.main_activity_drawer_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
         // set hamburger icon to open drawer
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, toolbar,
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, mToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        // hiding swipe refresh
         SwipeRefreshLayout swipeRefresh = getActivity().findViewById(R.id.swipe_refresh_home);
         swipeRefresh.setEnabled(true);
 
         user = (User) getArguments().getSerializable(getString(R.string.user));
         serviceProvidersArrayList = (ArrayList<ServiceProvider>) getArguments().getSerializable(getString(R.string.service_provider));
         serviceReceiversArrayList = (ArrayList<ServiceReceiver>) getArguments().getSerializable(getString(R.string.service_receiver));
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_home, container, false);
 
     }
@@ -73,26 +79,26 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.main_activity_recycler_view);
+        mRecyclerView = view.findViewById(R.id.main_activity_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
 
         String profile = user.getProfile();
 
         if (profile.equals(getString(R.string.service_receiver))) {
 
             serviceProviderAdapter = new ServiceProviderAdapter(serviceProvidersArrayList, getContext());
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setAdapter(serviceProviderAdapter);
+            mRecyclerView.setHasFixedSize(true);
+            mRecyclerView.setAdapter(serviceProviderAdapter);
 
         } else if (profile.equals(getString(R.string.service_provider))) {
 
             serviceReceiverAdapter = new ServiceReceiverAdapter(serviceReceiversArrayList, getContext());
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setAdapter(serviceReceiverAdapter);
+            mRecyclerView.setHasFixedSize(true);
+            mRecyclerView.setAdapter(serviceReceiverAdapter);
 
         } else {
-            Toast.makeText(getContext(), "Some error has occurred", Toast.LENGTH_LONG);
+            Toast.makeText(getContext(), "Some error has occurred", Toast.LENGTH_LONG).show();
         }
     }
 }
