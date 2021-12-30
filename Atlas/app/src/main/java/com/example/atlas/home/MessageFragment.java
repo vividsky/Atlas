@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.atlas.Models.Message;
+import com.example.atlas.Models.User;
 import com.example.atlas.R;
 import com.example.atlas.adapters.MessageAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,7 +35,7 @@ public class MessageFragment extends Fragment {
 
     private static final String TAG = MessageFragment.class.getSimpleName();
 
-    Toolbar toolbar;
+    Toolbar mToolbar;
     DrawerLayout mDrawerLayout;
     RecyclerView messageRecyclerView;
     MessageAdapter messageAdapter;
@@ -44,6 +45,7 @@ public class MessageFragment extends Fragment {
 
     String chatroomId;
     String userId;
+    String userName = "";
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -53,10 +55,25 @@ public class MessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // set toolbar head to "Atlas" and remove hamburger icon from it
-        toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.app_name);
-        toolbar.setNavigationIcon(null);
+        chatroomId = this.getArguments().getString("chatId");
+        userId = this.getArguments().getString("userId");
+
+        mToolbar = getActivity().findViewById(R.id.toolbar);
+        //set toolbar title
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore.collection(getString(R.string.user)).document(userId).get()
+                .addOnCompleteListener(getUserName -> {
+                    if(getUserName.isSuccessful()) {
+                        User userObj = getUserName.getResult().toObject(User.class);
+                        if(userObj != null) {
+                            mToolbar.setTitle(userObj.getName());
+                        }
+                    } else {
+                        mToolbar.setTitle(R.string.app_name);
+                    }
+                });
+        // remove hamburger icon from toolbar
+        mToolbar.setNavigationIcon(null);
 
         // hiding side navigation
         mDrawerLayout = getActivity().findViewById(R.id.main_activity_drawer_layout);
@@ -79,11 +96,6 @@ public class MessageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // Here chatroomId is coming from chatroom fragment)
-        chatroomId = this.getArguments().getString("chatId");
-        // Here userId is coming from serviceProviderAdapter/serviceReceiverAdapter(Home fragment)
-        userId = this.getArguments().getString("userId");
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
