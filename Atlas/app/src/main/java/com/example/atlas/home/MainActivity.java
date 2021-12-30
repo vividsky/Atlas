@@ -50,14 +50,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String TAG = MainActivity.class.getSimpleName();
     private static ArrayList<ServiceProvider> serviceProvidersArrayList;
     private static ArrayList<ServiceReceiver> serviceReceiversArrayList;
-    private static ArrayList<ServiceReceiver> starredServiceReceiversArrayList;
-    private static ArrayList<ServiceProvider> starredServiceProvidersArrayList;
+
     FragmentManager fragmentManager;
     BottomNavigationView bottomNavigationView;
     NavigationView navigationView;
     View navigationHeaderView;
     FrameLayout homeLayout;
     Toolbar toolbar;
+
     private DrawerLayout drawerLayout;
     private SwipeRefreshLayout swipeRefresh;
     private ProgressBar progressBar;
@@ -80,8 +80,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         firebaseFirestore = FirebaseFirestore.getInstance();
         serviceProvidersArrayList = new ArrayList<>();
         serviceReceiversArrayList = new ArrayList<>();
-        starredServiceProvidersArrayList = new ArrayList<>();
-        starredServiceReceiversArrayList = new ArrayList<>();
 
         drawerLayout = findViewById(R.id.main_activity_drawer_layout);
         homeLayout = findViewById(R.id.auth_fragment_container);
@@ -100,14 +98,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // side navigation view
         navigationView.setNavigationItemSelectedListener(this);
 
-//        DocumentReference userDR = Utils.getCurrentUserDocumentReference().get()
-//                .addOnCompleteListener(task -> {
-//                    User userObj;
-//                    if(task.isSuccessful()) {
-//
-//                    }
-//                })
-
         // set hamburger icon to open drawer
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -118,8 +108,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         swipeRefresh.setOnRefreshListener(() -> {
             serviceReceiversArrayList.clear();
             serviceProvidersArrayList.clear();
-            starredServiceReceiversArrayList.clear();
-            starredServiceProvidersArrayList.clear();
             passDataToFragments();
             swipeRefresh.setRefreshing(false);
         });
@@ -191,9 +179,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                                         ServiceReceiver srObj = sp.toObject(ServiceReceiver.class);
 
                                                         ArrayList<String> requirements = new ArrayList<>(srObj.getRequirements());
-                                                        if (starredUsers.contains(srObj.getId())) {
-                                                            starredServiceReceiversArrayList.add(srObj);
-                                                        }
                                                         String speciality = serviceProviderObj.getSpeciality();
 
                                                         // Store the comparison output
@@ -237,10 +222,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                                         String speciality = spObj.getSpeciality();
                                                         ArrayList<String> requirements = new ArrayList<>(serviceReceiver.getRequirements());
-
-                                                        if (starredUsers.contains(spObj.getId())) {
-                                                            starredServiceProvidersArrayList.add(spObj);
-                                                        }
 
                                                         // Store the comparison output
                                                         // in ArrayList requirements
@@ -439,16 +420,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void switchToStarredFragment() {
-        Bundle starredBundle = new Bundle();
-        starredBundle.putSerializable(getString(R.string.user), user);
-        starredBundle.putSerializable(getString(R.string.starred_service_provider), starredServiceProvidersArrayList);
-        starredBundle.putSerializable(getString(R.string.starred_service_receiver), starredServiceReceiversArrayList);
-        StarredFragment starredFragment = new StarredFragment();
-        starredFragment.setArguments(starredBundle);
         fragmentManager = getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.main_activity_container, starredFragment)
+                .replace(R.id.main_activity_container, new StarredFragment())
                 .commit();
     }
 }

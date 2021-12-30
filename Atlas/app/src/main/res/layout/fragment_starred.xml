@@ -8,16 +8,18 @@
     android:orientation="vertical"
     tools:context=".home.StarredFragment">
 
+    <ProgressBar
+        android:id="@+id/starred_fragment_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_gravity="center"
+        android:visibility="visible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/starred_fragment_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-    <!--        android:id="@+id/swipe_refresh_starred"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_gravity="center"/>-->
 
 
 </LinearLayout>
