@@ -137,7 +137,7 @@ public class MessageFragment extends Fragment {
 
         firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid())
                 .collection(getString(R.string.chatrooms)).document(chatroomId)
-                .collection(getString(R.string.messages)).get()
+                .collection(getString(R.string.messages)).orderBy("sentAt").get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Message message;
