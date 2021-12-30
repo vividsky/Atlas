@@ -68,6 +68,7 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
         TextView speciality;
         ImageView starred;
         ImageView sendMessage;
+        ImageView shareSPDetails;
 
         public ContentViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,6 +81,7 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
             speciality = itemView.findViewById(R.id.tv_sp_speciality);
             starred = itemView.findViewById(R.id.sp_iv_starred);
             sendMessage = itemView.findViewById(R.id.sp_iv_sendMessage);
+            shareSPDetails = itemView.findViewById(R.id.sp_iv_share);
         }
 
         void bind(int listIndex) {
@@ -172,6 +174,10 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
                                 currentUserDR.update("starredUsers", starredUsers);
                             }
                         });
+            });
+
+            shareSPDetails.setOnClickListener(view -> {
+                Toast.makeText(context, "yet to be implemented in future.", Toast.LENGTH_LONG).show();
             });
         }
     }

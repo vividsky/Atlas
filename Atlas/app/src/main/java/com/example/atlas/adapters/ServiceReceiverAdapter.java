@@ -66,6 +66,7 @@ public class ServiceReceiverAdapter extends RecyclerView.Adapter<ServiceReceiver
         ImageView starred;
         TextView requirements;
         ImageView sendMessage;
+        ImageView shareSRDetails;
 
         public ContentViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,6 +76,7 @@ public class ServiceReceiverAdapter extends RecyclerView.Adapter<ServiceReceiver
             starred = itemView.findViewById(R.id.sr_iv_starred);
             requirements = itemView.findViewById(R.id.sr_tv_requirement);
             sendMessage = itemView.findViewById(R.id.sr_iv_sendMessage);
+            shareSRDetails = itemView.findViewById(R.id.sr_iv_share);
         }
 
         void bind(int listIndex) {
@@ -165,6 +167,10 @@ public class ServiceReceiverAdapter extends RecyclerView.Adapter<ServiceReceiver
                                 currentUserDR.update("starredUsers", starredUsers);
                             }
                         });
+            });
+
+            shareSRDetails.setOnClickListener(view -> {
+                Toast.makeText(context, "yet to be implemented in future.", Toast.LENGTH_LONG).show();
             });
         }
     }
