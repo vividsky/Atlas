@@ -18,6 +18,10 @@ public class Message {
         return sentBy;
     }
 
+    public long getSentAt() {
+        return sentAt;
+    }
+
     public String getText() {
         return text;
     }
