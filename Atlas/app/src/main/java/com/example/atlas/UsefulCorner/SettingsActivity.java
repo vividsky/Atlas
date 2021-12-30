@@ -55,9 +55,6 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         mSaveNewPassword.setOnClickListener(v -> {
-            // TODO: if successfully changed
-            //  1. new pass must follow pass standard requirements.
-            //  2. toast to indicate save was successful on cloud.
 
             String oldPassword = mOldPassword.getText().toString();
             String newPassword = mNewPassword.getText().toString();
