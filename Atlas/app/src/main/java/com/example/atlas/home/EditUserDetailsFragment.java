@@ -131,8 +131,8 @@ public class EditUserDetailsFragment extends Fragment {
         } else {
             // set experience, wage, vehicle owned
             if (serviceProviderObj != null) {
-                mEditExperience.getEditText().setText(serviceProviderObj.getExperience());
-                mEditExpectedWage.getEditText().setText(serviceProviderObj.getExpectedWage());
+                mEditExperience.getEditText().setText(String.valueOf(serviceProviderObj.getExperience()));
+                mEditExpectedWage.getEditText().setText(String.valueOf(serviceProviderObj.getExpectedWage()));
 
                 if (serviceProviderObj.getVehicleOwned().equals(getString(R.string.vehicle_owned_yes))) {
                     vehicleOwned[0] = getString(R.string.vehicle_owned_yes);
