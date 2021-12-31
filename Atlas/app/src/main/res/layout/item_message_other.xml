@@ -14,5 +14,12 @@
         android:background="@drawable/message_text_other_shape"
         android:padding="10dp"
         android:textColor="@color/black" />
+    <TextView
+        android:id="@+id/tv_message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="2.00am"
+        android:layout_gravity="start"
+        android:textColor="#436065"/>
 
 </LinearLayout>

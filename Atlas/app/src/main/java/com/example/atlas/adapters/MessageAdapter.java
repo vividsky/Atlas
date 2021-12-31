@@ -12,6 +12,8 @@ import com.example.atlas.Models.Message;
 import com.example.atlas.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
@@ -59,16 +61,25 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public class MessageViewHolder extends RecyclerView.ViewHolder {
         TextView text;
+        TextView time;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
 
             text = itemView.findViewById(R.id.tv_message_text);
+            time = itemView.findViewById(R.id.tv_message_time);
         }
 
         void bind(int listIndex) {
             Message message = messageList.get(listIndex);
             text.setText(message.getText());
+            time.setText(millisToDate(message.getSentAt()));
+
         }
+    }
+    private String millisToDate(long milliseconds) {
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+        Date resultdate = new Date(milliseconds);
+        return sdf.format(resultdate);
     }
 }
