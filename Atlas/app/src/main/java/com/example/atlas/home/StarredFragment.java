@@ -112,11 +112,11 @@ public class StarredFragment extends Fragment {
                                         ServiceProvider spObj = sp.toObject(ServiceProvider.class);
                                         if (starredUsersId.contains(spObj.getId())) {
                                             starredServiceProvidersArrayList.add(spObj);
-                                            serviceProviderAdapter = new ServiceProviderAdapter(starredServiceProvidersArrayList, getContext());
-                                            mRecyclerView.setHasFixedSize(true);
-                                            mRecyclerView.setAdapter(serviceProviderAdapter);
                                         }
                                     }
+                                    serviceProviderAdapter = new ServiceProviderAdapter(starredServiceProvidersArrayList, getContext());
+                                    mRecyclerView.setHasFixedSize(true);
+                                    mRecyclerView.setAdapter(serviceProviderAdapter);
                                 } else {
                                     Log.i(TAG, task2.getException().getMessage());
                                 }
@@ -129,11 +129,11 @@ public class StarredFragment extends Fragment {
                                         ServiceReceiver srObj = sr.toObject(ServiceReceiver.class);
                                         if (starredUsersId.contains(srObj.getId())) {
                                             starredServiceReceiversArrayList.add(srObj);
-                                            serviceReceiverAdapter = new ServiceReceiverAdapter(starredServiceReceiversArrayList, getContext());
-                                            mRecyclerView.setHasFixedSize(true);
-                                            mRecyclerView.setAdapter(serviceReceiverAdapter);
                                         }
                                     }
+                                    serviceReceiverAdapter = new ServiceReceiverAdapter(starredServiceReceiversArrayList, getContext());
+                                    mRecyclerView.setHasFixedSize(true);
+                                    mRecyclerView.setAdapter(serviceReceiverAdapter);
                                 } else {
                                     Log.i(TAG, task2.getException().getMessage());
                                 }
