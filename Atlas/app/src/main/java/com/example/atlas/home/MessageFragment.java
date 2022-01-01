@@ -25,8 +25,13 @@ import com.example.atlas.R;
 import com.example.atlas.adapters.MessageAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,8 +107,30 @@ public class MessageFragment extends Fragment {
 
         textMessage = view.findViewById(R.id.et_send_message);
         sendMessage = view.findViewById(R.id.iv_send_message);
-        //TODO: to do scheduling
+
         setUpRecyclerView(view);
+
+        firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid())
+                .collection(getString(R.string.chatrooms)).document(chatroomId)
+                .collection(getString(R.string.messages)).orderBy("sentAt")
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.w(TAG, "Listen failed.", error);
+                        return;
+                    }
+                    if (!value.isEmpty()) {
+                        List<DocumentChange> messagesDocumentChange =  value.getDocumentChanges();
+                        for (DocumentChange messageDocumentChange: messagesDocumentChange) {
+                            Message message = messageDocumentChange.getDocument().toObject(Message.class);
+                            messageList.add(message);
+                        }
+                        messageAdapter.notifyItemInserted(messageList.size() - 1);
+                        messageRecyclerView.scrollToPosition(messageRecyclerView.getAdapter().getItemCount() - 1);
+                        Log.d(TAG, "Successfully listened messages");
+                    } else {
+                        Log.d(TAG, "message listened unsuccessful");
+                    }
+                });
 
         sendMessage.setOnClickListener(view1 -> {
             String text = textMessage.getText().toString();
@@ -122,37 +149,19 @@ public class MessageFragment extends Fragment {
                         .collection(getString(R.string.messages))
                         .document()
                         .set(new Message(sentBy, sentAt, text));
-
-                setUpRecyclerView(view);
             }
         });
 
     }
 
     private void setUpRecyclerView(View view) {
-
         messageList = new ArrayList<>();
         messageAdapter = new MessageAdapter(messageList);
         messageRecyclerView = view.findViewById(R.id.message_recycler_view);
-
-        firebaseFirestore.collection(getString(R.string.user)).document(firebaseAuth.getCurrentUser().getUid())
-                .collection(getString(R.string.chatrooms)).document(chatroomId)
-                .collection(getString(R.string.messages)).orderBy("sentAt").get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Message message;
-                        for (QueryDocumentSnapshot messageQuery : task.getResult()) {
-                            message = messageQuery.toObject(Message.class);
-                            messageList.add(message);
-                        }
-                        messageRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                        messageRecyclerView.setHasFixedSize(true);
-                        messageRecyclerView.setAdapter(messageAdapter);
-                        messageRecyclerView.scrollToPosition(messageRecyclerView.getAdapter().getItemCount() - 1);
-                    } else {
-                        Log.i(TAG, task.getException().getMessage());
-                    }
-                });
+        messageRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        messageRecyclerView.setHasFixedSize(true);
+        messageRecyclerView.setAdapter(messageAdapter);
+        messageRecyclerView.scrollToPosition(messageRecyclerView.getAdapter().getItemCount() - 1);
     }
 
     // hide the menu item refresh

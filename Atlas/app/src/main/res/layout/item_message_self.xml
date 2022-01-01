@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:textSize="16sp"
         android:background="@drawable/message_text_self_shape"
         android:padding="10dp"
         android:textColor="@color/black" />
@@ -18,8 +19,8 @@
         android:id="@+id/tv_message_time"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="2.00am"
         android:layout_gravity="end"
+        android:textSize="12sp"
         android:textColor="#436065"/>
 
 </LinearLayout>
