@@ -37,13 +37,20 @@ public class SettingsActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Settings");
 
-        String email = getIntent().getStringExtra("UserEmail");
-
         mChangePassword = findViewById(R.id.tv_change_password);
         mOldPassword = findViewById(R.id.et_edit_old_password);
         mNewPassword = findViewById(R.id.et_edit_new_password);
         mConfirmNewPassword = findViewById(R.id.et_confirm_new_password);
         mSaveNewPassword = findViewById(R.id.bv_save_new_password);
+
+        String email = getIntent().getStringExtra("UserEmail");
+        if (TextUtils.isEmpty(email)) {
+            mChangePassword.setVisibility(View.GONE);
+            mOldPassword.setVisibility(View.GONE);
+            mNewPassword.setVisibility(View.GONE);
+            mConfirmNewPassword.setVisibility(View.GONE);
+            mSaveNewPassword.setVisibility(View.GONE);
+        }
 
         // changing password
         mChangePassword.setOnClickListener(v -> {
