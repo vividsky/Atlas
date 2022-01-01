@@ -306,8 +306,8 @@ public class EditUserDetailsFragment extends Fragment {
                     User updatedUserObj = task.getResult().toObject(User.class);
                     if (updatedUserObj.getProfile().equals(getString(R.string.service_provider))) {
                         DocumentReference serviceProviderDR = Utils.getCurrentServiceProviderDocumentReference();
-                        serviceProviderDR.update("experience", experience);
-                        serviceProviderDR.update("expectedWage", expectedWage);
+                        serviceProviderDR.update("experience", Integer.parseInt(experience));
+                        serviceProviderDR.update("expectedWage", Integer.parseInt(expectedWage));
                         serviceProviderDR.update("vehicleOwned", vehicleOwned[0]);
                         serviceProviderDR.update("userDetails", updatedUserObj);
 
